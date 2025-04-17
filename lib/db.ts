@@ -1,30 +1,50 @@
 // lib/db.ts
-import { Pool } from "pg";
-import { neon } from "@neondatabase/serverless";
-import { DATABASE_URL } from "./env";
+import { neon, neonConfig } from '@neondatabase/serverless';
+import { Pool } from 'pg';
+import { DATABASE_URL } from './env';
 
-// const DATABASE_URL = "postgres://neondb_owner:npg_RDf20qHAMkBc@ep-rapid-lake-a1oiqs63-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require";
-
-// Create a SQL client with Neon
-export const sql = neon(DATABASE_URL || "");
-
-// Create a connection pool for more complex operations
-export const pool = new Pool({
-  connectionString: DATABASE_URL,
-});
-
-// Helper function to generate a unique ID
-export function generateId(): string {
-  return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+// Enable WebSocket for Neon in production
+if (process.env.NODE_ENV === 'production') {
+  neonConfig.webSocketConstructor = require('ws');
 }
 
-// Helper function to execute queries
+// Initialize database connection lazily
+let sql: any = null;
+
+export function getSql() {
+  if (!sql) {
+    if (!DATABASE_URL) {
+      if (process.env.NODE_ENV === 'production') {
+        throw new Error('DATABASE_URL is required in production');
+      }
+      console.warn('DATABASE_URL not set; database operations will be skipped in development');
+      return null; // Avoid build-time errors
+    }
+    sql = neon(DATABASE_URL);
+  }
+  return sql;
+}
+
+// Create a connection pool for more complex operations
+export const pool = DATABASE_URL
+  ? new Pool({ connectionString: DATABASE_URL })
+  : null;
+
+// Helper function to execute queries using pool
 export async function query(text: string, params?: any[]) {
+  if (!pool) {
+    throw new Error('Database pool not initialized; check DATABASE_URL');
+  }
   try {
     const result = await pool.query(text, params);
     return result;
   } catch (error) {
-    console.error("Database query error:", error);
+    console.error('Database query error:', error);
     throw error;
   }
+}
+
+// Helper function to generate a unique ID
+export function generateId(): string {
+  return require('crypto').randomBytes(16).toString('hex'); // More robust than random string
 }
