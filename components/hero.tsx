@@ -1,48 +1,46 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
-import { motion } from "framer-motion"
+import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
+import Lottie from "lottie-react";
+import robotAnimation from "./robot.json"; // If in src/animations/
+import { useEffect, useRef } from "react";
 
-// Simple robot illustration similar to the reference
+// Robot illustration using Lottie animation
 function RobotIllustration() {
+  const lottieRef = useRef(null);
+
+  // Control Lottie animation playback
+  useEffect(() => {
+    if (lottieRef.current) {
+      lottieRef.current.play();
+    }
+    return () => {
+      if (lottieRef.current) {
+        lottieRef.current.stop();
+      }
+    };
+  }, []);
+
   return (
     <div className="absolute bottom-0 right-0 md:right-10 lg:right-20 w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96">
-      <motion.svg
-        viewBox="0 0 240 240"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1 }}
+        className="w-full h-full"
       >
-        <circle cx="120" cy="120" r="80" fill="#3b82f6" opacity="0.3" />
-        <motion.g
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.5, duration: 0.8 }}
-        >
-          {/* Robot head */}
-          <rect x="80" y="60" width="80" height="80" rx="10" fill="white" />
-          {/* Robot eyes */}
-          <rect x="95" y="85" width="15" height="5" rx="2.5" fill="#3b82f6" />
-          <rect x="130" y="85" width="15" height="5" rx="2.5" fill="#3b82f6" />
-          {/* Robot mouth */}
-          <rect x="105" y="105" width="30" height="5" rx="2.5" fill="#3b82f6" />
-          {/* Robot body */}
-          <rect x="105" y="140" width="30" height="40" rx="5" fill="white" />
-          {/* Robot legs */}
-          <rect x="105" y="180" width="10" height="20" rx="5" fill="white" />
-          <rect x="125" y="180" width="10" height="20" rx="5" fill="white" />
-          {/* Robot arms */}
-          <rect x="65" y="150" width="40" height="8" rx="4" fill="white" />
-          <rect x="135" y="150" width="40" height="8" rx="4" fill="white" />
-          {/* Robot antenna */}
-          <rect x="115" y="50" width="10" height="10" rx="5" fill="white" />
-          <line x1="120" y1="40" x2="120" y2="50" stroke="white" strokeWidth="2" />
-        </motion.g>
-      </motion.svg>
+        <Lottie
+          lottieRef={lottieRef}
+          animationData={robotAnimation}
+          loop={true} // Set to false for single play
+          autoplay={false} // Controlled via useEffect
+          style={{ width: "100%", height: "100%" }}
+          aria-label="Animated robot illustration"
+        />
+      </motion.div>
     </div>
-  )
+  );
 }
 
 // Grid background pattern
@@ -56,23 +54,21 @@ function GridBackground() {
         <rect width="100%" height="100%" fill="url(#grid)" />
       </svg>
     </div>
-  )
+  );
 }
 
 export default function Hero() {
   const scrollToSection = (sectionId: string) => {
-    const section = document.getElementById(sectionId)
+    const section = document.getElementById(sectionId);
     if (section) {
-      section.scrollIntoView({ behavior: "smooth" })
+      section.scrollIntoView({ behavior: "smooth" });
     }
-  }
+  };
 
   return (
     <section className="relative h-screen flex items-center overflow-hidden bg-gradient-to-br from-blue-800 via-blue-900 to-purple-900">
       <GridBackground />
       <RobotIllustration />
-
-      {/* Content */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="max-w-3xl">
           <motion.div
@@ -103,5 +99,5 @@ export default function Hero() {
         </div>
       </div>
     </section>
-  )
+  );
 }
