@@ -1,12 +1,14 @@
-import Hero from "@/components/hero"
-import Navbar from "@/components/navbar"
-import Mission from "@/components/mission"
-import Timeline from "@/components/timeline"
-import Tools from "@/components/tools"
-import Projects from "@/components/projects"
-import Fundraising from "@/components/fundraising"
-import Partners from "@/components/partners"
-import Footer from "@/components/footer"
+"use client";
+
+import Hero from "@/components/hero";
+import Navbar from "@/components/navbar";
+import Mission from "@/components/mission";
+import Timeline from "@/components/timeline";
+import Tools from "@/components/tools";
+import Projects from "@/components/projects";
+import Fundraising from "@/components/fundraising";
+import Partners from "@/components/partners";
+import Footer from "@/components/footer";
 
 export default function Home() {
   return (
@@ -21,5 +23,5 @@ export default function Home() {
       <Partners />
       <Footer />
     </main>
-  )
+  );
 }
