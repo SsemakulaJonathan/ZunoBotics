@@ -3,14 +3,12 @@
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import Lottie from "lottie-react";
-import robotAnimation from "./robot.json"; // If in src/animations/
+import robotAnimation from "./robot.json";
 import { useEffect, useRef } from "react";
 
-// Robot illustration using Lottie animation
 function RobotIllustration() {
   const lottieRef = useRef(null);
 
-  // Control Lottie animation playback
   useEffect(() => {
     if (lottieRef.current) {
       lottieRef.current.play();
@@ -33,8 +31,8 @@ function RobotIllustration() {
         <Lottie
           lottieRef={lottieRef}
           animationData={robotAnimation}
-          loop={true} // Set to false for single play
-          autoplay={false} // Controlled via useEffect
+          loop={true}
+          autoplay={false}
           style={{ width: "100%", height: "100%" }}
           aria-label="Animated robot illustration"
         />
@@ -43,7 +41,6 @@ function RobotIllustration() {
   );
 }
 
-// Grid background pattern
 function GridBackground() {
   return (
     <div className="absolute inset-0 z-0 opacity-20">
@@ -59,9 +56,11 @@ function GridBackground() {
 
 export default function Hero() {
   const scrollToSection = (sectionId: string) => {
-    const section = document.getElementById(sectionId);
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
+    if (typeof window !== "undefined") {
+      const section = document.getElementById(sectionId);
+      if (section) {
+        section.scrollIntoView({ behavior: "smooth" });
+      }
     }
   };
 
