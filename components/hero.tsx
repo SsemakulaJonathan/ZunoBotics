@@ -55,14 +55,18 @@ function GridBackground() {
 }
 
 export default function Hero() {
+  // Move scrollToSection to useEffect to ensure it runs only on the client
   const scrollToSection = (sectionId: string) => {
-    if (typeof window !== "undefined") {
-      const section = document.getElementById(sectionId);
-      if (section) {
-        section.scrollIntoView({ behavior: "smooth" });
-      }
+    const section = document.getElementById(sectionId);
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
     }
   };
+
+  // Ensure scrollToSection is only defined and used on the client
+  useEffect(() => {
+    // No need to redefine scrollToSection here; it's already defined above
+  }, []);
 
   return (
     <section className="relative h-screen flex items-center overflow-hidden bg-gradient-to-br from-blue-800 via-blue-900 to-purple-900">
