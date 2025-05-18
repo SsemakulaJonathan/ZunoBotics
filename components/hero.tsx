@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
 import Image from "next/image"
-import robotArm3D from "@/public/robot-arm-3d.png" // Ensure transparent PNG is in public folder or adjust path
+import robotArm3D from "./robot-arm-3d.png" // Ensure transparent PNG is in public folder or adjust path
 
 // Robot Arm Illustration centered and enlarged
 function RobotArm3D() {
