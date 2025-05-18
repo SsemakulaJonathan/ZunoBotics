@@ -1,53 +1,48 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { Menu, X, ArrowRight } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import Logo from "@/components/logo"
-import { motion, AnimatePresence } from "framer-motion"
+import { useState, useEffect } from "react";
+import { Menu, X, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import Logo from "@/components/logo";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
-  const [activeSection, setActiveSection] = useState("")
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 10) {
-        setScrolled(true)
-      } else {
-        setScrolled(false)
-      }
+      setScrolled(window.scrollY > 10);
 
-      // Determine active section
-      const sections = ["mission", "timeline", "tools", "projects", "support"]
-      let currentSection = ""
+      const sections = ["mission", "timeline", "tools", "projects", "support"];
+      let currentSection = "";
 
       for (const section of sections) {
-        const element = document.getElementById(section)
+        const element = document.getElementById(section);
         if (element) {
-          const rect = element.getBoundingClientRect()
+          const rect = element.getBoundingClientRect();
           if (rect.top <= 100 && rect.bottom >= 100) {
-            currentSection = section
-            break
+            currentSection = section;
+            break;
           }
         }
       }
 
-      setActiveSection(currentSection)
-    }
+      setActiveSection(currentSection);
+    };
 
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const scrollToSection = (sectionId: string) => {
-    const section = document.getElementById(sectionId)
+    const section = document.getElementById(sectionId);
     if (section) {
-      section.scrollIntoView({ behavior: "smooth" })
+      section.scrollIntoView({ behavior: "smooth" });
     }
-    setIsOpen(false)
-  }
+    setIsOpen(false);
+  };
 
   const navItems = [
     { name: "Home", href: "#", id: "" },
@@ -55,12 +50,12 @@ export default function Navbar() {
     { name: "Projects", href: "#projects", id: "projects" },
     { name: "Resources", href: "#tools", id: "tools" },
     { name: "Support Us", href: "#support", id: "support" },
-  ]
+  ];
 
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? "bg-white shadow-sm py-3" : "bg-white py-5" //changed header colour to white
+        scrolled ? "bg-white shadow-sm py-3" : "bg-white py-5"
       }`}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -74,7 +69,6 @@ export default function Navbar() {
             </button>
           </div>
 
-          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-10">
             {navItems.map((item) => (
               <button
@@ -86,8 +80,8 @@ export default function Navbar() {
                       ? "text-blue-600"
                       : "text-gray-700 hover:text-blue-600"
                     : activeSection === item.id
-                      ? "text-gray-700"
-                      : "text-gray-700 hover:text-gray-700"
+                    ? "text-gray-700"
+                    : "text-gray-700 hover:text-gray-700"
                 }`}
               >
                 {item.name}
@@ -98,7 +92,6 @@ export default function Navbar() {
             </Button>
           </nav>
 
-          {/* Mobile menu button */}
           <div className="md:hidden">
             <button
               type="button"
@@ -112,7 +105,6 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Navigation - Full Screen Overlay */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -169,5 +161,5 @@ export default function Navbar() {
         )}
       </AnimatePresence>
     </header>
-  )
+  );
 }
