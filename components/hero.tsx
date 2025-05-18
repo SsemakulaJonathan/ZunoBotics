@@ -1,5 +1,3 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import Lottie from "lottie-react";
@@ -55,18 +53,27 @@ function GridBackground() {
 }
 
 export default function Hero() {
-  // Move scrollToSection to useEffect to ensure it runs only on the client
-  const scrollToSection = (sectionId: string) => {
-    const section = document.getElementById(sectionId);
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
+  // Use a ref to store the scrollToSection function to ensure it's only used client-side
+  const scrollToSectionRef = useRef<(sectionId: string) => void | null>(null);
+
+  // Define scrollToSection inside useEffect to ensure it runs only in the browser
+  useEffect(() => {
+    scrollToSectionRef.current = (sectionId: string) => {
+      if (typeof window !== 'undefined') {
+        const section = document.getElementById(sectionId);
+        if (section) {
+          section.scrollIntoView({ behavior: "smooth" });
+        }
+      }
+    };
+  }, []);
+
+  // Wrapper function to call scrollToSection safely
+  const handleScroll = (sectionId: string) => {
+    if (scrollToSectionRef.current) {
+      scrollToSectionRef.current(sectionId);
     }
   };
-
-  // Ensure scrollToSection is only defined and used on the client
-  useEffect(() => {
-    // No need to redefine scrollToSection here; it's already defined above
-  }, []);
 
   return (
     <section className="relative h-screen flex items-center overflow-hidden bg-gradient-to-br from-blue-800 via-blue-900 to-purple-900">
@@ -86,13 +93,13 @@ export default function Hero() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button
-                onClick={() => scrollToSection("projects")}
+                onClick={() => handleScroll("projects")}
                 className="bg-blue-500 hover:bg-blue-600 text-lg px-8 py-6 rounded-md text-white"
               >
                 Explore Projects
               </Button>
               <Button
-                onClick={() => scrollToSection("mission")}
+                onClick={() => handleScroll("mission")}
                 className="bg-blue-600 hover:bg-blue-700 text-lg px-8 py-6 rounded-md text-white"
               >
                 Learn More
