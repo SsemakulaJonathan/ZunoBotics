@@ -1,18 +1,19 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { motion } from "framer-motion"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { ArrowRight } from "lucide-react"
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { ArrowRight } from "lucide-react";
+import Image from "next/image";
 
 export default function Projects() {
-  const [visibleProjects, setVisibleProjects] = useState(3)
+  const [visibleProjects, setVisibleProjects] = useState(3);
 
   const fadeIn = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 },
-  }
+  };
 
   const projects = [
     {
@@ -58,11 +59,11 @@ export default function Projects() {
       tags: ["Raspberry Pi", "Sensors", "IoT"],
       university: "Kyambogo University",
     },
-  ]
+  ];
 
   const showMoreProjects = () => {
-    setVisibleProjects(projects.length)
-  }
+    setVisibleProjects(projects.length);
+  };
 
   return (
     <section id="projects" className="py-24 bg-gray-50">
@@ -93,10 +94,13 @@ export default function Projects() {
             >
               <div className="bg-white rounded-lg overflow-hidden shadow-md h-full">
                 <div className="relative h-56 overflow-hidden">
-                  <img
+                  <Image
                     src={project.image || "/placeholder.svg"}
                     alt={project.title}
+                    width={400}
+                    height={300}
                     className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+                    priority={index < 3} // Prioritize loading for first 3 images
                   />
                   <div className="absolute top-4 right-4">
                     <Badge className="bg-blue-500 hover:bg-blue-600 text-white">{project.university}</Badge>
@@ -138,5 +142,5 @@ export default function Projects() {
         )}
       </div>
     </section>
-  )
+  );
 }
