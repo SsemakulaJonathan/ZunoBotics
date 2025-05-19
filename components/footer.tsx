@@ -79,7 +79,7 @@ export default function Footer() {
               </li>
               <li className="flex items-start">
                 <Phone className="h-5 w-5 text-primary mr-2 mt-0.5" />
-                <span className="text-muted-foreground">+256 123 456 789</span>
+                <span className="text-muted-foreground">+256 755-655-687</span>
               </li>
             </ul>
           </div>
