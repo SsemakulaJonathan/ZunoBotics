@@ -29,25 +29,25 @@ export default function Tools() {
           {
             name: "Arduino",
             description: "Open-source microcontroller platform for beginners and advanced users.",
-            icon: <Microchip size={40} className="text-blue-600" />,
+            icon: <Microchip size={40} className="text-primary" />,
             useCase: "Prototyping simple robots and IoT devices.",
           },
           {
             name: "Raspberry Pi",
             description: "Single-board computer for complex processing and networking.",
-            icon: <Monitor size={40} className="text-blue-600" />,
+            icon: <Monitor size={40} className="text-primary" />,
             useCase: "Running computer vision or ROS-based robotics projects.",
           },
           {
             name: "STM32",
             description: "High-performance microcontrollers for embedded systems.",
-            icon: <Cpu size={40} className="text-blue-600" />,
+            icon: <Cpu size={40} className="text-primary" />,
             useCase: "Real-time control in advanced robotics applications.",
           },
           {
             name: "ESP32",
             description: "Wi-Fi and Bluetooth-enabled microcontroller for IoT.",
-            icon: <Microchip size={40} className="text-blue-600" />,
+            icon: <Microchip size={40} className="text-primary" />,
             useCase: "Wireless sensor networks and smart agriculture.",
           },
         ],
@@ -58,13 +58,13 @@ export default function Tools() {
           {
             name: "3D Printers",
             description: "On-site printers for rapid prototyping of robot parts.",
-            icon: <Printer size={40} className="text-blue-600" />, // Changed from Printer3D to Printer
+            icon: <Printer size={40} className="text-primary" />,
             useCase: "Custom enclosures and mechanical components.",
           },
           {
             name: "PCB Fabrication",
             description: "Tools for designing and producing custom circuit boards.",
-            icon: <Wrench size={40} className="text-blue-600" />,
+            icon: <Wrench size={40} className="text-primary" />,
             useCase: "Creating specialized electronics for robotics.",
           },
         ],
@@ -75,13 +75,13 @@ export default function Tools() {
           {
             name: "Ultrasonic Sensors",
             description: "Measure distances for obstacle avoidance in robots.",
-            icon: <Thermometer size={40} className="text-blue-600" />,
+            icon: <Thermometer size={40} className="text-primary" />,
             useCase: "Navigation in autonomous vehicles.",
           },
           {
             name: "Camera Modules",
             description: "Enable computer vision and image processing.",
-            icon: <Video size={40} className="text-blue-600" />,
+            icon: <Video size={40} className="text-primary" />,
             useCase: "Object detection in waste sorting systems.",
           },
         ],
@@ -92,7 +92,7 @@ export default function Tools() {
           {
             name: "Solar Panels",
             description: "Sustainable power for off-grid robotics projects.",
-            icon: <Battery size={40} className="text-blue-600" />,
+            icon: <Battery size={40} className="text-primary" />,
             useCase: "Powering water quality monitors in remote areas.",
           },
         ],
@@ -103,7 +103,7 @@ export default function Tools() {
           {
             name: "FPGA Boards",
             description: "Programmable logic for high-speed processing.",
-            icon: <FPGA size={40} className="text-blue-600" />,
+            icon: <FPGA size={40} className="text-primary" />,
             useCase: "Real-time signal processing in medical drones.",
           },
         ],
@@ -116,13 +116,13 @@ export default function Tools() {
           {
             name: "Robot Operating System (ROS)",
             description: "Middleware for complex robotics projects.",
-            icon: <Code2 size={40} className="text-blue-600" />,
+            icon: <Code2 size={40} className="text-primary" />,
             useCase: "Coordinating multi-robot systems.",
           },
           {
             name: "Gazebo",
             description: "Simulation environment for testing robotics algorithms.",
-            icon: <Bot size={40} className="text-blue-600" />,
+            icon: <Bot size={40} className="text-primary" />,
             useCase: "Simulating drone flight paths.",
           },
         ],
@@ -133,13 +133,13 @@ export default function Tools() {
           {
             name: "OpenCV",
             description: "Library for image processing and machine learning.",
-            icon: <Eye size={40} className="text-blue-600" />,
+            icon: <Eye size={40} className="text-primary" />,
             useCase: "Facial recognition in assistive devices.",
           },
           {
             name: "TensorFlow",
             description: "AI framework for deep learning in robotics.",
-            icon: <Database size={40} className="text-blue-600" />,
+            icon: <Database size={40} className="text-primary" />,
             useCase: "Object detection in waste sorting.",
           },
         ],
@@ -150,13 +150,13 @@ export default function Tools() {
           {
             name: "FreeCAD & Blender",
             description: "3D design and simulation tools for robotics.",
-            icon: <Wrench size={40} className="text-blue-600" />,
+            icon: <Wrench size={40} className="text-primary" />,
             useCase: "Designing robot chassis and animations.",
           },
           {
             name: "KiCAD",
             description: "Open-source tool for PCB design.",
-            icon: <Wrench size={40} className="text-blue-600" />,
+            icon: <Wrench size={40} className="text-primary" />,
             useCase: "Creating custom circuit boards.",
           },
         ],
@@ -167,13 +167,13 @@ export default function Tools() {
           {
             name: "Git & GitHub",
             description: "Version control and collaboration platforms.",
-            icon: <GitBranch size={40} className="text-blue-600" />,
+            icon: <GitBranch size={40} className="text-primary" />,
             useCase: "Managing project codebases.",
           },
           {
             name: "Jupyter Notebooks",
             description: "Interactive coding for data analysis and prototyping.",
-            icon: <Cloud size={40} className="text-blue-600" />,
+            icon: <Cloud size={40} className="text-primary" />,
             useCase: "Testing AI models for robotics.",
           },
         ],
@@ -195,33 +195,32 @@ export default function Tools() {
       )
 
   return (
-    <section id="tools" className="py-24 bg-white" aria-labelledby="tools-heading">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="tools" className="py-24 bg-background" aria-labelledby="tools-heading">
+      <div className="container">
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
           variants={fadeIn}
-          className="text-center mb-16"
+          className="section-header"
         >
-          <h2 id="tools-heading" className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+          <h2 id="tools-heading" className="text-4xl md:text-5xl">
             Tools & Technologies
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             ZunoBotics equips innovators with an extensive suite of open-source hardware and software tools, fostering cutting-edge robotics and automation projects.
           </p>
         </motion.div>
 
-        {/* Filter Section */}
         <div className="flex flex-col sm:flex-row justify-between items-center mb-12 gap-4">
           <div className="flex items-center gap-2">
-            <Filter size={20} className="text-blue-600" />
-            <h3 className="font-semibold text-gray-800">Filter Tools:</h3>
+            <Filter size={20} className="text-primary" />
+            <h3 className="font-semibold text-foreground">Filter Tools:</h3>
           </div>
           <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
             <select
-              className="px-4 py-2 border border-gray-300 rounded-md bg-white"
+              className="px-4 py-2 border rounded-md bg-card text-foreground focus:ring-2 focus:ring-ring"
               value={activeCategory}
               onChange={(e) => setActiveCategory(e.target.value)}
             >
@@ -237,24 +236,24 @@ export default function Tools() {
                 placeholder="Search tools..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 pr-4 py-2 border border-gray-300 rounded-md"
+                className="pl-10 pr-4 py-2 border rounded-md bg-card text-foreground focus:ring-2 focus:ring-ring"
               />
-              <Search size={16} className="absolute left-3 top-3 text-gray-400" />
+              <Search size={16} className="absolute left-3 top-3 text-muted-foreground" />
             </div>
           </div>
         </div>
 
         <Tabs defaultValue="hardware" className="w-full">
-          <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-12 bg-blue-50 p-1 rounded-full">
+          <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-12 bg-muted p-1 rounded-full">
             <TabsTrigger
               value="hardware"
-              className="rounded-full py-3 data-[state=active]:bg-blue-600 data-[state=active]:text-white transition-all duration-300"
+              className="rounded-full py-3 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-300"
             >
               Hardware
             </TabsTrigger>
             <TabsTrigger
               value="software"
-              className="rounded-full py-3 data-[state=active]:bg-blue-600 data-[state=active]:text-white transition-all duration-300"
+              className="rounded-full py-3 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-300"
             >
               Software
             </TabsTrigger>
@@ -272,11 +271,11 @@ export default function Tools() {
                   variants={fadeIn}
                   className="group"
                 >
-                  <div className="bg-blue-50 p-8 rounded-lg h-full transition-transform duration-300 group-hover:scale-105 group-hover:shadow-lg">
+                  <div className="card-premium p-8 rounded-lg h-full">
                     <div className="mb-6">{tool.icon}</div>
-                    <h3 className="text-2xl font-bold mb-3 text-blue-600">{tool.name}</h3>
-                    <p className="text-gray-600 mb-4">{tool.description}</p>
-                    <Badge variant="outline" className="bg-blue-100 text-blue-600">
+                    <h3 className="text-2xl font-bold mb-3 text-primary">{tool.name}</h3>
+                    <p className="text-muted-foreground mb-4">{tool.description}</p>
+                    <Badge className="bg-secondary text-secondary-foreground">
                       Use Case: {tool.useCase}
                     </Badge>
                   </div>
@@ -297,11 +296,11 @@ export default function Tools() {
                   variants={fadeIn}
                   className="group"
                 >
-                  <div className="bg-blue-50 p-8 rounded-lg h-full transition-transform duration-300 group-hover:scale-105 group-hover:shadow-lg">
+                  <div className="card-premium p-8 rounded-lg h-full">
                     <div className="mb-6">{tool.icon}</div>
-                    <h3 className="text-2xl font-bold mb-3 text-blue-600">{tool.name}</h3>
-                    <p className="text-gray-600 mb-4">{tool.description}</p>
-                    <Badge variant="outline" className="bg-blue-100 text-blue-600">
+                    <h3 className="text-2xl font-bold mb-3 text-primary">{tool.name}</h3>
+                    <p className="text-muted-foreground mb-4">{tool.description}</p>
+                    <Badge className="bg-secondary text-secondary-foreground">
                       Use Case: {tool.useCase}
                     </Badge>
                   </div>
