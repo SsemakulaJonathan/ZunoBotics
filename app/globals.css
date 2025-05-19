@@ -136,7 +136,7 @@
   }
 
   .btn-elegant {
-    @apply transition-all duration-400 ease-in-out;
+    @apply transition-all duration-300 ease-in-out; /* Changed from duration-400 */
     background: linear-gradient(
       90deg,
       hsl(var(--primary)) 0%,
@@ -183,6 +183,10 @@
       hsl(var(--accent)) 0%,
       hsl(var(--primary)) 100%
     );
+  }
+
+  .text-balance {
+    text-wrap: balance;
   }
 }
 
