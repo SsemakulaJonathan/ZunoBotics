@@ -15,19 +15,19 @@ export default function Mission() {
     {
       name: "Jonathan Ssemakula",
       role: "Founder & Director",
-      image: "/api/placeholder/150/150",
-      description: "PhD in Robotics, leading ZunoBotics' mission to empower African innovators.",
+      image: "/images/team/jon",
+      description: "Masters in Robotics & Mechatronics Engineering leading ZunoBotics' mission to empower African innovators.",
     },
     {
       name: "Isaac Ssozi",
       role: "Lead Student Engineer",
-      image: "/api/placeholder/150/150",
-      description: "Engineering student at Makerere University, spearheading irrigation projects.",
+      image: "/images/team/isaac",
+      description: "Computer Scientist from Makerere University spearheading irrigation projects.",
     },
     {
       name: "Farouk Jjingo",
       role: "Community Manager",
-      image: "/api/placeholder/150/150",
+      image: "/images/team/farouk",
       description: "Coordinates student collaborations and community outreach programs.",
     },
   ]
