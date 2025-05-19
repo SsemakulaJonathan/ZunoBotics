@@ -49,21 +49,22 @@ export default function Partners() {
   ]
 
   return (
-    <section className="py-24 bg-white">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          variants={fadeIn}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Our Partners</h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            We collaborate with leading universities, tech companies, and communities to empower African innovation in robotics and automation.
-          </p>
-        </motion.div>
+    <section className="py-24 bg-background">
+      <div className="container">
+        <motion  className="section-header">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            variants={fadeIn}
+          >
+            <h2>Our Partners</h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              We collaborate with leading universities, tech companies, and communities to empower African innovation in robotics and automation.
+            </p>
+          </motion.div>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {partners.map((partner, index) => (
@@ -74,7 +75,7 @@ export default function Partners() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               variants={fadeIn}
-              className="bg-gray-50 p-6 rounded-lg shadow-md border border-gray-100 hover:shadow-lg transition"
+              className="card-premium p-6"
             >
               <div className="flex items-center justify-center mb-4">
                 <img
@@ -83,9 +84,9 @@ export default function Partners() {
                   className="max-h-16 grayscale hover:grayscale-0 transition-all duration-300"
                 />
               </div>
-              <h3 className="text-lg font-semibold text-gray-800 text-center mb-2">{partner.name}</h3>
-              <p className="text-sm text-blue-600 text-center mb-2">{partner.category}</p>
-              <p className="text-gray-600 text-center text-sm">{partner.description}</p>
+              <h3 className="text-lg font-semibold text-foreground text-center mb-2">{partner.name}</h3>
+              <p className="text-sm text-primary text-center mb-2">{partner.category}</p>
+              <p className="text-muted-foreground text-center text-sm">{partner.description}</p>
             </motion.div>
           ))}
         </div>
