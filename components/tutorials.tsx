@@ -16,47 +16,47 @@ export default function Tutorials() {
       title: "Getting Started with Arduino",
       type: "Guide",
       description: "Learn the basics of Arduino programming and hardware setup.",
-      icon: <BookOpen size={40} className="text-blue-600" />,
+      icon: <BookOpen size={40} className="text-primary" />,
       link: "#",
     },
     {
       title: "Introduction to ROS",
       type: "Video Series",
       description: "A step-by-step video guide to building robotics applications with ROS.",
-      icon: <Video size={40} className="text-blue-600" />,
+      icon: <Video size={40} className="text-primary" />,
       link: "#",
     },
     {
       title: "3D Printing for Robotics",
       type: "Tutorial",
       description: "Design and print custom parts for your robotics projects.",
-      icon: <FileText size={40} className="text-blue-600" />,
+      icon: <FileText size={40} className="text-primary" />,
       link: "#",
     },
     {
       title: "OpenCV for Computer Vision",
       type: "Guide",
       description: "Master image processing techniques for robotics applications.",
-      icon: <BookOpen size={40} className="text-blue-600" />,
+      icon: <BookOpen size={40} className="text-primary" />,
       link: "#",
     },
   ]
 
   return (
-    <section id="tutorials" className="py-24 bg-gray-50" aria-labelledby="tutorials-heading">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="tutorials" className="py-24 bg-background" aria-labelledby="tutorials-heading">
+      <div className="container">
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
           variants={fadeIn}
-          className="text-center mb-16"
+          className="section-header"
         >
-          <h2 id="tutorials-heading" className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+          <h2 id="tutorials-heading" className="text-4xl md:text-5xl">
             Tutorials & Guides
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Access our comprehensive library of tutorials to kickstart your robotics journey with ZunoBotics.
           </p>
         </motion.div>
@@ -72,13 +72,13 @@ export default function Tutorials() {
               variants={fadeIn}
               className="group"
             >
-              <div className="bg-white p-8 rounded-lg shadow-md h-full transition-transform duration-300 group-hover:scale-105 group-hover:shadow-lg">
+              <div className="card-premium p-8 rounded-lg h-full">
                 <div className="mb-6">{tutorial.icon}</div>
-                <h3 className="text-xl font-bold mb-2 text-blue-600">{tutorial.title}</h3>
-                <p className="text-gray-600 mb-4">{tutorial.description}</p>
+                <h3 className="text-xl font-bold mb-2 text-primary">{tutorial.title}</h3>
+                <p className="text-muted-foreground mb-4">{tutorial.description}</p>
                 <Button
                   variant="outline"
-                  className="w-full border-blue-600 text-blue-600 hover:bg-blue-50"
+                  className="w-full border-primary text-primary hover:bg-primary/10"
                   asChild
                 >
                   <a href={tutorial.link} target="_blank" rel="noopener noreferrer">
