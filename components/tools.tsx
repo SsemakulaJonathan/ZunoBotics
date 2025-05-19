@@ -209,7 +209,7 @@ export default function Tools() {
             Tools & Technologies
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            ZunoBotics equips innovators with an extensive suite of open-source hardware and software tools, fostering cutting-edge robotics and automation projects.
+            ZunoBotics equips innovators with an extensive suite of open-source hardware and software tools spearheading cutting-edge robotics and automation projects.
           </p>
         </motion.div>
 
