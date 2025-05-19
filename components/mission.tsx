@@ -37,27 +37,27 @@ export default function Mission() {
       year: "2023",
       title: "ZunoBotics Founded",
       description: "Initiated at Makerere University to democratize robotics in Africa.",
-      icon: <Briefcase size={24} className="text-blue-600" />,
+      icon: <Briefcase size={24} className="text-primary" />,
     },
     {
       year: "2024",
       title: "First Prototype",
       description: "Developed the Autonomous Irrigation Robot, impacting local farmers.",
-      icon: <Award size={24} className="text-blue-600" />,
+      icon: <Award size={24} className="text-primary" />,
     },
     {
       year: "2025",
       title: "Official Launch",
       description: "Launching across Uganda with partnerships at 5 universities.",
-      icon: <Users size={24} className="text-blue-600" />,
+      icon: <Users size={24} className="text-primary" />,
     },
   ]
 
   return (
     <div className="flex flex-col">
       {/* Mission Section */}
-      <section id="mission" className="py-24 bg-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="mission" className="py-24 bg-background">
+        <div className="container">
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -66,11 +66,9 @@ export default function Mission() {
             variants={fadeIn}
             className="text-center mb-16"
           >
-            <div className="inline-block px-4 py-1 mb-4 rounded-full bg-blue-50 text-blue-600 font-medium text-sm">
-              Our Vision
-            </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Our Vision & Mission</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <Badge className="mb-4 bg-muted text-muted-foreground">Our Vision</Badge>
+            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">Our Vision & Mission</h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               ZunoBotics is a robotics and automation open-source innovation hub launching in Uganda in 2025. Our vision
               is to democratize innovation by making robotics and automation technology accessible to students and young
               innovators across Africa.
@@ -84,10 +82,10 @@ export default function Mission() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.1 }}
               variants={fadeIn}
-              className="bg-gray-50 p-8 rounded-lg"
+              className="bg-card p-8 rounded-lg"
             >
-              <h3 className="text-2xl font-bold mb-4 text-blue-600">Democratize Innovation</h3>
-              <p className="text-gray-600">
+              <h3 className="text-2xl font-bold mb-4 text-primary">Democratize Innovation</h3>
+              <p className="text-muted-foreground">
                 Making robotics and automation technology accessible to students and young innovators across Africa,
                 breaking down financial and technical barriers.
               </p>
@@ -99,10 +97,10 @@ export default function Mission() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.2 }}
               variants={fadeIn}
-              className="bg-gray-50 p-8 rounded-lg"
+              className="bg-card p-8 rounded-lg"
             >
-              <h3 className="text-2xl font-bold mb-4 text-blue-600">Build Community</h3>
-              <p className="text-gray-600">
+              <h3 className="text-2xl font-bold mb-4 text-primary">Build Community</h3>
+              <p className="text-muted-foreground">
                 Creating a growing ecosystem of shared knowledge and accessible innovation in Africa, where students
                 collaborate and learn from each other.
               </p>
@@ -114,10 +112,10 @@ export default function Mission() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.3 }}
               variants={fadeIn}
-              className="bg-gray-50 p-8 rounded-lg"
+              className="bg-card p-8 rounded-lg"
             >
-              <h3 className="text-2xl font-bold mb-4 text-blue-600">Open Source Everything</h3>
-              <p className="text-gray-600">
+              <h3 className="text-2xl font-bold mb-4 text-primary">Open Source Everything</h3>
+              <p className="text-muted-foreground">
                 All projects are open-sourced, allowing anyone to learn from and build upon previous work, creating a
                 repository of African-made robotics solutions.
               </p>
@@ -127,8 +125,8 @@ export default function Mission() {
       </section>
 
       {/* Team Section */}
-      <section className="py-24 bg-gray-50">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-24 bg-background">
+        <div className="container">
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -137,8 +135,8 @@ export default function Mission() {
             variants={fadeIn}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Our Team</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">Our Team</h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Meet the passionate individuals driving ZunoBotics' mission to empower African innovators.
             </p>
           </motion.div>
@@ -152,16 +150,16 @@ export default function Mission() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 variants={fadeIn}
-                className="bg-white p-6 rounded-lg shadow-md border border-gray-100"
+                className="bg-card p-6 rounded-lg shadow-md border border-border"
               >
                 <img
                   src={member.image}
                   alt={member.name}
                   className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
                 />
-                <h3 className="text-xl font-bold text-gray-800 mb-2">{member.name}</h3>
-                <p className="text-blue-600 font-medium mb-2">{member.role}</p>
-                <p className="text-gray-600">{member.description}</p>
+                <h3 className="text-xl font-bold text-foreground mb-2">{member.name}</h3>
+                <p className="text-primary font-medium mb-2">{member.role}</p>
+                <p className="text-muted-foreground">{member.description}</p>
               </motion.div>
             ))}
           </div>
@@ -169,18 +167,17 @@ export default function Mission() {
       </section>
 
       {/* Milestones Section */}
-      <section className="py-24 bg-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-24 bg-background">
+        <div className="container">
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
             variants={fadeIn}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Our Journey</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+ радумийл className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">Our Journey</h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               From our founding to our upcoming launch, here are key milestones in ZunoBotics' story.
             </p>
           </motion.div>
@@ -194,14 +191,14 @@ export default function Mission() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 variants={fadeIn}
-                className="bg-gray-50 p-6 rounded-lg"
+                className="bg-card p-6 rounded-lg"
               >
                 <div className="flex items-center mb-4">
                   {milestone.icon}
-                  <h3 className="text-xl font-bold text-gray-800 ml-3">{milestone.year}</h3>
+                  <h3 className="text-xl font-bold text-foreground ml-3">{milestone.year}</h3>
                 </div>
-                <h4 className="text-lg font-semibold text-blue-600 mb-2">{milestone.title}</h4>
-                <p className="text-gray-600">{milestone.description}</p>
+                <h4 className="text-lg font-semibold text-primary mb-2">{milestone.title}</h4>
+                <p className="text-muted-foreground">{milestone.description}</p>
               </motion.div>
             ))}
           </div>
