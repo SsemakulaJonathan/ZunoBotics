@@ -18,7 +18,7 @@ export default function Navbar() {
     { name: "Impact", href: "/impact" },
     { name: "Projects", href: "/projects" },
     { name: "Resources", href: "/resources" },
-    { name: "Support Us", href: "/support" },
+    { name: "Support Us", href: "/donate" },
   ]
 
   return (
