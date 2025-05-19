@@ -23,15 +23,15 @@ export default function ResourcesPage() {
       ) : (
         <div>Error: CommunityResources component not found</div>
       )}
-      <section className="py-24 bg-blue-600 text-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <section className="py-24 bg-primary text-primary-foreground">
+        <div className="container text-center">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">Start Innovating Today</h2>
           <p className="text-xl mb-8 max-w-3xl mx-auto">
             Leverage ZunoBotics' extensive resources to build your next robotics project. Join our community of innovators.
           </p>
           <Button
             asChild
-            className="bg-white text-blue-600 px-6 py-3 rounded-md hover:bg-gray-100 transition flex items-center justify-center mx-auto"
+            className="btn-elegant px-6 py-3 rounded-md flex items-center justify-center mx-auto"
           >
             <Link href="/support">
               Get Involved
