@@ -6,7 +6,7 @@ import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import Image from "next/image"
-import { ArrowRight, Github, Users, Award, Filter,(Search, FileText, Code, ExternalLink } from "lucide-react"
+import { ArrowRight, Github, Users, Award, Filter, Search, FileText, Code, ExternalLink } from "lucide-react"
 
 export default function Projects() {
   const [visibleProjects, setVisibleProjects] = useState(3)
