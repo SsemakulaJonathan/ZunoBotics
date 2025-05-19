@@ -12,37 +12,37 @@ export default function Partners() {
   const partners = [
     {
       name: "Makerere University",
-      logo: "/images/partners/makerere.png",
+      logo: "/images/partners/makerere.jpeg",
       category: "Academic",
       description: "Leading research institution in Uganda promoting robotics innovation.",
     },
     {
       name: "Kyambogo University",
-      logo: "/images/partners/kyambogo.png",
+      logo: "/images/partners/kyambogo.jpeg",
       category: "Academic",
       description: "Partner in engineering education and student-led projects.",
     },
     {
       name: "Uganda Martyrs University",
-      logo: "/images/partners/uganda-martyrs.png",
+      logo: "/images/partners/uganda-martyrs.jpeg",
       category: "Academic",
       description: "Supports sustainable technology solutions for communities.",
     },
     {
       name: "Mbarara University",
-      logo: "/images/partners/mbarara.png",
+      logo: "/images/partners/mbarara.jpeg",
       category: "Academic",
       description: "Drives innovation in healthcare and accessibility tech.",
     },
     {
       name: "TechBit",
-      logo: "/images/partners/techbit.png",
+      logo: "/images/partners/techbit.jpeg",
       category: "Industry",
       description: "Provides hardware components and technical expertise.",
     },
     {
       name: "Innovation Hub Uganda",
-      logo: "/images/partners/innovation-hub.png",
+      logo: "/images/partners/innovation-hub.jpg",
       category: "Community",
       description: "Connects innovators and supports startup ecosystems.",
     },
@@ -78,7 +78,7 @@ export default function Partners() {
             >
               <div className="flex items-center justify-center mb-4">
                 <img
-                  src={partner.logo || "/images/partners/placeholder.png"}
+                  src={partner.logo || "/images/partners/techbit.jpeg"}
                   alt={partner.name}
                   className="max-h-16 grayscale hover:grayscale-0 transition-all duration-300"
                 />
