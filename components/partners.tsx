@@ -51,7 +51,7 @@ export default function Partners() {
   return (
     <section className="py-24 bg-background">
       <div className="container">
-        <motion  className="section-header">
+        <motion.div className="section-header">
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -64,7 +64,7 @@ export default function Partners() {
               We collaborate with leading universities, tech companies, and communities to empower African innovation in robotics and automation.
             </p>
           </motion.div>
-        </div>
+        </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {partners.map((partner, index) => (
