@@ -3,6 +3,7 @@
 
 import { motion } from "framer-motion"
 import { CheckCircle2 } from "lucide-react"
+import { Badge } from "@/components/ui/badge"; 
 
 export default function OperationalModel() {
   const fadeIn = {
