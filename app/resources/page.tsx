@@ -15,10 +15,14 @@ export default function ResourcesPage() {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
-      <Tools />
-      <Tutorials />
-      <Repositories />
-      <CommunityResources />
+      {Tools ? <Tools /> : <div>Error: Tools component not found</div>}
+      {Tutorials ? <Tutorials /> : <div>Error: Tutorials component not found</div>}
+      {Repositories ? <Repositories /> : <div>Error: Repositories component not found</div>}
+      {CommunityResources ? (
+        <CommunityResources />
+      ) : (
+        <div>Error: CommunityResources component not found</div>
+      )}
       <section className="py-24 bg-blue-600 text-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">Start Innovating Today</h2>
