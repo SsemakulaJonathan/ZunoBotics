@@ -4,7 +4,7 @@
 import React from 'react'
 import { Users, Code, School, Globe, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import Impact from '@/components/Impact' // Assuming the Impact component is in a components directory
+import Impact from '@/components/impact' // Assuming the Impact component is in a components directory
 
 export default function ImpactPage() {
   return (
