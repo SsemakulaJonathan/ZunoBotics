@@ -1,3 +1,4 @@
+// components/projects.tsx
 "use client"
 
 import { useState } from "react"
@@ -56,7 +57,7 @@ export default function Projects() {
       title: "Smart Waste Sorting System",
       description: "An automated system that uses computer vision to sort recyclable waste materials.",
       image: "/Waste_Sorting.png?height=300&width=400",
-      tags: ["Raspberry PI", "Gemma 3", "SunoBotics Robot Arm", "Servo Motors"],
+      tags: ["Raspberry PI", "Gemma 3", "ZunoBotics Robot Arm", "Servo Motors"],
       university: "Makerere University",
       category: "Environment",
       impact: "90% accuracy in sorting plastic, metal and paper waste",
@@ -71,7 +72,7 @@ export default function Projects() {
       title: "Solar-Powered Water Quality Monitor",
       description: "A device that continuously monitors water quality parameters in community water sources.",
       image: "/Water_Monitor.png?height=300&width=400",
-      tags: ["STM32", "Sensors", "LoRs Module"],
+      tags: ["STM32", "Sensors", "LoRa Module"],
       university: "Uganda Martyrs University",
       category: "Environment",
       impact: "Early detection of pollutants in Lake Victoria tributaries",
@@ -86,7 +87,7 @@ export default function Projects() {
       title: "Assistive Technology for Visually Impaired",
       description: "A wearable device that helps visually impaired individuals navigate their surroundings.",
       image: "/Visually_Impaired.png?height=300&width=400",
-      tags: ["ESP32-CAM", "Ultrasonic Sensors", "Object Dection", "Vibration Motor", "Wearable Tech", "3D Printing"],
+      tags: ["ESP32-CAM", "Ultrasonic Sensors", "Object Detection", "Vibration Motor", "Wearable Tech", "3D Printing"],
       university: "Mbarara University",
       category: "Accessibility",
       impact: "Increased independence for users in pilot testing",
@@ -113,18 +114,18 @@ export default function Projects() {
     }
   ]
 
-  const universities = ['all', 'Makerere University', 'Kyambogo University', 'Uganda Martyrs University', 'Mbarara University']
-  const categories = ['all', 'Agriculture', 'Healthcare', 'Environment', 'Accessibility']
+  const universities = ['all', ...new Set(projects.map(project => project.university))]
+  const categories = ['all', ...new Set(projects.map(project => project.category))]
   const technologies = ['all', ...new Set(projects.flatMap(project => project.tags))]
 
-  const handleFilterChange = (filterType, value) => {
+  const handleFilterChange = (filterType: string, value: string) => {
     setActiveFilters({
       ...activeFilters,
       [filterType]: value
     })
   }
 
-  const handleSearch = (e) => {
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setActiveFilters({
       ...activeFilters,
       search: e.target.value.toLowerCase()
@@ -147,8 +148,8 @@ export default function Projects() {
   }
 
   return (
-    <section id="projects" className="py-24 bg-gray-50">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="projects" className="py-24 bg-background">
+      <div className="container">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -157,22 +158,22 @@ export default function Projects() {
           variants={fadeIn}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Student Projects</h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">Student Projects</h2>
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Explore innovative open-source projects created by students across Uganda.
           </p>
         </motion.div>
 
         {/* Filter Section */}
-        <div className="bg-white border-b py-6 mb-8">
+        <div className="bg-card border-b py-6 mb-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-2">
-              <Filter size={20} className="text-blue-600" />
-              <h2 className="font-semibold text-gray-800">Filter Projects:</h2>
+              <Filter size={20} className="text-primary" />
+              <h2 className="font-semibold text-foreground">Filter Projects:</h2>
             </div>
             <div className="flex flex-wrap gap-4">
               <select
-                className="w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-md bg-white"
+                className="w-full sm:w-auto px-4 py-2 border border-input rounded-md bg-card text-foreground"
                 value={activeFilters.university}
                 onChange={(e) => handleFilterChange('university', e.target.value)}
               >
@@ -182,7 +183,7 @@ export default function Projects() {
                 ))}
               </select>
               <select
-                className="w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-md bg-white"
+                className="w-full sm:w-auto px-4 py-2 border border-input rounded-md bg-card text-foreground"
                 value={activeFilters.category}
                 onChange={(e) => handleFilterChange('category', e.target.value)}
               >
@@ -192,7 +193,7 @@ export default function Projects() {
                 ))}
               </select>
               <select
-                className="w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-md bg-white"
+                className="w-full sm:w-auto px-4 py-2 border border-input rounded-md bg-card text-foreground"
                 value={activeFilters.technology}
                 onChange={(e) => handleFilterChange('technology', e.target.value)}
               >
@@ -205,10 +206,10 @@ export default function Projects() {
                 <input
                   type="text"
                   placeholder="Search projects..."
-                  className="w-full sm:w-auto pl-10 pr-4 py-2 border border-gray-300 rounded-md"
+                  className="w-full sm:w-auto pl-10 pr-4 py-2 border border-input rounded-md bg-card text-foreground"
                   onChange={handleSearch}
                 />
-                <Search size={16} className="absolute left-3 top-3 text-gray-400" />
+                <Search size={16} className="absolute left-3 top-3 text-muted-foreground" />
               </div>
             </div>
           </div>
@@ -225,7 +226,7 @@ export default function Projects() {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               variants={fadeIn}
             >
-              <div className="bg-white rounded-lg overflow-hidden shadow-md border border-gray-200 h-full">
+              <div className="card-premium rounded-lg overflow-hidden h-full">
                 <div className="relative h-56 overflow-hidden">
                   <img
                     src={project.image || "/placeholder.svg"}
@@ -233,33 +234,33 @@ export default function Projects() {
                     className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
                   />
                   <div className="absolute top-4 left-4">
-                    <Badge className="bg-blue-500 hover:bg-blue-600 text-white">{project.university}</Badge>
+                    <Badge className="bg-primary hover:bg-primary/80 text-primary-foreground">{project.university}</Badge>
                   </div>
                   <div className="absolute top-4 right-4">
-                    <Badge className="bg-gray-800 hover:bg-gray-900 text-white">{project.category}</Badge>
+                    <Badge className="bg-muted text-muted-foreground hover:bg-muted/80">{project.category}</Badge>
                   </div>
                 </div>
                 <div className="p-6">
-                  <h3 className="text-xl font-bold mb-2 text-gray-800">{project.title}</h3>
-                  <p className="text-gray-600 mb-4">{project.description}</p>
-                  <div className="flex items-center text-sm text-gray-500 mb-4">
-                    <Award size={16} className="mr-1 text-blue-600" />
+                  <h3 className="text-xl font-bold text-foreground mb-2">{project.title}</h3>
+                  <p className="text-muted-foreground mb-4">{project.description}</p>
+                  <div className="flex items-center text-sm text-muted-foreground mb-4">
+                    <Award size={16} className="mr-1 text-primary" />
                     <span>Impact: {project.impact}</span>
                   </div>
                   <div className="flex flex-wrap gap-2 mb-4">
                     {project.tags.map((tag, tagIndex) => (
-                      <Badge key={tagIndex} variant="outline" className="bg-blue-50 border-blue-200">
+                      <Badge key={tagIndex} variant="outline" className="bg-muted border-muted-foreground/20">
                         {tag}
                       </Badge>
                     ))}
                   </div>
-                  <div className="flex items-center justify-between mb-4 text-sm">
+                  <div className="flex items-center justify-between mb-4 text-sm text-muted-foreground">
                     <div className="flex items-center">
-                      <Users size={16} className="mr-1 text-gray-500" />
+                      <Users size={16} className="mr-1" />
                       <span>{project.contributors} contributors</span>
                     </div>
                     <div className="flex items-center">
-                      <Github size={16} className="mr-1 text-gray-500" />
+                      <Github size={16} className="mr-1" />
                       <span>{project.repoStars} stars</span>
                     </div>
                     <div>Completed: {project.dateCompleted}</div>
@@ -267,7 +268,7 @@ export default function Projects() {
                   <div className="flex space-x-2">
                     <Button
                       variant="default"
-                      className="flex-1 flex items-center justify-center bg-blue-600 text-white hover:bg-blue-700"
+                      className="flex-1 btn-elegant flex items-center justify-center"
                       asChild
                     >
                       <a href={project.repoUrl} target="_blank" rel="noopener noreferrer">
@@ -277,7 +278,7 @@ export default function Projects() {
                     </Button>
                     <Button
                       variant="outline"
-                      className="flex items-center justify-center border-blue-600 text-blue-600 hover:bg-blue-50"
+                      className="flex items-center justify-center border-primary text-primary hover:bg-primary/10"
                     >
                       <ExternalLink size={16} className="mr-2" />
                       Details
@@ -294,7 +295,7 @@ export default function Projects() {
             <Button
               onClick={showMoreProjects}
               variant="outline"
-              className="px-8 py-6 text-lg rounded-md border-blue-200 text-blue-700 hover:bg-blue-50"
+              className="px-8 py-6 text-lg rounded-md border-primary/20 text-primary hover:bg-primary/10"
             >
               Load More Projects
             </Button>
@@ -302,73 +303,73 @@ export default function Projects() {
         )}
 
         {/* Call to Action */}
-        <div className="bg-gray-100 py-16 mt-16">
-          <div className="max-w-5xl mx-auto bg-white rounded-lg overflow-hidden shadow-lg border border-gray-200">
+        <div className="bg-muted py-16 mt-16">
+          <div className="max-w-5xl mx-auto bg-card rounded-lg overflow-hidden shadow-lg border border-border">
             <div className="flex flex-col md:flex-row">
-              <div className="md:w-1/3 bg-blue-600 text-white p-8">
+              <div className="md:w-1/3 bg-primary text-primary-foreground p-8">
                 <h3 className="text-2xl font-bold mb-4">Want to Start Your Own Project?</h3>
                 <p className="mb-6">
                   ZunoBotics provides components, workspace, mentorship, and support for student innovation projects.
                 </p>
                 <ul className="space-y-3">
                   <li className="flex items-start">
-                    <div className="bg-blue-500 p-1 rounded-full mr-2 mt-1">
-                      <div className="w-2 h-2 bg-white rounded-full"></div>
+                    <div className="bg-primary-foreground/20 p-1 rounded-full mr-2 mt-1">
+                      <div className="w-2 h-2 bg-primary-foreground rounded-full"></div>
                     </div>
                     Access to hardware components
                   </li>
                   <li className="flex items-start">
-                    <div className="bg-blue-500 p-1 rounded-full mr-2 mt-1">
-                      <div className="w-2 h-2 bg-white rounded-full"></div>
+                    <div className="bg-primary-foreground/20 p-1 rounded-full mr-2 mt-1">
+                      <div className="w-2 h-2 bg-primary-foreground rounded-full"></div>
                     </div>
                     Prototyping equipment (3D printers, PCB fab)
                   </li>
                   <li className="flex items-start">
-                    <div className="bg-blue-500 p-1 rounded-full mr-2 mt-1">
-                      <div className="w-2 h-2 bg-white rounded-full"></div>
+                    <div className="bg-primary-foreground/20 p-1 rounded-full mr-2 mt-1">
+                      <div className="w-2 h-2 bg-primary-foreground rounded-full"></div>
                     </div>
                     Experienced mentors and guidance
                   </li>
                   <li className="flex items-start">
-                    <div className="bg-blue-500 p-1 rounded-full mr-2 mt-1">
-                      <div className="w-2 h-2 bg-white rounded-full"></div>
+                    <div className="bg-primary-foreground/20 p-1 rounded-full mr-2 mt-1">
+                      <div className="w-2 h-2 bg-primary-foreground rounded-full"></div>
                     </div>
                     Project management support
                   </li>
                 </ul>
               </div>
               <div className="md:w-2/3 p-8">
-                <h3 className="text-2xl font-bold mb-4 text-gray-800">How to Apply</h3>
+                <h3 className="text-2xl font-bold text-foreground mb-4">How to Apply</h3>
                 <ol className="space-y-4 mb-6">
                   <li className="flex items-start">
-                    <div className="bg-blue-100 rounded-full w-6 h-6 flex items-center justify-center text-blue-600 font-bold mr-3 mt-0.5">
+                    <div className="bg-muted rounded-full w-6 h-6 flex items-center justify-center text-primary font-bold mr-3 mt-0.5">
                       1
                     </div>
                     <div>
-                      <h4 className="font-semibold text-gray-800">Download the Project Proposal Template</h4>
-                      <p className="text-gray-600">
+                      <h4 className="font-semibold text-foreground">Download the Project Proposal Template</h4>
+                      <p className="text-muted-foreground">
                         Our template guides you through articulating your project idea, goals, and resource requirements.
                       </p>
                     </div>
                   </li>
                   <li className="flex items-start">
-                    <div className="bg-blue-100 rounded-full w-6 h-6 flex items-center justify-center text-blue-600 font-bold mr-3 mt-0.5">
+                    <div className="bg-muted rounded-full w-6 h-6 flex items-center justify-center text-primary font-bold mr-3 mt-0.5">
                       2
                     </div>
                     <div>
-                      <h4 className="font-semibold text-gray-800">Submit Your Proposal</h4>
-                      <p className="text-gray-600">
+                      <h4 className="font-semibold text-foreground">Submit Your Proposal</h4>
+                      <p className="text-muted-foreground">
                         Complete the proposal and submit it to ZunoBotics for review by our selection committee.
                       </p>
                     </div>
                   </li>
                   <li className="flex items-start">
-                    <div className="bg-blue-100 rounded-full w-6 h-6 flex items-center justify-center text-blue-600 font-bold mr-3 mt-0.5">
+                    <div className="bg-muted rounded-full w-6 h-6 flex items-center justify-center text-primary font-bold mr-3 mt-0.5">
                       3
                     </div>
                     <div>
-                      <h4 className="font-semibold text-gray-800">Project Kickoff</h4>
-                      <p className="text-gray-600">
+                      <h4 className="font-semibold text-foreground">Project Kickoff</h4>
+                      <p className="text-muted-foreground">
                         If approved, you'll receive resources, be assigned a mentor, and create your project repository.
                       </p>
                     </div>
@@ -376,14 +377,14 @@ export default function Projects() {
                 </ol>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Button
-                    className="flex items-center justify-center bg-blue-600 text-white hover:bg-blue-700"
+                    className="btn-elegant flex items-center justify-center"
                   >
                     <FileText size={18} className="mr-2" />
                     Download Proposal Template
                   </Button>
                   <Button
                     variant="outline"
-                    className="flex items-center justify-center border-blue-600 text-blue-600 hover:bg-blue-50"
+                    className="flex items-center justify-center border-primary text-primary hover:bg-primary/10"
                   >
                     <Code size={18} className="mr-2" />
                     View Project Guidelines
