@@ -14,7 +14,7 @@ export default function Partners() {
       name: "Makerere University",
       logo: "/images/partners/makerere.png",
       category: "Academic",
-      description: "Leading research institution in Uganda, fostering robotics innovation.",
+      description: "Leading research institution in Uganda promoting robotics innovation.",
     },
     {
       name: "Kyambogo University",
