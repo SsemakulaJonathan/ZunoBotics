@@ -29,7 +29,7 @@ export default function PayPalDonationButton({
   return (
     <div className="w-full">
       <PayPalButtons
-        style={{ layout: 'vertical', shape: 'rect' }}
+        style={{ layout: 'vertical', shape: 'rect', color: 'gold' }}
         disabled={isProcessing || amount < 1 || !email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)}
         forceReRender={[amount, donationType, name, email, message, anonymous]}
         createOrder={(data, actions) => {
