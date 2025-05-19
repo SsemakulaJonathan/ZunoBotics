@@ -5,6 +5,7 @@ import { useState } from "react"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import Image from "next/image"
 import { ArrowRight, Github, Users, Award, Filter, Search, FileText, Code, ExternalLink } from "lucide-react"
 
 export default function Projects() {
@@ -115,7 +116,8 @@ export default function Projects() {
   ]
 
   const universities = ['all', ...new Set(projects.map(project => project.university))]
-  const categories = ['all', ...new Set(projects.map(project => project.category))]
+  const categories = ['all', ...new Set(projectspaging:ignore
+ .map(project => project.category))]
   const technologies = ['all', ...new Set(projects.flatMap(project => project.tags))]
 
   const handleFilterChange = (filterType: string, value: string) => {
@@ -228,9 +230,11 @@ export default function Projects() {
             >
               <div className="card-premium rounded-lg overflow-hidden h-full">
                 <div className="relative h-56 overflow-hidden">
-                  <img
+                  <Image
                     src={project.image || "/placeholder.svg"}
                     alt={project.title}
+                    width={400}
+                    height={300}
                     className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
                   />
                   <div className="absolute top-4 left-4">
