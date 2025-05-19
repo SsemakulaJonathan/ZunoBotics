@@ -4,6 +4,7 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import { Users, Briefcase, Award } from 'lucide-react'
+import { Badge } from "@/components/ui/badge"; 
 
 export default function Mission() {
   const fadeIn = {
