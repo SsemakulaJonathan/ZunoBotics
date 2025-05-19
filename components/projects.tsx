@@ -161,7 +161,7 @@ export default function Projects() {
         >
           <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">Student Projects</h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Explore innovative open-source projects created by students across Uganda.
+            Explore innovative open-source projects created by students across Africa.
           </p>
         </motion.div>
 
