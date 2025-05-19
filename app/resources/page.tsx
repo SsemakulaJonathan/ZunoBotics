@@ -9,7 +9,7 @@ import Navbar from '@/components/navbar'
 import Tools from '@/components/tools'
 import Tutorials from '@/components/tutorials'
 import Repositories from '@/components/repositories'
-import CommunityResources from '@/components/community-resources'
+import CommunityResources from '@/components/communityresources'
 
 export default function ResourcesPage() {
   return (
