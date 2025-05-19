@@ -5,7 +5,7 @@ import { useState } from "react"
 import { motion } from "framer-motion"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { 
-  Microchip, Monitor, Cpu, Printer3D, Code2, Eye, Wrench, GitBranch, 
+  Microchip, Monitor, Cpu, Printer, Code2, Eye, Wrench, GitBranch, 
   Thermometer, Video, Battery, Cpu as FPGA, Database, Cloud, Bot, 
   Search, Filter 
 } from "lucide-react"
@@ -58,7 +58,7 @@ export default function Tools() {
           {
             name: "3D Printers",
             description: "On-site printers for rapid prototyping of robot parts.",
-            icon: <Printer3D size={40} className="text-blue-600" />,
+            icon: <Printer size={40} className="text-blue-600" />, // Changed from Printer3D to Printer
             useCase: "Custom enclosures and mechanical components.",
           },
           {
