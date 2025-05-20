@@ -1,36 +1,47 @@
-// lib/db.ts
 import { neon, neonConfig } from '@neondatabase/serverless';
 import { Pool } from 'pg';
 import { DATABASE_URL } from './env';
+import { randomBytes } from 'crypto';
 
 // Enable WebSocket for Neon in production
 if (process.env.NODE_ENV === 'production') {
   neonConfig.webSocketConstructor = require('ws');
 }
 
-// Initialize database connection lazily
-let sql: any = null;
+// Lazily initialize sql
+let _sql: ReturnType<typeof neon> | null = null;
 
+/**
+ * Returns the lazily initialized Neon SQL client.
+ */
 export function getSql() {
-  if (!sql) {
+  if (!_sql) {
     if (!DATABASE_URL) {
       if (process.env.NODE_ENV === 'production') {
         throw new Error('DATABASE_URL is required in production');
       }
-      console.warn('DATABASE_URL not set; database operations will be skipped in development');
-      return null; // Avoid build-time errors
+      console.warn('DATABASE_URL not set; SQL client will not be initialized in development');
+      return null;
     }
-    sql = neon(DATABASE_URL);
+    _sql = neon(DATABASE_URL);
   }
-  return sql;
+  return _sql;
 }
 
-// Create a connection pool for more complex operations
+/**
+ * Export the `sql` object directly for convenience.
+ * Only use if DATABASE_URL is guaranteed to be present.
+ */
+export const sql = getSql();
+
+// PostgreSQL connection pool (e.g., for transactions)
 export const pool = DATABASE_URL
   ? new Pool({ connectionString: DATABASE_URL })
   : null;
 
-// Helper function to execute queries using pool
+/**
+ * Executes a query using the pool.
+ */
 export async function query(text: string, params?: any[]) {
   if (!pool) {
     throw new Error('Database pool not initialized; check DATABASE_URL');
@@ -44,7 +55,9 @@ export async function query(text: string, params?: any[]) {
   }
 }
 
-// Helper function to generate a unique ID
+/**
+ * Generates a unique ID using crypto.
+ */
 export function generateId(): string {
-  return require('crypto').randomBytes(16).toString('hex'); // More robust than random string
+  return randomBytes(16).toString('hex');
 }

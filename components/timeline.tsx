@@ -1,6 +1,8 @@
+// components/timeline.tsx
 "use client"
 
 import { motion } from "framer-motion"
+import { Calendar } from "lucide-react"
 
 export default function Timeline() {
   const fadeIn = {
@@ -28,7 +30,7 @@ export default function Timeline() {
       align: "right",
     },
     {
-      year: "2026-2027",
+      year: "2027",
       title: "Regional Outreach to Rwanda and East Africa",
       description: "Extend to neighboring countries, starting with Rwanda.",
       align: "left",
@@ -36,25 +38,25 @@ export default function Timeline() {
   ]
 
   return (
-    <section className="py-24 bg-blue-50">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-24 bg-gradient-section" aria-labelledby="timeline-heading">
+      <div className="container">
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
           variants={fadeIn}
-          className="text-center mb-16"
+          className="section-header"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Launch Timeline</h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <h2 id="timeline-heading">Launch Timeline</h2>
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             ZunoBotics will roll out in phases, starting in Uganda and gradually expanding regionally.
           </p>
         </motion.div>
 
         <div className="relative">
           {/* Timeline line */}
-          <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-blue-200"></div>
+          <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-primary/30"></div>
 
           {/* Timeline items */}
           <div className="relative">
@@ -67,17 +69,19 @@ export default function Timeline() {
                 transition={{ duration: 0.5, delay: index * 0.2 }}
                 variants={fadeIn}
                 className={`flex items-center mb-16 ${item.align === "left" ? "flex-row-reverse" : ""}`}
+                role="listitem"
               >
                 <div className={`w-1/2 ${item.align === "left" ? "pr-12 text-right" : "pl-12"}`}>
-                  <div className="bg-white p-6 rounded-lg shadow-md">
-                    <h3 className="text-2xl font-bold mb-2">{item.title}</h3>
-                    <p className="text-gray-600">{item.description}</p>
+                  <div className="card-premium p-6 rounded-lg">
+                    <h3 className="text-2xl font-bold mb-2 text-foreground">{item.title}</h3>
+                    <p className="text-muted-foreground">{item.description}</p>
+                    <p className="text-sm text-accent mt-2">{item.year}</p>
                   </div>
                 </div>
 
                 <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center justify-center">
-                  <div className="bg-blue-500 rounded-full w-12 h-12 flex items-center justify-center text-white font-bold">
-                    {item.year.includes("-") ? item.year.split("-")[0] : item.year}
+                  <div className="bg-primary rounded-full w-12 h-12 flex items-center justify-center text-primary-foreground">
+                    <Calendar size={24} />
                   </div>
                 </div>
 

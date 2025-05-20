@@ -1,3 +1,4 @@
+// components/donation-form-with-paypal.tsx
 "use client"
 
 import { useState } from "react"
@@ -36,13 +37,13 @@ export default function DonationFormWithPayPal({ donationType, defaultAmount = 5
     <form className="space-y-6">
       {error && (
         <Alert variant="destructive">
-          <AlertCircle className="h-4 w-4" />
-          <AlertDescription>{error}</AlertDescription>
+          <AlertCircle className="h-4 w-4 text-destructive" />
+          <AlertDescription className="text-destructive-foreground">{error}</AlertDescription>
         </Alert>
       )}
 
       <div>
-        <Label htmlFor="amount">Donation Amount (USD)</Label>
+        <Label htmlFor="amount" className="text-foreground">Donation Amount (USD)</Label>
         <div className="mt-2">
           <Slider
             id="amount"
@@ -54,7 +55,7 @@ export default function DonationFormWithPayPal({ donationType, defaultAmount = 5
             onValueChange={handleDonationChange}
             className="my-6"
           />
-          <div className="flex justify-between text-sm text-gray-400">
+          <div className="flex justify-between text-sm text-muted-foreground">
             <span>$10</span>
             <span>${donationAmount}</span>
             <span>$500</span>
@@ -64,38 +65,38 @@ export default function DonationFormWithPayPal({ donationType, defaultAmount = 5
 
       <div className="space-y-4">
         <div>
-          <Label htmlFor="name">Name</Label>
+          <Label htmlFor="name" className="text-foreground">Name</Label>
           <Input
             id="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             disabled={isAnonymous}
             placeholder="Your name"
-            className="mt-1"
+            className="mt-1 bg-background text-foreground border-input"
           />
         </div>
 
         <div>
-          <Label htmlFor="email">Email</Label>
+          <Label htmlFor="email" className="text-foreground">Email</Label>
           <Input
             id="email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="your.email@example.com"
-            className="mt-1"
+            className="mt-1 bg-background text-foreground border-input"
             required
           />
         </div>
 
         <div>
-          <Label htmlFor="message">Message (Optional)</Label>
+          <Label htmlFor="message" className="text-foreground">Message (Optional)</Label>
           <Textarea
             id="message"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             placeholder="Share why you're supporting ZunoBotics..."
-            className="mt-1"
+            className="mt-1 bg-background text-foreground border-input"
           />
         </div>
 
@@ -104,22 +105,23 @@ export default function DonationFormWithPayPal({ donationType, defaultAmount = 5
             id="anonymous"
             checked={isAnonymous}
             onCheckedChange={(checked) => setIsAnonymous(checked === true)}
+            className="border-input"
           />
-          <Label htmlFor="anonymous">Make my donation anonymous</Label>
+          <Label htmlFor="anonymous" className="text-foreground">Make my donation anonymous</Label>
         </div>
       </div>
 
       <div className="space-y-4">
-        <Label>Payment Method</Label>
+        <Label className="text-foreground">Payment Method</Label>
         <Tabs defaultValue="stripe" onValueChange={(value) => setPaymentMethod(value as "stripe" | "paypal")}>
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="stripe">Credit Card</TabsTrigger>
-            <TabsTrigger value="paypal">PayPal</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 bg-muted">
+            <TabsTrigger value="stripe" className="text-foreground">Credit Card</TabsTrigger>
+            <TabsTrigger value="paypal" className="text-foreground">PayPal</TabsTrigger>
           </TabsList>
           <TabsContent value="stripe" className="pt-4">
             <Button
               type="submit"
-              className="w-full bg-blue-500 hover:bg-blue-600 py-6 text-lg text-white"
+              className="w-full btn-elegant py-6 text-lg"
               formAction="/api/donations"
             >
               Donate ${donationAmount} <Heart className="ml-2 h-5 w-5" />

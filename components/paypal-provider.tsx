@@ -13,7 +13,7 @@ export default function PayPalProvider({ children }: PayPalProviderProps) {
 
   if (!clientId) {
     console.error('PayPal Client ID is missing. Check NEXT_PUBLIC_PAYPAL_CLIENT_ID in environment variables.');
-    return <div>Error: PayPal configuration missing. Please try again later.</div>;
+    return <div className="text-destructive">Error: PayPal configuration missing. Please try again later.</div>;
   }
 
   console.log('PayPal SDK initializing with Client ID:', clientId);

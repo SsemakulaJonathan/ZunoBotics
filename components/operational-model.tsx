@@ -1,7 +1,9 @@
+// components/operational-model.tsx
 "use client"
 
 import { motion } from "framer-motion"
 import { CheckCircle2 } from "lucide-react"
+import { Badge } from "@/components/ui/badge"; 
 
 export default function OperationalModel() {
   const fadeIn = {
@@ -31,8 +33,8 @@ export default function OperationalModel() {
   ]
 
   return (
-    <section id="how-it-works" className="py-24 bg-gray-50">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="how-it-works" className="py-24 bg-background">
+      <div className="container">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -41,11 +43,9 @@ export default function OperationalModel() {
           variants={fadeIn}
           className="text-center mb-16"
         >
-          <div className="inline-block px-4 py-1 mb-4 rounded-full bg-emerald-100 text-emerald-800 font-medium text-sm">
-            Our Process
-          </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">How It Works</h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <Badge className="mb-4 bg-muted text-muted-foreground">Our Process</Badge>
+          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">How It Works</h2>
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Our operational model is designed to support students while ensuring open-source development.
           </p>
         </motion.div>
@@ -59,17 +59,17 @@ export default function OperationalModel() {
             variants={fadeIn}
             className="relative"
           >
-            <div className="absolute -inset-4 bg-emerald-200 rounded-3xl transform rotate-3 opacity-50"></div>
-            <div className="absolute -inset-4 bg-emerald-300 rounded-3xl transform -rotate-2 opacity-30"></div>
+            <div className="absolute -inset-4 bg-accent rounded-3xl transform rotate-3 opacity-50"></div>
+            <div className="absolute -inset-4 bg-accent/50 rounded-3xl transform -rotate-2 opacity-30"></div>
             <img
               src="/placeholder.svg?height=500&width=600"
               alt="Students working on robotics project"
               className="relative z-10 rounded-2xl shadow-2xl w-full object-cover h-[500px]"
             />
-            <div className="absolute -bottom-6 -right-6 bg-white rounded-2xl shadow-xl p-4 z-20">
+            <div className="absolute -bottom-6 -right-6 bg-card rounded-2xl shadow-xl p-4 z-20">
               <div className="flex items-center gap-3 px-2 py-1">
-                <div className="w-3 h-3 rounded-full bg-emerald-500"></div>
-                <span className="text-sm font-medium">Project in progress</span>
+                <div className="w-3 h-3 rounded-full bg-primary"></div>
+                <span className="text-sm font-medium text-foreground">Project in progress</span>
               </div>
             </div>
           </motion.div>
@@ -86,17 +86,17 @@ export default function OperationalModel() {
                 <div key={index} className="flex gap-6 group">
                   <div className="flex-shrink-0 mt-1">
                     <div className="relative">
-                      <div className="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center group-hover:bg-emerald-200 transition-colors">
-                        <CheckCircle2 className="h-6 w-6 text-emerald-600" />
+                      <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center group-hover:bg-accent transition-colors">
+                        <CheckCircle2 className="h-6 w-6 text-primary" />
                       </div>
                       {index < steps.length - 1 && (
-                        <div className="absolute top-12 left-1/2 w-0.5 h-16 bg-emerald-200 -translate-x-1/2"></div>
+                        <div className="absolute top-12 left-1/2 w-0.5 h-16 bg-muted -translate-x-1/2"></div>
                       )}
                     </div>
                   </div>
                   <div>
-                    <h3 className="text-2xl font-bold mb-3">{step.title}</h3>
-                    <p className="text-gray-600 text-lg">{step.description}</p>
+                    <h3 className="text-2xl font-bold text-foreground mb-3">{step.title}</h3>
+                    <p className="text-muted-foreground text-lg">{step.description}</p>
                   </div>
                 </div>
               ))}

@@ -1,3 +1,4 @@
+// app/donate/[tier]/page.tsx
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import DonationForm from "@/components/donation-form-with-paypal"
@@ -17,7 +18,6 @@ interface DonatePageProps {
 export default function DonatePage({ params }: DonatePageProps) {
   const tier = params.tier
 
-  // Define donation tiers and their default amounts
   const tiers = {
     supporter: {
       name: "Supporter",
@@ -41,7 +41,6 @@ export default function DonatePage({ params }: DonatePageProps) {
     },
   }
 
-  // Check if the tier exists
   if (!Object.keys(tiers).includes(tier)) {
     notFound()
   }
@@ -49,15 +48,15 @@ export default function DonatePage({ params }: DonatePageProps) {
   const selectedTier = tiers[tier as keyof typeof tiers]
 
   return (
-    <main className="min-h-screen bg-gray-50 pt-24 pb-16">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <main className="min-h-screen bg-background pt-24 pb-16">
+      <div className="container">
         <div className="max-w-2xl mx-auto">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold mb-2">Donate as a {selectedTier.name}</h1>
-            <p className="text-gray-600">{selectedTier.description}</p>
+          <div className="section-header">
+            <h1 className="text-3xl md:text-4xl">{`Donate as a ${selectedTier.name}`}</h1>
+            <p className="text-muted-foreground">{selectedTier.description}</p>
           </div>
 
-          <Card>
+          <Card className="card-premium">
             <CardContent className="pt-6">
               <DonationForm
                 donationType={tier as "supporter" | "innovator" | "pioneer" | "visionary"}
