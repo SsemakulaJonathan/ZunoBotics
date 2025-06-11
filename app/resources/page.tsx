@@ -1,28 +1,31 @@
 // app/resources/page.tsx
-"use client"
+"use client";
 
-import React from 'react'
-import { Button } from '@/components/ui/button'
-import { ArrowRight } from 'lucide-react'
-import Link from 'next/link'
-import Navbar from '@/components/navbar'
-import Tools from '@/components/tools'
-import Tutorials from '@/components/tutorials'
-import Repositories from '@/components/repositories'
-import CommunityResources from '@/components/communityresources'
+import React from "react";
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
+import Link from "next/link";
+import Navbar from "@/components/navbar";
+import Tutorials from "@/components/tutorials";
+import CommunityResources from "@/components/communityresources";
 
 export default function ResourcesPage() {
   return (
     <div className="flex flex-col min-h-screen">
+      {/* Navbar */}
       <Navbar />
-      {Tools ? <Tools /> : <div>Error: Tools component not found</div>}
+
+      {/* Tutorials Section */}
       {Tutorials ? <Tutorials /> : <div>Error: Tutorials component not found</div>}
-      {Repositories ? <Repositories /> : <div>Error: Repositories component not found</div>}
+
+      {/* Community Resources Section */}
       {CommunityResources ? (
         <CommunityResources />
       ) : (
         <div>Error: CommunityResources component not found</div>
       )}
+
+      {/* Call-to-Action Section */}
       <section className="py-24 bg-primary text-primary-foreground">
         <div className="container text-center">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">Start Innovating Today</h2>
@@ -41,5 +44,5 @@ export default function ResourcesPage() {
         </div>
       </section>
     </div>
-  )
+  );
 }
