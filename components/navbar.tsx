@@ -13,13 +13,23 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
 
   const navItems = [
-    { name: "Home", href: "#home" },
+    { name: "Home", href: "#hero" },
     { name: "About", href: "#about" },
     { name: "Impact", href: "#impact" },
     { name: "Projects", href: "#projects" },
-    { name: "Resources", href: "#resources" },
-    { name: "Support Us", href: "#donate" },
+    { name: "Resources", href: "#tools" },
+    { name: "Support Us", href: "#fundraising" },
   ]
+
+  const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault()
+    const element = document.querySelector(href)
+    if (element) {
+      const offset = element.getBoundingClientRect().top + window.scrollY - 80
+      window.scrollTo({ top: offset, behavior: "smooth" })
+    }
+    setIsOpen(false)
+  }
 
   return (
     <header
@@ -43,11 +53,7 @@ export default function Navbar() {
                 key={item.name}
                 href={item.href}
                 className="font-medium text-foreground hover:text-accent transition-colors"
-                onClick={(e) => {
-                  e.preventDefault()
-                  const element = document.querySelector(item.href)
-                  element?.scrollIntoView({ behavior: "smooth" })
-                }}
+                onClick={(e) => handleScroll(e, item.href)}
               >
                 {item.name}
               </a>
@@ -107,12 +113,7 @@ export default function Navbar() {
                     <a
                       key={item.name}
                       href={item.href}
-                      onClick={(e) => {
-                        e.preventDefault()
-                        setIsOpen(false)
-                        const element = document.querySelector(item.href)
-                        element?.scrollIntoView({ behavior: "smooth" })
-                      }}
+                      onClick={(e) => handleScroll(e, item.href)}
                       className={`py-3 text-foreground hover:text-accent font-medium text-xl ${
                         item.name === "Support Us" ? "bg-secondary px-4 py-4 rounded-md" : ""
                       }`}
