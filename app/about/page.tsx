@@ -1,21 +1,29 @@
-// app/about/page.tsx
-"use client"
+"use client";
 
-import React from 'react'
-import { Button } from '@/components/ui/button'
-import { ArrowRight } from 'lucide-react'
-import Link from 'next/link'
-import Navbar from '@/components/navbar'
-import Mission from '@/components/mission'
-import Tools from '@/components/tools'
-import Timeline from '@/components/timeline'
+import React from "react";
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
+import Link from "next/link";
+import Navbar from "@/components/navbar";
+import Mission from "@/components/mission";
+import Impact from "@/components/impact"; // Directly import Impact component
+import Partners from "@/components/partners"; // Directly import Partners component
 
 export default function AboutPage() {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
+
+      {/* Mission Section */}
       <Mission />
-      <Timeline />
+
+      {/* Impact Section */}
+      <Impact />
+
+      {/* Partners Section */}
+      <Partners />
+
+      {/* Call-to-Action Section */}
       <section className="py-24 bg-primary text-primary-foreground">
         <div className="container text-center">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">Join Our Mission</h2>
@@ -35,5 +43,5 @@ export default function AboutPage() {
         </div>
       </section>
     </div>
-  )
+  );
 }
