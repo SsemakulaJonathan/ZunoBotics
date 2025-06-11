@@ -12,7 +12,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
-    { name: "Home", href: "/" }, // Route to the main homepage
+    { name: "Home", href: "/" },
     { name: "About", href: "/about" },
     { name: "Projects", href: "/projects" },
     { name: "Tools", href: "/tools" },
@@ -43,6 +43,7 @@ export default function Navbar() {
                 {item.name}
               </Link>
             ))}
+            {/* Theme Toggle */}
             <ThemeToggle />
             <Button asChild className="btn-elegant">
               <Link href="/support">Get Involved</Link>
@@ -97,14 +98,13 @@ export default function Navbar() {
                     <Link
                       key={item.name}
                       href={item.href}
-                      className={`py-3 text-foreground hover:text-accent font-medium text-xl ${
-                        item.name === "Support Us" ? "bg-secondary px-4 py-4 rounded-md" : ""
-                      }`}
+                      className="py-3 text-foreground hover:text-accent font-medium text-xl"
                       onClick={() => setIsOpen(false)} // Close menu after navigation
                     >
                       {item.name}
                     </Link>
                   ))}
+                  {/* Theme Toggle for Mobile */}
                   <div className="pt-4">
                     <ThemeToggle />
                   </div>
