@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import Logo from "@/components/logo";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import ThemeToggle from "@/components/theme-toggle";
+import ThemeToggle from "@/components/theme-toggle"; // Theme Toggle button for Dark/Light mode
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,7 +17,7 @@ export default function Navbar() {
     { name: "Projects", href: "/projects" },
     { name: "Tools", href: "/tools" },
     { name: "Repositories", href: "/repositories" },
-    { name: "Resources", href: "/resources" }, // Added Resources to the navigation
+    { name: "Resources", href: "/resources" },
     { name: "Support Us", href: "/support" },
   ];
 
@@ -34,7 +34,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-10">
+          <nav className="hidden md:flex items-center space-x-6">
             {navItems.map((item) => (
               <Link
                 key={item.name}
@@ -44,7 +44,7 @@ export default function Navbar() {
                 {item.name}
               </Link>
             ))}
-            {/* Theme Toggle */}
+            {/* Theme Toggle Button */}
             <ThemeToggle />
             <Button asChild className="btn-elegant">
               <Link href="/support">Get Involved</Link>
