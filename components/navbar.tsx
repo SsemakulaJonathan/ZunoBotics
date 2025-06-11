@@ -18,7 +18,7 @@ export default function Navbar() {
     { name: "Impact", href: "#impact" },
     { name: "Projects", href: "#projects" },
     { name: "Resources", href: "#tools" },
-    { name: "Support Us", href: "#fundraising" },
+    { name: "Support Us", href: "#support" },
   ]
 
   const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
