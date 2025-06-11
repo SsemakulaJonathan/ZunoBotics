@@ -17,6 +17,7 @@ export default function Navbar() {
     { name: "Projects", href: "/projects" },
     { name: "Tools", href: "/tools" },
     { name: "Repositories", href: "/repositories" },
+    { name: "Resources", href: "/resources" }, // Added Resources to the navigation
     { name: "Support Us", href: "/support" },
   ];
 
