@@ -1,4 +1,3 @@
-// app/resources/page.tsx
 "use client";
 
 import React from "react";
@@ -6,42 +5,36 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import Navbar from "@/components/navbar";
-import Tools from "@/components/tools";
-import Tutorials from "@/components/tutorials";
-import Repositories from "@/components/repositories";
-import CommunityResources from "@/components/communityresources";
-import Timeline from "@/components/timeline"; // Import Timeline component
+import Mission from "@/components/mission";
+import Impact from "@/components/impact"; // Directly import Impact component
+import Partners from "@/components/partners"; // Directly import Partners component
+import Timeline from "@/components/timeline"; // Directly import Timeline component
 
-export default function ResourcesPage() {
+export default function AboutPage() {
   return (
     <div className="flex flex-col min-h-screen">
+      {/* Navbar */}
       <Navbar />
 
-      {/* Tools Section */}
-      {Tools ? <Tools /> : <div>Error: Tools component not found</div>}
+      {/* Mission Section */}
+      <Mission />
 
-      {/* Tutorials Section */}
-      {Tutorials ? <Tutorials /> : <div>Error: Tutorials component not found</div>}
-
-      {/* Repositories Section */}
-      {Repositories ? <Repositories /> : <div>Error: Repositories component not found</div>}
-
-      {/* Community Resources Section */}
-      {CommunityResources ? (
-        <CommunityResources />
-      ) : (
-        <div>Error: CommunityResources component not found</div>
-      )}
+      {/* Impact Section */}
+      <Impact />
 
       {/* Timeline Section */}
-      {Timeline ? <Timeline /> : <div>Error: Timeline component not found</div>}
+      <Timeline />
+
+      {/* Partners Section */}
+      <Partners />
 
       {/* Call-to-Action Section */}
       <section className="py-24 bg-primary text-primary-foreground">
         <div className="container text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">Start Innovating Today</h2>
+          <h2 className="text-4xl md:text-5xl font-bold mb-6">Join Our Mission</h2>
           <p className="text-xl mb-8 max-w-3xl mx-auto">
-            Leverage ZunoBotics' extensive resources to build your next robotics project. Join our community of innovators.
+            Be part of ZunoBotics by contributing as a student, mentor, or supporter. Help us build a future where
+            African innovation thrives.
           </p>
           <Button
             asChild
