@@ -13,12 +13,12 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
 
   const navItems = [
-    { name: "Home", href: "/" },
-    { name: "About", href: "/about" },
-    { name: "Impact", href: "/impact" },
-    { name: "Projects", href: "/projects" },
-    { name: "Resources", href: "/resources" },
-    { name: "Support Us", href: "/donate" },
+    { name: "Home", href: "#home" },
+    { name: "About", href: "#about" },
+    { name: "Impact", href: "#impact" },
+    { name: "Projects", href: "#projects" },
+    { name: "Resources", href: "#resources" },
+    { name: "Support Us", href: "#donate" },
   ]
 
   return (
@@ -39,13 +39,18 @@ export default function Navbar() {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-10">
             {navItems.map((item) => (
-              <Link
+              <a
                 key={item.name}
                 href={item.href}
                 className="font-medium text-foreground hover:text-accent transition-colors"
+                onClick={(e) => {
+                  e.preventDefault()
+                  const element = document.querySelector(item.href)
+                  element?.scrollIntoView({ behavior: "smooth" })
+                }}
               >
                 {item.name}
-              </Link>
+              </a>
             ))}
             <ThemeToggle />
             <Button asChild className="btn-elegant">
@@ -99,16 +104,21 @@ export default function Navbar() {
               <div className="flex-1 overflow-y-auto p-4">
                 <nav className="flex flex-col space-y-6 mt-8">
                   {navItems.map((item) => (
-                    <Link
+                    <a
                       key={item.name}
                       href={item.href}
-                      onClick={() => setIsOpen(false)}
+                      onClick={(e) => {
+                        e.preventDefault()
+                        setIsOpen(false)
+                        const element = document.querySelector(item.href)
+                        element?.scrollIntoView({ behavior: "smooth" })
+                      }}
                       className={`py-3 text-foreground hover:text-accent font-medium text-xl ${
                         item.name === "Support Us" ? "bg-secondary px-4 py-4 rounded-md" : ""
                       }`}
                     >
                       {item.name}
-                    </Link>
+                    </a>
                   ))}
                   <div className="pt-4">
                     <ThemeToggle />
