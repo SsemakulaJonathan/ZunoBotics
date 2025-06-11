@@ -44,22 +44,25 @@ export default function Navbar() {
                 {item.name}
               </Link>
             ))}
-            {/* Theme Toggle Button */}
-            <ThemeToggle />
             <Button asChild className="btn-elegant">
               <Link href="/donate">Get Involved</Link>
             </Button>
+            {/* Theme Toggle Button for Desktop */}
+            <ThemeToggle />
           </nav>
 
-          {/* Mobile Menu Button */}
-          <button
-            type="button"
-            className="md:hidden text-primary hover:text-accent"
-            onClick={() => setIsOpen(!isOpen)}
-            aria-label="Toggle menu"
-          >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          {/* Mobile Menu Button and Theme Toggle */}
+          <div className="flex items-center space-x-4 md:hidden">
+            <ThemeToggle />
+            <button
+              type="button"
+              className="text-primary hover:text-accent"
+              onClick={() => setIsOpen(!isOpen)}
+              aria-label="Toggle menu"
+            >
+              {isOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -100,15 +103,11 @@ export default function Navbar() {
                       key={item.name}
                       href={item.href}
                       className="py-3 text-foreground hover:text-accent font-medium text-xl"
-                      onClick={() => setIsOpen(false)} // Close menu after navigation
+                      onClick={() => setIsOpen(false)}
                     >
                       {item.name}
                     </Link>
                   ))}
-                  {/* Theme Toggle for Mobile */}
-                  <div className="pt-4">
-                    <ThemeToggle />
-                  </div>
                 </nav>
               </div>
 
