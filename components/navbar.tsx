@@ -18,7 +18,7 @@ export default function Navbar() {
     { name: "Tools", href: "/tools" },
     { name: "Repositories", href: "/repositories" },
     { name: "Resources", href: "/resources" },
-    { name: "Support Us", href: "/support" },
+    { name: "Support Us", href: "/donate" },
   ];
 
   return (
@@ -47,7 +47,7 @@ export default function Navbar() {
             {/* Theme Toggle Button */}
             <ThemeToggle />
             <Button asChild className="btn-elegant">
-              <Link href="/support">Get Involved</Link>
+              <Link href="/donate">Get Involved</Link>
             </Button>
           </nav>
 
@@ -118,7 +118,7 @@ export default function Navbar() {
                   asChild
                   className="w-full py-6 text-lg flex items-center justify-center gap-2 btn-elegant"
                 >
-                  <Link href="/support" onClick={() => setIsOpen(false)}>
+                  <Link href="/donate" onClick={() => setIsOpen(false)}>
                     Join Us <ArrowRight className="h-5 w-5" />
                   </Link>
                 </Button>
