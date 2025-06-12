@@ -1,11 +1,17 @@
-import { Manrope } from 'next/font/google';
+import { Poppins, Inter } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme-provider';
 import './globals.css';
 
-const manrope = Manrope({
+const poppins = Poppins({
   subsets: ['latin'],
-  weight: ['200', '300', '400', '500', '600', '700', '800'], // Include a range of weights
-  variable: '--font-manrope',
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-poppins',
+});
+
+const inter = Inter({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-inter',
 });
 
 export const metadata = {
@@ -17,8 +23,12 @@ import { ReactNode } from 'react';
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={manrope.variable} suppressHydrationWarning>
-      <body>
+    <html 
+      lang="en" 
+      className={`${poppins.variable} ${inter.variable}`} 
+      suppressHydrationWarning
+    >
+      <body className={inter.className}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
