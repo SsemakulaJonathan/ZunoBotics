@@ -6,9 +6,10 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import Navbar from "@/components/navbar";
 import Mission from "@/components/mission";
-import Impact from "@/components/impact"; // Directly import Impact component
-import Partners from "@/components/partners"; // Directly import Partners component
-import Timeline from "@/components/timeline"; // Directly import Timeline component
+import Impact from "@/components/impact";
+import Partners from "@/components/partners";
+import Timeline from "@/components/timeline";
+import OperationalModel from "@/components/operational-model"; 
 
 export default function AboutPage() {
   return (
@@ -27,6 +28,9 @@ export default function AboutPage() {
 
       {/* Partners Section */}
       <Partners />
+
+      {/* Operational Model Section */}
+      <OperationalModel />
 
       {/* Call-to-Action Section */}
       <section className="py-24 bg-primary text-primary-foreground">
