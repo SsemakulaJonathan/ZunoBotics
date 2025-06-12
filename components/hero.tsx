@@ -1,5 +1,7 @@
-import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
+"use client"
+
+import { Button } from "@/components/ui/button"
+import { motion } from "framer-motion"
 
 function RobotArmVideo() {
   return (
@@ -15,24 +17,23 @@ function RobotArmVideo() {
         loop
         muted
         playsInline
-        className="w-full h-full object-cover"
+        className="w-full h-full object-cover opacity-70"
       />
-      {/* Removed dark overlay and opacity adjustment */}
     </motion.div>
-  );
+  )
 }
 
 export default function Hero() {
   const scrollToSection = (sectionId: string) => {
-    const section = document.getElementById(sectionId);
+    const section = document.getElementById(sectionId)
     if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
+      section.scrollIntoView({ behavior: "smooth" })
     }
-  };
+  }
 
   return (
     <section
-      className="relative h-screen flex items-center justify-center text-center overflow-hidden"
+      className="relative h-screen flex items-center justify-center text-center overflow-hidden bg-gradient-to-br from-blue-800 via-blue-900 to-purple-900"
       aria-labelledby="hero-heading"
     >
       <RobotArmVideo />
@@ -42,26 +43,27 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
+            className="text-white"
           >
             <h1
               id="hero-heading"
-              className="text-5xl md:text-7xl font-bold text-foreground mb-6 drop-shadow-lg"
+              className="text-5xl md:text-7xl font-bold text-white mb-6"
             >
               Invent Without Limits
             </h1>
-            <p className="text-xl md:text-2xl text-muted-foreground mb-10 max-w-2xl mx-auto drop-shadow-lg">
+            <p className="text-xl md:text-2xl text-gray-200 mb-10 max-w-2xl mx-auto">
               Democratizing robotics and automation innovation in Africa through open-source technology.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
                 onClick={() => scrollToSection("projects")}
-                className="btn-elegant text-lg px-8 py-6 rounded-md"
+                className="bg-blue-500 hover:bg-blue-600 text-lg px-8 py-6 rounded-md text-white"
               >
                 Explore Projects
               </Button>
               <Button
                 onClick={() => scrollToSection("mission")}
-                className="btn-elegant text-lg px-8 py-6 rounded-md"
+                className="bg-blue-600 hover:bg-blue-700 text-lg px-8 py-6 rounded-md text-white"
               >
                 Learn More
               </Button>
@@ -70,5 +72,5 @@ export default function Hero() {
         </div>
       </div>
     </section>
-  );
+  )
 }
