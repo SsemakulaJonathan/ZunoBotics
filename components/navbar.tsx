@@ -12,17 +12,31 @@ import { useRouter, usePathname } from "next/navigation";
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
   const pathname = usePathname();
   const router = useRouter();
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 10);
+      const currentScrollY = window.scrollY;
+      
+      // Handle navbar background change
+      setScrolled(currentScrollY > 10);
+      
+      // Handle navbar visibility
+      if (currentScrollY < 10) {
+        setIsVisible(true);
+      } else {
+        setIsVisible(lastScrollY > currentScrollY || currentScrollY < 10);
+      }
+      
+      setLastScrollY(currentScrollY);
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [lastScrollY]);
 
   const navItems = [
     { name: "Home", href: "/", isExternal: false },
@@ -44,10 +58,14 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Safe area spacer that matches navbar background */}
       <div className="h-safe-area w-full bg-card fixed top-0 left-0 right-0 z-40" />
       
-      <header className="fixed top-safe-area left-0 right-0 h-16 z-50 bg-card border-b border-border transition-shadow duration-300">
+      <motion.header
+        initial={{ y: 0 }}
+        animate={{ y: isVisible ? 0 : -100 }}
+        transition={{ duration: 0.3 }}
+        className={`fixed top-safe-area left-0 right-0 h-16 z-50 bg-card border-b border-border transition-shadow duration-300 transform`}
+      >
         <div className="container h-full mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-full">
             <Link href="/" className="flex items-center h-full">
@@ -76,11 +94,7 @@ export default function Navbar() {
                 </Link>
               ))}
               <Button asChild className="btn-elegant">
-                <Link 
-                  href="https://services.zunobotics.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <Link href="/donate">
                   Get Involved
                 </Link>
               </Button>
@@ -138,9 +152,7 @@ export default function Navbar() {
                     className="w-full py-6 text-lg flex items-center justify-center gap-2 btn-elegant"
                   >
                     <Link 
-                      href="https://services.zunobotics.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      href="/donate"
                       onClick={() => setIsOpen(false)}
                     >
                       Join Us <ArrowRight className="h-5 w-5" />
@@ -151,7 +163,7 @@ export default function Navbar() {
             </motion.div>
           )}
         </AnimatePresence>
-      </header>
+      </motion.header>
     </>
   );
 }
