@@ -5,21 +5,26 @@ import { motion } from "framer-motion"
 
 function RobotArmVideo() {
   return (
-    <motion.div
-      className="absolute inset-0 flex items-center justify-center z-0 w-full h-full"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 1 }}
-    >
-      <video
-        src="/Robot_Arm_Animation.mp4"
-        autoPlay
-        loop
-        muted
-        playsInline
-        className="w-full h-full object-cover opacity-70"
-      />
-    </motion.div>
+    <>
+      {/* Video background */}
+      <motion.div
+        className="absolute inset-0 flex items-center justify-center z-0 w-full h-full"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+      >
+        <video
+          src="/Robot_Arm_Animation.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover opacity-70"
+        />
+      </motion.div>
+      {/* Subtle overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/40 z-10" />
+    </>
   )
 }
 
@@ -47,23 +52,23 @@ export default function Hero() {
           >
             <h1
               id="hero-heading"
-              className="text-5xl md:text-7xl font-bold text-white mb-6"
+              className="text-5xl md:text-7xl font-bold font-heading text-white mb-6"
             >
               Invent Without Limits
             </h1>
-            <p className="text-xl md:text-2xl text-gray-200 mb-10 max-w-2xl mx-auto">
+            <p className="text-xl md:text-2xl font-sans text-gray-100 mb-10 max-w-2xl mx-auto">
               Democratizing robotics and automation innovation in Africa through open-source technology.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
                 onClick={() => scrollToSection("projects")}
-                className="bg-blue-500 hover:bg-blue-600 text-lg px-8 py-6 rounded-md text-white"
+                className="bg-blue-500 hover:bg-blue-600 text-lg px-8 py-6 rounded-md text-white font-sans"
               >
                 Explore Projects
               </Button>
               <Button
                 onClick={() => scrollToSection("mission")}
-                className="bg-blue-600 hover:bg-blue-700 text-lg px-8 py-6 rounded-md text-white"
+                className="bg-blue-600 hover:bg-blue-700 text-lg px-8 py-6 rounded-md text-white font-sans"
               >
                 Learn More
               </Button>
