@@ -43,122 +43,115 @@ export default function Navbar() {
   };
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-card shadow-sm ${
-        scrolled ? "py-2" : "py-3"
-      }`}
-    >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between">
-          <Link href="/" className="flex items-center">
-            <div className="bg-primary rounded-lg p-1 flex items-center justify-center">
-              <Logo className="h-8 w-8" />
-            </div>
-            <span
-              className={`ml-1.5 text-xl font-bold ${scrolled ? "text-foreground" : "text-primary"}`}
-            >
-              ZunoBotics
-            </span>
-          </Link>
+    <>
+      {/* Safe area spacer that matches navbar background */}
+      <div className="h-safe-area w-full bg-card fixed top-0 left-0 right-0 z-40" />
+      
+      <header className="fixed top-safe-area left-0 right-0 h-16 z-50 bg-card border-b border-border transition-shadow duration-300">
+        <div className="container h-full mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-full">
+            <Link href="/" className="flex items-center h-full">
+              <div className="bg-primary rounded-lg p-1.5 flex items-center justify-center">
+                <Logo className="h-7 w-7" />
+              </div>
+              <span className="ml-2 text-lg font-bold text-foreground">
+                ZunoBotics
+              </span>
+            </Link>
 
-          <nav className="hidden md:flex items-center space-x-6">
-            {navItems.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                target={item.isExternal ? "_blank" : undefined}
-                rel={item.isExternal ? "noopener noreferrer" : undefined}
-                className={`font-medium transition-colors ${
-                  pathname === item.href && !item.isExternal
-                    ? "text-accent"
-                    : "text-foreground hover:text-accent"
-                }`}
+            <nav className="hidden md:flex items-center gap-6 h-full">
+              {navItems.map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  target={item.isExternal ? "_blank" : undefined}
+                  rel={item.isExternal ? "noopener noreferrer" : undefined}
+                  className={`font-medium transition-colors hover:text-accent ${
+                    pathname === item.href && !item.isExternal
+                      ? "text-accent"
+                      : "text-foreground"
+                  }`}
+                >
+                  {item.name}
+                </Link>
+              ))}
+              <Button asChild className="btn-elegant">
+                <Link 
+                  href="https://services.zunobotics.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Get Involved
+                </Link>
+              </Button>
+              <ThemeToggle />
+            </nav>
+
+            <div className="flex items-center gap-4 md:hidden">
+              <ThemeToggle />
+              <button
+                type="button"
+                className="text-foreground hover:text-accent"
+                onClick={() => setIsOpen(!isOpen)}
+                aria-label="Toggle menu"
               >
-                {item.name}
-              </Link>
-            ))}
-            <Button asChild className="btn-elegant">
-              <Link href="/donate">Get Involved</Link>
-            </Button>
-            <ThemeToggle />
-          </nav>
-
-          <div className="flex items-center space-x-4 md:hidden">
-            <ThemeToggle />
-            <button
-              type="button"
-              className={scrolled ? "text-foreground hover:text-accent" : "text-primary hover:text-accent"}
-              onClick={() => setIsOpen(!isOpen)}
-              aria-label="Toggle menu"
-            >
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+                {isOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
+            </div>
           </div>
         </div>
-      </div>
 
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 bg-card z-40 md:hidden"
-          >
-            <div className="flex flex-col h-full">
-              <div className="flex items-center justify-between p-3 border-b border-border">
-                <Link href="/" className="flex items-center">
-                  <div className="bg-primary rounded-lg p-1 flex items-center justify-center">
-                    <Logo className="h-8 w-8" />
-                  </div>
-                  <span className="ml-1.5 text-xl font-semibold text-foreground">ZunoBotics</span>
-                </Link>
-                <button
-                  type="button"
-                  className="text-foreground hover:text-accent"
-                  onClick={() => setIsOpen(false)}
-                  aria-label="Close menu"
-                >
-                  <X size={24} />
-                </button>
-              </div>
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-x-0 top-[calc(env(safe-area-inset-top)+4rem)] bottom-0 bg-card border-t border-border z-40 md:hidden"
+            >
+              <div className="flex flex-col h-full">
+                <div className="flex-1 overflow-y-auto">
+                  <nav className="flex flex-col p-4 gap-2">
+                    {navItems.map((item) => (
+                      <Link
+                        key={item.name}
+                        href={item.href}
+                        target={item.isExternal ? "_blank" : undefined}
+                        rel={item.isExternal ? "noopener noreferrer" : undefined}
+                        onClick={() => handleNavClick(item.href, item.isExternal)}
+                        className={`py-3 px-4 rounded-md font-medium text-lg transition-colors ${
+                          pathname === item.href && !item.isExternal
+                            ? "text-accent bg-accent/10"
+                            : "text-foreground hover:text-accent hover:bg-accent/5"
+                        }`}
+                      >
+                        {item.name}
+                      </Link>
+                    ))}
+                  </nav>
+                </div>
 
-              <div className="flex-1 overflow-y-auto p-4">
-                <nav className="flex flex-col space-y-6 mt-8">
-                  {navItems.map((item) => (
-                    <Link
-                      key={item.name}
-                      href={item.href}
-                      target={item.isExternal ? "_blank" : undefined}
-                      rel={item.isExternal ? "noopener noreferrer" : undefined}
-                      onClick={() => handleNavClick(item.href, item.isExternal)}
-                      className={`py-3 font-medium text-xl ${
-                        pathname === item.href && !item.isExternal
-                          ? "text-accent"
-                          : "text-foreground hover:text-accent"
-                      } ${item.name === "Support Us" ? "bg-accent/10 px-4 py-4 rounded" : ""}`}
+                <div className="p-4 border-t border-border">
+                  <Button
+                    asChild
+                    className="w-full py-6 text-lg flex items-center justify-center gap-2 btn-elegant"
+                  >
+                    <Link 
+                      href="https://services.zunobotics.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => setIsOpen(false)}
                     >
-                      {item.name}
+                      Join Us <ArrowRight className="h-5 w-5" />
                     </Link>
-                  ))}
-                </nav>
+                  </Button>
+                </div>
               </div>
-
-              <div className="p-4 border-t border-border">
-                <Button
-                  asChild
-                  className="w-full py-6 text-lg flex items-center justify-center gap-2 btn-elegant"
-                >
-                  <Link href="/donate" onClick={() => setIsOpen(false)}>
-                    Join Us <ArrowRight className="h-5 w-5" />
-                  </Link>
-                </Button>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </header>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </header>
+    </>
   );
 }
