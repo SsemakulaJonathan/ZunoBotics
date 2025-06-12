@@ -22,8 +22,8 @@ function RobotArmVideo() {
           className="w-full h-full object-cover opacity-70"
         />
       </motion.div>
-      {/* Subtle overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/40 z-10" />
+      {/* Subtle overlay using the theme colors */}
+      <div className="absolute inset-0 bg-gradient-to-b from-primary/30 via-background/20 to-accent/30 z-10" />
     </>
   )
 }
@@ -38,7 +38,7 @@ export default function Hero() {
 
   return (
     <section
-      className="relative h-screen flex items-center justify-center text-center overflow-hidden bg-gradient-to-br from-blue-800 via-blue-900 to-purple-900"
+      className="relative h-screen flex items-center justify-center text-center overflow-hidden bg-gradient-to-br from-background via-primary/10 to-accent/10"
       aria-labelledby="hero-heading"
     >
       <RobotArmVideo />
@@ -48,27 +48,27 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-white"
           >
             <h1
               id="hero-heading"
-              className="text-5xl md:text-7xl font-bold font-heading text-white mb-6"
+              className="text-5xl md:text-7xl text-balance mb-6"
             >
               Invent Without Limits
             </h1>
-            <p className="text-xl md:text-2xl font-sans text-gray-100 mb-10 max-w-2xl mx-auto">
+            <p className="text-xl md:text-2xl text-secondary-foreground mb-10 max-w-2xl mx-auto">
               Democratizing robotics and automation innovation in Africa through open-source technology.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
                 onClick={() => scrollToSection("projects")}
-                className="bg-blue-500 hover:bg-blue-600 text-lg px-8 py-6 rounded-md text-white font-sans"
+                className="btn-elegant text-lg px-8 py-6"
               >
                 Explore Projects
               </Button>
               <Button
                 onClick={() => scrollToSection("mission")}
-                className="bg-blue-600 hover:bg-blue-700 text-lg px-8 py-6 rounded-md text-white font-sans"
+                variant="secondary"
+                className="text-lg px-8 py-6 hover:scale-[1.06] transition-all duration-300"
               >
                 Learn More
               </Button>
