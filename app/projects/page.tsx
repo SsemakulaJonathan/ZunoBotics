@@ -23,7 +23,7 @@ export default function ProjectsPage() {
             asChild
             className="btn-elegant px-6 py-3 rounded-md flex items-center justify-center mx-auto"
           >
-            <Link href="/donate">
+            <Link href="/about#get-involved">
               Get Involved
               <ArrowRight size={20} className="ml-2" />
             </Link>

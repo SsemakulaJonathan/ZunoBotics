@@ -8,18 +8,19 @@ datasource db {
 }
 
 model Donation {
-  id              String   @id @default(cuid())
-  amount          Float
-  name            String
-  email           String?
-  message         String?
-  anonymous       Boolean  @default(false)
-  donationType    String
-  status          String   @default("pending") // pending, completed, failed
-  stripeSessionId String?
-  paidAt          DateTime?
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  id                    String   @id @default(cuid())
+  amount                Float
+  name                  String
+  email                 String?
+  message               String?
+  anonymous             Boolean  @default(false)
+  donationType          String   @default("one-time") @map("donation_type")
+  status                String   @default("pending") // pending, completed, failed
+  stripeSessionId       String?  @map("stripe_session_id")
+  paypalTransactionId   String?  @map("paypal_transaction_id")
+  paidAt                DateTime? @map("paid_at")
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @default(now()) @map("updated_at")
 
   @@map("donations")
 }
@@ -28,11 +29,20 @@ model Project {
   id          String   @id @default(cuid())
   title       String
   description String
+  impact      String?
   image       String?
   tags        String[]
   university  String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  contributors Int     @default(1)
+  repoStars   Int     @default(0)
+  githubUrl   String?
+  demoUrl     String?
+  dateCompleted String?
+  category    String?
+  technology  String[]
+  status      String  @default("active") // active, completed, archived
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @default(now()) @map("updated_at")
 
   @@map("projects")
 }
@@ -42,8 +52,137 @@ model Partner {
   name      String
   logo      String?
   website   String?
+  description String?
+  type      String  @default("university") // university, corporate, ngo
+  location  String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @default(now()) @map("updated_at")
+
+  @@map("partners")
+}
+
+model TeamMember {
+  id          String   @id @default(cuid())
+  name        String
+  role        String
+  description String
+  image       String?
+  email       String?
+  linkedin    String?
+  github      String?
+  order       Int     @default(0)
+  isActive    Boolean @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("team_members")
+}
+
+model Milestone {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  year        String
+  date        DateTime?
+  type        String  @default("milestone") // milestone, achievement, event
+  order       Int     @default(0)
+  isVisible   Boolean @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("milestones")
+}
+
+model LaunchTimelineItem {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  year        String
+  date        DateTime?
+  order       Int     @default(0)
+  isVisible   Boolean @default(true)
+  status      String  @default("planned") // planned, in_progress, completed
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("launch_timeline_items")
+}
+
+model Tool {
+  id          String   @id @default(cuid())
+  name        String
+  description String
+  useCase     String?
+  category    String   // programming, hardware, software, platform
+  icon        String?
+  website     String?
+  isPopular   Boolean @default(false)
+  order       Int     @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("tools")
+}
+
+model Resource {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  type        String   // tutorial, documentation, video, course, book
+  url         String?
+  category    String   // robotics, programming, electronics, ai, etc
+  difficulty  String   @default("beginner") // beginner, intermediate, advanced
+  isExternal  Boolean @default(true)
+  isFeatured  Boolean @default(false)
+  order       Int     @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("resources")
+}
+
+model ProposalSubmission {
+  id          String   @id @default(cuid())
+  name        String
+  email       String
+  university  String
+  projectTitle String
+  description String
+  filename    String?
+  status      String  @default("pending") // pending, under_review, approved, rejected
+  reviewNotes String?
+  reviewedBy  String?
+  reviewedAt  DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("proposal_submissions")
+}
+
+model ProposalTemplate {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  filename    String
+  version     String  @default("1.0")
+  isActive    Boolean @default(true)
+  downloadCount Int   @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("proposal_templates")
+}
+
+model Admin {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  password  String
+  role      String  @default("admin") // admin, super_admin
+  isActive  Boolean @default(true)
+  lastLogin DateTime?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("partners")
+  @@map("admins")
 }

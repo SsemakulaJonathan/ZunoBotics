@@ -94,7 +94,7 @@ export default function Navbar() {
                 </Link>
               ))}
               <Button asChild className="btn-elegant">
-                <Link href="/donate">
+                <Link href="/about#get-involved">
                   Get Involved
                 </Link>
               </Button>
@@ -152,10 +152,10 @@ export default function Navbar() {
                     className="w-full py-6 text-lg flex items-center justify-center gap-2 btn-elegant"
                   >
                     <Link 
-                      href="/donate"
+                      href="/about#get-involved"
                       onClick={() => setIsOpen(false)}
                     >
-                      Join Us <ArrowRight className="h-5 w-5" />
+                      Get Involved <ArrowRight className="h-5 w-5" />
                     </Link>
                   </Button>
                 </div>

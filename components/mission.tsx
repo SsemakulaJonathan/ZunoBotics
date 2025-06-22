@@ -1,9 +1,33 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { Calendar, Users, Briefcase, Award } from "lucide-react";
+import { Calendar, Users, Briefcase, Award, Target, Trophy, Star, Clock, CheckCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { motion, useInView } from "framer-motion";
+
+interface TeamMember {
+  id: string;
+  name: string;
+  role: string;
+  description: string;
+  image?: string;
+  email?: string;
+  linkedin?: string;
+  github?: string;
+  order: number;
+  isActive: boolean;
+}
+
+interface Milestone {
+  id: string;
+  title: string;
+  description: string;
+  year: string;
+  date?: string;
+  type: string;
+  order: number;
+  isVisible: boolean;
+}
 
 export default function Mission() {
   const [visibleSections, setVisibleSections] = useState({
@@ -12,6 +36,9 @@ export default function Mission() {
     milestones: false,
   });
   const [teamIndex, setTeamIndex] = useState(0);
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
+  const [milestones, setMilestones] = useState<Milestone[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const missionRef = useRef<HTMLElement>(null);
   const teamRef = useRef<HTMLElement>(null);
@@ -22,47 +49,46 @@ export default function Mission() {
     visible: { opacity: 1, y: 0 },
   };
 
-  const teamMembers = [
-    {
-      name: "Jonathan Ssemakula",
-      role: "Founder & Director",
-      image: "/images/team/jon.jpg",
-      description: "Masters in Robotics & Mechatronics Engineering leading ZunoBotics' mission to empower African innovators.",
-    },
-    {
-      name: "Isaac Ssozi",
-      role: "Lead Student Engineer",
-      image: "/images/team/isaac.png",
-      description: "Computer Scientist from Makerere University spearheading irrigation projects.",
-    },
-    {
-      name: "Farouk Jjingo",
-      role: "Community Manager",
-      image: "/images/team/farouk.png",
-      description: "Coordinates student collaborations and community outreach programs.",
-    },
-  ];
+  // Fetch team members and milestones from database
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [teamResponse, milestonesResponse] = await Promise.all([
+          fetch('/api/team'),
+          fetch('/api/milestones')
+        ]);
 
-  const milestones = [
-    {
-      year: "2023",
-      title: "ZunoBotics Founded",
-      description: "Initiated at Makerere University to democratize robotics in Africa.",
-      icon: <Briefcase size={24} className="text-primary" />,
-    },
-    {
-      year: "2024",
-      title: "First Prototype",
-      description: "Developed the Autonomous Irrigation Robot, impacting local farmers.",
-      icon: <Award size={24} className="text-primary" />,
-    },
-    {
-      year: "2025",
-      title: "Official Launch",
-      description: "Launching across Uganda with partnerships at 5 universities.",
-      icon: <Users size={24} className="text-primary" />,
-    },
-  ];
+        if (teamResponse.ok) {
+          const teamData = await teamResponse.json();
+          setTeamMembers(teamData.teamMembers);
+        }
+
+        if (milestonesResponse.ok) {
+          const milestonesData = await milestonesResponse.json();
+          setMilestones(milestonesData.milestones);
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const getTypeIcon = (type: string) => {
+    switch (type) {
+      case 'achievement':
+        return <CheckCircle size={24} />;
+      case 'milestone':
+        return <Clock size={24} />;
+      case 'event':
+        return <Calendar size={24} />;
+      default:
+        return <Calendar size={24} />;
+    }
+  };
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -187,15 +213,25 @@ export default function Mission() {
           </div>
 
           <div className="relative max-w-6xl mx-auto">
-            {/* Mobile Slider */}
-            <div className="md:hidden">
-              <div className="overflow-hidden">
-                <div
-                  className="flex transition-transform duration-500 ease-in-out"
-                  style={{ transform: `translateX(-${teamIndex * 100}%)` }}
-                >
-                  {teamMembers.map((member, index) => (
-                    <div key={index} className="flex-shrink-0 w-full px-4">
+            {isLoading ? (
+              <div className="flex justify-center py-12">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+              </div>
+            ) : teamMembers.length === 0 ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">No team members found.</p>
+              </div>
+            ) : (
+              <>
+                {/* Mobile Slider */}
+                <div className="md:hidden">
+                  <div className="overflow-hidden">
+                    <div
+                      className="flex transition-transform duration-500 ease-in-out"
+                      style={{ transform: `translateX(-${teamIndex * 100}%)` }}
+                    >
+                      {teamMembers.map((member, index) => (
+                        <div key={member.id} className="flex-shrink-0 w-full px-4">
                       <div
                         className={`bg-card p-6 rounded-lg shadow-md border border-border hover:shadow-lg transition-all duration-1000 transform ${
                           visibleSections.team ? "opacity-100" : "opacity-0"
@@ -203,7 +239,7 @@ export default function Mission() {
                         style={{ transitionDelay: `${index * 200}ms` }}
                       >
                         <img
-                          src={member.image}
+                          src={member.image || '/images/team/default-avatar.png'}
                           alt={member.name}
                           className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
                         />
@@ -226,27 +262,29 @@ export default function Mission() {
               </div>
             </div>
 
-            {/* Desktop Grid */}
-            <div className="hidden md:grid md:grid-cols-1 lg:grid-cols-3 gap-8">
-              {teamMembers.map((member, index) => (
-                <div
-                  key={index}
-                  className={`bg-card p-6 rounded-lg shadow-md border border-border hover:shadow-lg transition-all duration-1000 transform ${
-                    visibleSections.team ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-                  }`}
-                  style={{ transitionDelay: `${index * 200}ms` }}
-                >
-                  <img
-                    src={member.image}
-                    alt={member.name}
-                    className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
-                  />
-                  <h3 className="text-xl font-bold text-foreground mb-2 text-center">{member.name}</h3>
-                  <p className="text-primary font-medium mb-2 text-center">{member.role}</p>
-                  <p className="text-muted-foreground text-center">{member.description}</p>
+                {/* Desktop Grid */}
+                <div className="hidden md:grid md:grid-cols-1 lg:grid-cols-3 gap-8">
+                  {teamMembers.map((member, index) => (
+                    <div
+                      key={member.id}
+                      className={`bg-card p-6 rounded-lg shadow-md border border-border hover:shadow-lg transition-all duration-1000 transform ${
+                        visibleSections.team ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                      }`}
+                      style={{ transitionDelay: `${index * 200}ms` }}
+                    >
+                      <img
+                        src={member.image || '/images/team/default-avatar.png'}
+                        alt={member.name}
+                        className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
+                      />
+                      <h3 className="text-xl font-bold text-foreground mb-2 text-center">{member.name}</h3>
+                      <p className="text-primary font-medium mb-2 text-center">{member.role}</p>
+                      <p className="text-muted-foreground text-center">{member.description}</p>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </>
+            )}
           </div>
         </div>
       </section>
@@ -269,24 +307,34 @@ export default function Mission() {
           </motion.div>
 
           <div className="relative max-w-4xl mx-auto">
-            {/* Timeline line - hidden on mobile */}
-            <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-primary/30"></div>
-            {/* Mobile timeline line */}
-            <div className="md:hidden absolute left-6 top-0 h-full w-0.5 bg-primary/30"></div>
+            {isLoading ? (
+              <div className="flex justify-center py-12">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+              </div>
+            ) : milestones.length === 0 ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">No milestones found.</p>
+              </div>
+            ) : (
+              <>
+                {/* Timeline line - hidden on mobile */}
+                <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-primary/30"></div>
+                {/* Mobile timeline line */}
+                <div className="md:hidden absolute left-6 top-0 h-full w-0.5 bg-primary/30"></div>
 
-            {/* Timeline items */}
-            <div className="relative">
-              {milestones.map((milestone, index) => (
-                <motion.div
-                  key={index}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.2 }}
-                  variants={fadeIn}
-                  className={`flex items-center mb-16 ${index % 2 === 0 ? "md:flex-row-reverse" : ""}`}
-                  role="listitem"
-                >
+                {/* Timeline items */}
+                <div className="relative">
+                  {milestones.map((milestone, index) => (
+                    <motion.div
+                      key={milestone.id}
+                      initial="hidden"
+                      whileInView="visible"
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.5, delay: index * 0.2 }}
+                      variants={fadeIn}
+                      className={`flex items-center mb-16 ${index % 2 === 0 ? "md:flex-row-reverse" : ""}`}
+                      role="listitem"
+                    >
                   {/* Desktop layout */}
                   <div className={`hidden md:block w-1/2 ${index % 2 === 0 ? "pr-12 text-right" : "pl-12"}`}>
                     <div className="card-premium p-6 rounded-lg">
@@ -308,21 +356,23 @@ export default function Mission() {
                   {/* Timeline icon - desktop */}
                   <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 flex items-center justify-center">
                     <div className="bg-primary rounded-full w-12 h-12 flex items-center justify-center text-primary-foreground">
-                      <Calendar size={24} />
+                      {getTypeIcon(milestone.type)}
                     </div>
                   </div>
 
                   {/* Timeline icon - mobile */}
                   <div className="md:hidden absolute left-0 flex items-center justify-center">
                     <div className="bg-primary rounded-full w-12 h-12 flex items-center justify-center text-primary-foreground">
-                      <Calendar size={24} />
+                      {getTypeIcon(milestone.type)}
                     </div>
                   </div>
 
-                  <div className="hidden md:block w-1/2"></div>
-                </motion.div>
-              ))}
-            </div>
+                      <div className="hidden md:block w-1/2"></div>
+                    </motion.div>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
         </div>
       </section>
