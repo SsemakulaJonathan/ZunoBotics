@@ -190,8 +190,12 @@ export default function Fundraising() {
                   <p className="text-muted-foreground mb-4">{option.description}</p>
                 </CardContent>
                 <CardFooter className="pt-0 pb-6 flex flex-col space-y-3">
-                  <Button className="w-full btn-elegant flex items-center justify-center gap-2">
-                    Contact: {option.contact}
+                  <Button asChild className="w-full btn-elegant flex items-center justify-center gap-2">
+                    <a 
+                      href={`mailto:${option.contact}?subject=${encodeURIComponent(`${option.title} Opportunity`)}&body=${encodeURIComponent(`Hello ZunoBotics team,\n\nI'm interested in the ${option.title} opportunity. Please let me know how we can work together to support African innovation in robotics.\n\nBest regards`)}`}
+                    >
+                      Contact: {option.contact}
+                    </a>
                   </Button>
                 </CardFooter>
               </Card>

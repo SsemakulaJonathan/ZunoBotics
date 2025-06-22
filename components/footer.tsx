@@ -20,17 +20,35 @@ export default function Footer() {
               Democratizing robotics and automation technology across Africa through open-source innovation.
             </p>
             <div className="flex space-x-4">
-              <Button variant="ghost" size="icon" className="rounded-full hover:bg-muted">
-                <Github className="h-5 w-5 text-foreground" />
-                <span className="sr-only">GitHub</span>
+              <Button variant="ghost" size="icon" className="rounded-full hover:bg-muted" asChild>
+                <a 
+                  href="https://github.com/SsemakulaJonathan" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  aria-label="Visit our GitHub"
+                >
+                  <Github className="h-5 w-5 text-foreground" />
+                </a>
               </Button>
-              <Button variant="ghost" size="icon" className="rounded-full hover:bg-muted">
-                <Linkedin className="h-5 w-5 text-foreground" />
-                <span className="sr-only">LinkedIn</span>
+              <Button variant="ghost" size="icon" className="rounded-full hover:bg-muted" asChild>
+                <a 
+                  href="https://linkedin.com/company/zunobotics" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  aria-label="Follow us on LinkedIn"
+                >
+                  <Linkedin className="h-5 w-5 text-foreground" />
+                </a>
               </Button>
-              <Button variant="ghost" size="icon" className="rounded-full hover:bg-muted">
-                <Twitter className="h-5 w-5 text-foreground" />
-                <span className="sr-only">Twitter</span>
+              <Button variant="ghost" size="icon" className="rounded-full hover:bg-muted" asChild>
+                <a 
+                  href="https://twitter.com/zunobotics" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  aria-label="Follow us on Twitter"
+                >
+                  <Twitter className="h-5 w-5 text-foreground" />
+                </a>
               </Button>
             </div>
           </div>
@@ -75,11 +93,23 @@ export default function Footer() {
               </li>
               <li className="flex items-start">
                 <Mail className="h-5 w-5 text-primary mr-2 mt-0.5" />
-                <span className="text-muted-foreground">zunobotics@gmail.com</span>
+                <a 
+                  href="mailto:zunobotics@gmail.com?subject=Hello%20ZunoBotics!&body=Hi%20ZunoBotics%20team,%0D%0A%0D%0AI'm%20interested%20in%20learning%20more%20about%20your%20robotics%20and%20automation%20programs.%20I%20would%20love%20to%20discuss%20potential%20collaboration%20opportunities.%0D%0A%0D%0ABest%20regards"
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
+                  zunobotics@gmail.com
+                </a>
               </li>
               <li className="flex items-start">
                 <Phone className="h-5 w-5 text-primary mr-2 mt-0.5" />
-                <span className="text-muted-foreground">+256788123717</span>
+                <a 
+                  href="https://wa.me/256788123717?text=Hello%20ZunoBotics!%20I'm%20interested%20in%20learning%20more%20about%20your%20robotics%20and%20automation%20programs.%20Could%20we%20discuss%20potential%20collaboration%20opportunities?"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
+                  +256788123717
+                </a>
               </li>
             </ul>
           </div>
