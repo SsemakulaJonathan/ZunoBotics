@@ -32,7 +32,7 @@ export default function Footer() {
               </Button>
               <Button variant="ghost" size="icon" className="rounded-full hover:bg-muted" asChild>
                 <a 
-                  href="https://www.linkedin.com/company/ict-tech-consultant/" 
+                  href="https://www.linkedin.com/company/zunobotics/" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   aria-label="Follow us on LinkedIn"
