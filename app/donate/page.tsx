@@ -23,10 +23,14 @@ export default function DonatePage() {
             asChild
             className="btn-elegant px-6 py-3 rounded-md flex items-center justify-center mx-auto"
           >
-            <Link href="/contact">
+            <a 
+              href="https://wa.me/256785330180?text=Hello%20ZunoBotics!%20I'm%20interested%20in%20supporting%20your%20mission%20to%20empower%20African%20innovators%20through%20robotics.%20I'd%20love%20to%20discuss%20how%20I%20can%20contribute%20to%20your%20programs."
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               Contact Us
               <ArrowRight size={20} className="ml-2" />
-            </Link>
+            </a>
           </Button>
         </div>
       </section>
