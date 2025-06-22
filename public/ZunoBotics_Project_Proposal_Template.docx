@@ -1,0 +1,14 @@
+This is a placeholder for the DOCX template file. In a real implementation, this would be a proper DOCX file with formatted content including sections for:
+
+1. Project Title
+2. Student Information (Name, University, Contact)
+3. Project Description
+4. Objectives and Goals
+5. Technical Requirements
+6. Timeline
+7. Expected Impact
+8. Resource Requirements
+9. Team Members (if applicable)
+10. References
+
+For now, this serves as a placeholder file that will be downloaded when users click the template download button.

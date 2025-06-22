@@ -62,7 +62,7 @@ export default function OperationalModel() {
             <div className="absolute -inset-4 bg-accent rounded-3xl transform rotate-3 opacity-50"></div>
             <div className="absolute -inset-4 bg-accent/50 rounded-3xl transform -rotate-2 opacity-30"></div>
             <img
-              src="/placeholder.svg?height=500&width=600"
+              src="/robot-arm-3d.png"
               alt="Students working on robotics project"
               className="relative z-10 rounded-2xl shadow-2xl w-full object-cover h-[500px]"
             />

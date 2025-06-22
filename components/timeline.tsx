@@ -55,8 +55,10 @@ export default function Timeline() {
         </motion.div>
 
         <div className="relative">
-          {/* Timeline line */}
-          <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-primary/30"></div>
+          {/* Timeline line - hidden on mobile */}
+          <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-primary/30"></div>
+          {/* Mobile timeline line */}
+          <div className="md:hidden absolute left-6 top-0 h-full w-0.5 bg-primary/30"></div>
 
           {/* Timeline items */}
           <div className="relative">
@@ -68,10 +70,11 @@ export default function Timeline() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.2 }}
                 variants={fadeIn}
-                className={`flex items-center mb-16 ${item.align === "left" ? "flex-row-reverse" : ""}`}
+                className={`flex items-center mb-16 ${item.align === "left" ? "md:flex-row-reverse" : ""}`}
                 role="listitem"
               >
-                <div className={`w-1/2 ${item.align === "left" ? "pr-12 text-right" : "pl-12"}`}>
+                {/* Desktop layout */}
+                <div className={`hidden md:block w-1/2 ${item.align === "left" ? "pr-12 text-right" : "pl-12"}`}>
                   <div className="card-premium p-6 rounded-lg">
                     <h3 className="text-2xl font-bold mb-2 text-foreground">{item.title}</h3>
                     <p className="text-muted-foreground">{item.description}</p>
@@ -79,13 +82,30 @@ export default function Timeline() {
                   </div>
                 </div>
 
-                <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center justify-center">
+                {/* Mobile layout */}
+                <div className="md:hidden w-full pl-16">
+                  <div className="card-premium p-6 rounded-lg">
+                    <h3 className="text-2xl font-bold mb-2 text-foreground">{item.title}</h3>
+                    <p className="text-muted-foreground">{item.description}</p>
+                    <p className="text-sm text-accent mt-2">{item.year}</p>
+                  </div>
+                </div>
+
+                {/* Timeline icon - desktop */}
+                <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 flex items-center justify-center">
                   <div className="bg-primary rounded-full w-12 h-12 flex items-center justify-center text-primary-foreground">
                     <Calendar size={24} />
                   </div>
                 </div>
 
-                <div className="w-1/2"></div>
+                {/* Timeline icon - mobile */}
+                <div className="md:hidden absolute left-0 flex items-center justify-center">
+                  <div className="bg-primary rounded-full w-12 h-12 flex items-center justify-center text-primary-foreground">
+                    <Calendar size={24} />
+                  </div>
+                </div>
+
+                <div className="hidden md:block w-1/2"></div>
               </motion.div>
             ))}
           </div>

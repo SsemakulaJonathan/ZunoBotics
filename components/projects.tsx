@@ -5,8 +5,13 @@ import { useState } from "react"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { Label } from "@/components/ui/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import Image from "next/image"
-import { ArrowRight, Github, Users, Award, Filter, Search, FileText, Code, ExternalLink } from "lucide-react"
+import { ArrowRight, Github, Users, Award, Filter, Search, FileText, Code, ExternalLink, Upload, Send, X } from "lucide-react"
 
 export default function Projects() {
   const [visibleProjects, setVisibleProjects] = useState(3)
@@ -16,6 +21,30 @@ export default function Projects() {
     technology: 'all',
     search: ''
   })
+  const [showProposalForm, setShowProposalForm] = useState(false)
+  const [proposalForm, setProposalForm] = useState({
+    name: '',
+    email: '',
+    university: '',
+    projectTitle: '',
+    description: '',
+    file: null as File | null
+  })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const availableUniversities = [
+    'Makerere University',
+    'Kyambogo University',
+    'Uganda Martyrs University',
+    'Mbarara University of Science and Technology',
+    'Busitema University',
+    'Islamic University in Uganda',
+    'Gulu University',
+    'Mbarara University',
+    'University of Rwanda',
+    'Kigali Institute of Science and Technology',
+    'Other'
+  ]
 
   const fadeIn = {
     hidden: { opacity: 0, y: 20 },
@@ -149,6 +178,7 @@ export default function Projects() {
   }
 
   return (
+    <>
     <section id="projects" className="py-24 bg-background">
       <div className="container">
         <motion.div
@@ -381,6 +411,14 @@ export default function Projects() {
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Button
                     className="btn-elegant flex items-center justify-center"
+                    onClick={() => {
+                      const link = document.createElement('a');
+                      link.href = '/ZunoBotics_Project_Proposal_Template.docx';
+                      link.download = 'ZunoBotics_Project_Proposal_Template.docx';
+                      document.body.appendChild(link);
+                      link.click();
+                      document.body.removeChild(link);
+                    }}
                   >
                     <FileText size={18} className="mr-2" />
                     Download Proposal Template
@@ -388,9 +426,18 @@ export default function Projects() {
                   <Button
                     variant="outline"
                     className="flex items-center justify-center border-primary text-primary hover:bg-primary/10"
+                    onClick={() => {
+                      setShowProposalForm(true);
+                      setTimeout(() => {
+                        const submitSection = document.getElementById('submit-proposal');
+                        if (submitSection) {
+                          submitSection.scrollIntoView({ behavior: 'smooth' });
+                        }
+                      }, 100);
+                    }}
                   >
                     <Code size={18} className="mr-2" />
-                    View Project Guidelines
+                    Submit Proposal
                   </Button>
                 </div>
               </div>
@@ -399,5 +446,207 @@ export default function Projects() {
         </div>
       </div>
     </section>
+
+    {/* Proposal Submission Section */}
+    {showProposalForm && (
+    <section id="submit-proposal" className="py-24 bg-gradient-section">
+      <div className="container">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          variants={fadeIn}
+          className="text-center mb-16"
+        >
+          <Badge className="mb-4 bg-muted text-muted-foreground">Submit Your Proposal</Badge>
+          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">Ready to Apply?</h2>
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            Submit your project proposal and join the ZunoBotics community of innovators.
+          </p>
+        </motion.div>
+
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          variants={fadeIn}
+          className="max-w-2xl mx-auto"
+        >
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle>Project Proposal Submission</CardTitle>
+                  <CardDescription>
+                    Fill out the form below and upload your completed proposal document.
+                  </CardDescription>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setShowProposalForm(false)}
+                  className="h-8 w-8"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <form
+                onSubmit={async (e) => {
+                  e.preventDefault()
+                  setIsSubmitting(true)
+                  
+                  try {
+                    const formData = new FormData()
+                    formData.append('name', proposalForm.name)
+                    formData.append('email', proposalForm.email)
+                    formData.append('university', proposalForm.university)
+                    formData.append('projectTitle', proposalForm.projectTitle)
+                    formData.append('description', proposalForm.description)
+                    if (proposalForm.file) {
+                      formData.append('proposal', proposalForm.file)
+                    }
+
+                    const response = await fetch('/api/proposals', {
+                      method: 'POST',
+                      body: formData,
+                    })
+
+                    if (response.ok) {
+                      alert('Proposal submitted successfully!')
+                      setProposalForm({
+                        name: '',
+                        email: '',
+                        university: '',
+                        projectTitle: '',
+                        description: '',
+                        file: null
+                      })
+                    } else {
+                      alert('Failed to submit proposal. Please try again.')
+                    }
+                  } catch (error) {
+                    alert('Error submitting proposal. Please try again.')
+                  } finally {
+                    setIsSubmitting(false)
+                  }
+                }}
+                className="space-y-6"
+              >
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="name">Full Name *</Label>
+                    <Input
+                      id="name"
+                      value={proposalForm.name}
+                      onChange={(e) => setProposalForm({...proposalForm, name: e.target.value})}
+                      placeholder="Enter your full name"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="email">Email Address *</Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      value={proposalForm.email}
+                      onChange={(e) => setProposalForm({...proposalForm, email: e.target.value})}
+                      placeholder="Enter your email"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="university">University *</Label>
+                    <Select
+                      value={proposalForm.university}
+                      onValueChange={(value) => setProposalForm({...proposalForm, university: value})}
+                      required
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select your university" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {availableUniversities.map((university) => (
+                          <SelectItem key={university} value={university}>
+                            {university}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label htmlFor="projectTitle">Project Title *</Label>
+                    <Input
+                      id="projectTitle"
+                      value={proposalForm.projectTitle}
+                      onChange={(e) => setProposalForm({...proposalForm, projectTitle: e.target.value})}
+                      placeholder="Enter your project title"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <Label htmlFor="description">Project Description *</Label>
+                  <Textarea
+                    id="description"
+                    value={proposalForm.description}
+                    onChange={(e) => setProposalForm({...proposalForm, description: e.target.value})}
+                    placeholder="Provide a brief description of your project"
+                    rows={4}
+                    required
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="proposal">Proposal Document * (PDF or DOCX)</Label>
+                  <div className="mt-2">
+                    <Input
+                      id="proposal"
+                      type="file"
+                      accept=".pdf,.docx,.doc"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0] || null
+                        setProposalForm({...proposalForm, file})
+                      }}
+                      required
+                    />
+                  </div>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Upload your completed proposal using our template. Maximum file size: 10MB
+                  </p>
+                </div>
+
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full btn-elegant"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Upload className="mr-2 h-4 w-4 animate-spin" />
+                      Submitting...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="mr-2 h-4 w-4" />
+                      Submit Proposal
+                    </>
+                  )}
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+        </motion.div>
+      </div>
+    </section>
+    )}
+    </>
   )
 }

@@ -61,21 +61,21 @@ export default function Fundraising() {
       description: "Become a corporate partner with brand visibility and talent nurturing opportunities.",
       icon: <Building className="h-6 w-6 text-primary" />,
       badge: "Enterprise",
-      contact: "partnerships@zunobotics.org",
+      contact: "jonathan@uhururobotics.com",
     },
     {
       title: "Educational Partnership",
       description: "Partner with us as an educational institution to expand our reach.",
       icon: <GraduationCap className="h-6 w-6 text-primary" />,
       badge: "Education",
-      contact: "education@zunobotics.org",
+      contact: "jonathan@uhururobotics.com",
     },
     {
       title: "Volunteer",
       description: "Share your skills and time to help us grow our community.",
       icon: <Users className="h-6 w-6 text-primary" />,
       badge: "Community",
-      contact: "volunteer@zunobotics.org",
+      contact: "zunobotics@gmail.com",
     },
   ]
 

@@ -77,43 +77,66 @@ export default function Impact() {
         }`}>
           Our Impact <span className="text-primary">So Far</span>
         </h2>
-        <div className="relative max-w-4xl mx-auto">
-          <div className="overflow-hidden">
-            <div
-              className="flex transition-transform duration-500 ease-in-out"
-              style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-            >
-              {impactMetrics.map((metric, index) => (
-                <div
-                  key={index}
-                  className="flex-shrink-0 w-full max-w-sm mx-auto"
-                >
+        <div className="relative max-w-6xl mx-auto">
+          {/* Mobile Slider */}
+          <div className="md:hidden">
+            <div className="overflow-hidden">
+              <div
+                className="flex transition-transform duration-500 ease-in-out"
+                style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+              >
+                {impactMetrics.map((metric, index) => (
                   <div
-                    className={`bg-card p-6 rounded-lg shadow-md border border-border hover:shadow-lg transition-all duration-1000 transform ${
-                      isVisible ? 'opacity-100 translate-x-0' : 'opacity-0'
-                    }`}
-                    style={{ transitionDelay: `${index * 200}ms` }}
+                    key={index}
+                    className="flex-shrink-0 w-full px-4"
                   >
-                    <div className="bg-muted p-3 rounded-full w-12 h-12 flex items-center justify-center text-primary mb-4">
-                      {metric.icon}
+                    <div
+                      className={`bg-card p-6 rounded-lg shadow-md border border-border hover:shadow-lg transition-all duration-1000 transform ${
+                        isVisible ? 'opacity-100 translate-x-0' : 'opacity-0'
+                      }`}
+                      style={{ transitionDelay: `${index * 200}ms` }}
+                    >
+                      <div className="bg-muted p-3 rounded-full w-12 h-12 flex items-center justify-center text-primary mb-4">
+                        {metric.icon}
+                      </div>
+                      <h3 className="text-4xl font-bold text-primary mb-2">{metric.count}</h3>
+                      <h4 className="text-xl font-semibold text-foreground mb-2">{metric.label}</h4>
+                      <p className="text-muted-foreground">{metric.description}</p>
                     </div>
-                    <h3 className="text-4xl font-bold text-primary mb-2">{metric.count}</h3>
-                    <h4 className="text-xl font-semibold text-foreground mb-2">{metric.label}</h4>
-                    <p className="text-muted-foreground">{metric.description}</p>
                   </div>
-                </div>
+                ))}
+              </div>
+            </div>
+            <div className="flex justify-center gap-2 mt-6">
+              {impactMetrics.map((_, index) => (
+                <button
+                  key={index}
+                  className={`w-3 h-3 rounded-full ${
+                    currentIndex === index ? 'bg-primary' : 'bg-muted'
+                  }`}
+                  onClick={() => setCurrentIndex(index)}
+                />
               ))}
             </div>
           </div>
-          <div className="flex justify-center gap-2 mt-6">
-            {impactMetrics.map((_, index) => (
-              <button
+
+          {/* Desktop Grid */}
+          <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {impactMetrics.map((metric, index) => (
+              <div
                 key={index}
-                className={`w-3 h-3 rounded-full ${
-                  currentIndex === index ? 'bg-primary' : 'bg-muted'
+                className={`bg-card p-6 rounded-lg shadow-md border border-border hover:shadow-lg transition-all duration-1000 transform ${
+                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
                 }`}
-                onClick={() => setCurrentIndex(index)}
-              />
+                style={{ transitionDelay: `${index * 200}ms` }}
+              >
+                <div className="bg-muted p-3 rounded-full w-12 h-12 flex items-center justify-center text-primary mb-4">
+                  {metric.icon}
+                </div>
+                <h3 className="text-4xl font-bold text-primary mb-2">{metric.count}</h3>
+                <h4 className="text-xl font-semibold text-foreground mb-2">{metric.label}</h4>
+                <p className="text-muted-foreground">{metric.description}</p>
+              </div>
             ))}
           </div>
         </div>
