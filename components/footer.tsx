@@ -2,7 +2,7 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import Logo from "@/components/logo"
-import { Mail, MapPin, Phone, Github, Linkedin, Twitter } from "lucide-react"
+import { Mail, MapPin, Phone, Github, Linkedin, Twitter, Instagram, MessageCircle } from "lucide-react"
 
 export default function Footer() {
   return (
@@ -19,10 +19,10 @@ export default function Footer() {
             <p className="text-muted-foreground mb-4">
               Democratizing robotics and automation technology across Africa through open-source innovation.
             </p>
-            <div className="flex space-x-4">
+            <div className="flex flex-wrap gap-2">
               <Button variant="ghost" size="icon" className="rounded-full hover:bg-muted" asChild>
                 <a 
-                  href="https://github.com/SsemakulaJonathan" 
+                  href="https://github.com/ZunoBotics" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   aria-label="Visit our GitHub"
@@ -32,7 +32,7 @@ export default function Footer() {
               </Button>
               <Button variant="ghost" size="icon" className="rounded-full hover:bg-muted" asChild>
                 <a 
-                  href="https://linkedin.com/company/zunobotics" 
+                  href="https://www.linkedin.com/company/ict-tech-consultant/" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   aria-label="Follow us on LinkedIn"
@@ -50,6 +50,26 @@ export default function Footer() {
                   <Twitter className="h-5 w-5 text-foreground" />
                 </a>
               </Button>
+              <Button variant="ghost" size="icon" className="rounded-full hover:bg-muted" asChild>
+                <a 
+                  href="https://instagram.com/zunobotics" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  aria-label="Follow us on Instagram"
+                >
+                  <Instagram className="h-5 w-5 text-foreground" />
+                </a>
+              </Button>
+              <Button variant="ghost" size="icon" className="rounded-full hover:bg-muted" asChild>
+                <a 
+                  href="https://discord.gg/GWFyEesE" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  aria-label="Join our Discord"
+                >
+                  <MessageCircle className="h-5 w-5 text-foreground" />
+                </a>
+              </Button>
             </div>
           </div>
 
@@ -57,27 +77,27 @@ export default function Footer() {
             <h3 className="text-lg font-bold mb-4 text-foreground">Quick Links</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="#mission" className="text-muted-foreground hover:text-accent transition-colors">
+                <Link href="/about#mission" className="text-muted-foreground hover:text-accent transition-colors">
                   Our Mission
                 </Link>
               </li>
               <li>
-                <Link href="#timeline" className="text-muted-foreground hover:text-accent transition-colors">
-                  Timeline
+                <Link href="/about#milestones" className="text-muted-foreground hover:text-accent transition-colors">
+                  Our Journey
                 </Link>
               </li>
               <li>
-                <Link href="#tools" className="text-muted-foreground hover:text-accent transition-colors">
+                <Link href="/tools" className="text-muted-foreground hover:text-accent transition-colors">
                   Tools & Resources
                 </Link>
               </li>
               <li>
-                <Link href="#projects" className="text-muted-foreground hover:text-accent transition-colors">
+                <Link href="/projects" className="text-muted-foreground hover:text-accent transition-colors">
                   Student Projects
                 </Link>
               </li>
               <li>
-                <Link href="#support" className="text-muted-foreground hover:text-accent transition-colors">
+                <Link href="/donate" className="text-muted-foreground hover:text-accent transition-colors">
                   Support Us
                 </Link>
               </li>
@@ -103,12 +123,12 @@ export default function Footer() {
               <li className="flex items-start">
                 <Phone className="h-5 w-5 text-primary mr-2 mt-0.5" />
                 <a 
-                  href="https://wa.me/256788123717?text=Hello%20ZunoBotics!%20I'm%20interested%20in%20learning%20more%20about%20your%20robotics%20and%20automation%20programs.%20Could%20we%20discuss%20potential%20collaboration%20opportunities?"
+                  href="https://wa.me/256785330180?text=Hello%20ZunoBotics!%20I'm%20interested%20in%20learning%20more%20about%20your%20robotics%20and%20automation%20programs.%20Could%20we%20discuss%20potential%20collaboration%20opportunities?"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
-                  +256788123717
+                  +256785330180
                 </a>
               </li>
             </ul>

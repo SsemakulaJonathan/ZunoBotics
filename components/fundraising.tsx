@@ -61,21 +61,24 @@ export default function Fundraising() {
       description: "Become a corporate partner with brand visibility and talent nurturing opportunities.",
       icon: <Building className="h-6 w-6 text-primary" />,
       badge: "Enterprise",
-      contact: "jonathan@uhururobotics.com",
+      contact: "zunobotics@gmail.com",
+      contactType: "email",
     },
     {
       title: "Educational Partnership",
       description: "Partner with us as an educational institution to expand our reach.",
       icon: <GraduationCap className="h-6 w-6 text-primary" />,
       badge: "Education",
-      contact: "jonathan@uhururobotics.com",
+      contact: "zunobotics@gmail.com",
+      contactType: "email",
     },
     {
       title: "Volunteer",
       description: "Share your skills and time to help us grow our community.",
       icon: <Users className="h-6 w-6 text-primary" />,
       badge: "Community",
-      contact: "zunobotics@gmail.com",
+      contact: "+256785330180",
+      contactType: "whatsapp",
     },
   ]
 
@@ -192,7 +195,13 @@ export default function Fundraising() {
                 <CardFooter className="pt-0 pb-6 flex flex-col space-y-3">
                   <Button asChild className="w-full btn-elegant flex items-center justify-center gap-2">
                     <a 
-                      href={`mailto:${option.contact}?subject=${encodeURIComponent(`${option.title} Opportunity`)}&body=${encodeURIComponent(`Hello ZunoBotics team,\n\nI'm interested in the ${option.title} opportunity. Please let me know how we can work together to support African innovation in robotics.\n\nBest regards`)}`}
+                      href={
+                        option.contactType === "whatsapp" 
+                          ? `https://wa.me/${option.contact.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`Hello ZunoBotics! I'm interested in the ${option.title} opportunity. I'd love to contribute my skills and time to support African innovation in robotics. Can we discuss how I can get involved?`)}`
+                          : `mailto:${option.contact}?subject=${encodeURIComponent(`${option.title} Opportunity`)}&body=${encodeURIComponent(`Hello ZunoBotics team,\n\nI'm interested in the ${option.title} opportunity. Please let me know how we can work together to support African innovation in robotics.\n\nBest regards`)}`
+                      }
+                      target={option.contactType === "whatsapp" ? "_blank" : undefined}
+                      rel={option.contactType === "whatsapp" ? "noopener noreferrer" : undefined}
                     >
                       Contact: {option.contact}
                     </a>
