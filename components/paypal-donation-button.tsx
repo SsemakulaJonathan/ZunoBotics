@@ -33,22 +33,35 @@ export default function PayPalDonationButton({
         disabled={isProcessing || amount < 1 || !email.trim()}
         forceReRender={[amount, donationType, name, email, message, anonymous]}
         createOrder={(data, actions) => {
-          console.log('Creating PayPal order:', { amount, donationType });
-          return actions.order.create({
-            intent: 'CAPTURE',
-            purchase_units: [
-              {
-                amount: {
-                  value: amount.toFixed(2),
-                  currency_code: 'USD',
+          console.log('Creating PayPal order:', { amount, donationType, email, name });
+          console.log('PayPal actions object:', actions);
+          
+          try {
+            return actions.order.create({
+              intent: 'CAPTURE',
+              purchase_units: [
+                {
+                  amount: {
+                    value: amount.toFixed(2),
+                    currency_code: 'USD',
+                  },
+                  description: `${donationType.charAt(0).toUpperCase() + donationType.slice(1)} Donation to ZunoBotics`,
                 },
-                description: `${donationType.charAt(0).toUpperCase() + donationType.slice(1)} Donation to ZunoBotics`,
+              ],
+              application_context: {
+                shipping_preference: 'NO_SHIPPING',
               },
-            ],
-            application_context: {
-              shipping_preference: 'NO_SHIPPING',
-            },
-          });
+            }).then(orderID => {
+              console.log('PayPal order created successfully:', orderID);
+              return orderID;
+            }).catch(error => {
+              console.error('Error creating PayPal order:', error);
+              throw error;
+            });
+          } catch (error) {
+            console.error('Error in createOrder function:', error);
+            throw error;
+          }
         }}
         onApprove={async (data, actions) => {
           setIsProcessing(true);

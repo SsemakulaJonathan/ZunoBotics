@@ -8,16 +8,17 @@ export const metadata: Metadata = {
   description: "Thank you for your donation to ZunoBotics",
 }
 
-export default function ThankYouPage({
+export default async function ThankYouPage({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined }
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }) {
-  const sessionId = searchParams.session_id
-  const orderID = searchParams.orderID
-  const provider = searchParams.provider
-  const hasError = searchParams.error
-  const isMock = searchParams.mock === "true"
+  const params = await searchParams
+  const sessionId = params.session_id
+  const orderID = params.orderID
+  const provider = params.provider
+  const hasError = params.error
+  const isMock = params.mock === "true"
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-white px-4">
