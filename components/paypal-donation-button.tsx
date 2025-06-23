@@ -30,7 +30,7 @@ export default function PayPalDonationButton({
     <div className="w-full">
       <PayPalButtons
         style={{ layout: 'vertical', shape: 'rect', color: 'gold' }}
-        disabled={isProcessing || amount < 1 || !email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)}
+        disabled={isProcessing || amount < 1 || !email.trim()}
         forceReRender={[amount, donationType, name, email, message, anonymous]}
         createOrder={(data, actions) => {
           console.log('Creating PayPal order:', { amount, donationType });
@@ -53,8 +53,15 @@ export default function PayPalDonationButton({
         onApprove={async (data, actions) => {
           setIsProcessing(true);
           try {
+            console.log('PayPal order approved, capturing...', { orderID: data.orderID });
             const details = await actions.order!.capture();
-            console.log('PayPal order captured:', { orderID: data.orderID, transactionID: details.id });
+            console.log('PayPal order captured successfully:', { 
+              orderID: data.orderID, 
+              transactionID: details.id,
+              status: details.status,
+              amount: details.purchase_units?.[0]?.payments?.captures?.[0]?.amount?.value 
+            });
+
             const donationData = {
               orderID: data.orderID,
               paypalTransactionID: details.id,
@@ -66,27 +73,33 @@ export default function PayPalDonationButton({
               donationType,
             };
 
+            console.log('Sending donation data to API:', donationData);
+
             const response = await fetch('/api/donations/paypal', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(donationData),
             });
 
+            const responseData = await response.json();
+            console.log('API response:', { status: response.status, data: responseData });
+
             if (!response.ok) {
-              const errorData = await response.json();
-              console.error('Failed to record donation:', errorData);
-              throw new Error(errorData.error || 'Failed to record donation');
+              console.error('API returned error:', responseData);
+              throw new Error(responseData.error || 'Failed to record donation');
             }
 
-            console.log('Donation recorded successfully:', donationData);
-            router.push('/thank-you?provider=paypal');
+            console.log('Donation recorded successfully, redirecting to thank you page');
+            router.push(`/thank-you?provider=paypal&orderID=${data.orderID}`);
           } catch (error) {
-            console.error('PayPal donation error:', error);
+            console.error('PayPal donation processing error:', error);
             toast({
-              title: 'Error',
-              description: 'Failed to process donation. Please try again.',
+              title: 'Payment Processing Error',
+              description: `Your payment was processed but we couldn't record it. Please contact support with order ID: ${data.orderID}`,
               variant: 'destructive',
             });
+            // Still redirect to thank you page since payment went through
+            router.push(`/thank-you?provider=paypal&orderID=${data.orderID}&error=recording`);
           } finally {
             setIsProcessing(false);
           }

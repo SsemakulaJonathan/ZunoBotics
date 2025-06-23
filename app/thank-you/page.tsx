@@ -14,6 +14,9 @@ export default function ThankYouPage({
   searchParams: { [key: string]: string | string[] | undefined }
 }) {
   const sessionId = searchParams.session_id
+  const orderID = searchParams.orderID
+  const provider = searchParams.provider
+  const hasError = searchParams.error
   const isMock = searchParams.mock === "true"
 
   return (
@@ -27,8 +30,28 @@ export default function ThankYouPage({
         <h1 className="mb-4 text-3xl font-bold">Thank You for Your Support!</h1>
         <p className="mb-8 text-gray-600">
           Your donation will help us democratize robotics and automation technology across Africa.
-          {!isMock && " We've sent a receipt to your email."}
+          {provider === 'paypal' && !hasError && " PayPal will send a receipt to your email."}
+          {!isMock && !provider && " We've sent a receipt to your email."}
         </p>
+        
+        {hasError === 'recording' && (
+          <div className="mb-8 rounded-md bg-orange-50 p-4 text-sm text-orange-800">
+            <p>
+              <strong>Payment Successful:</strong> Your payment was processed successfully through PayPal, but there was an issue recording it in our system. 
+              {orderID && ` Please save this Order ID for your records: ${orderID}`}
+            </p>
+          </div>
+        )}
+        
+        {provider === 'paypal' && orderID && !hasError && (
+          <div className="mb-8 rounded-md bg-green-50 p-4 text-sm text-green-800">
+            <p>
+              <strong>Payment Successful:</strong> Your PayPal donation has been processed.
+              <br />Order ID: {orderID}
+            </p>
+          </div>
+        )}
+        
         {isMock && (
           <div className="mb-8 rounded-md bg-blue-50 p-4 text-sm text-blue-800">
             <p>
