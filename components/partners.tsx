@@ -2,49 +2,41 @@
 
 import { useEffect, useRef, useState } from "react";
 
+interface Partner {
+  id: string;
+  name: string;
+  logo: string;
+  category: string;
+  description: string;
+  website?: string;
+  isVisible: boolean;
+  order: number;
+}
+
 export default function Partners() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
+  const [partners, setPartners] = useState<Partner[]>([]);
+  const [loading, setLoading] = useState(true);
   const sectionRef = useRef(null);
 
-  const partners = [
-    {
-      name: "Makerere University",
-      logo: "/images/partners/makerere.jpeg",
-      category: "Academic",
-      description: "Leading research institution in Uganda promoting robotics innovation.",
-    },
-    {
-      name: "Kyambogo University",
-      logo: "/images/partners/kyambogo.jpeg",
-      category: "Academic",
-      description: "Partner in engineering education and student-led projects.",
-    },
-    {
-      name: "Uganda Martyrs University",
-      logo: "/images/partners/uganda-martyrs.jpeg",
-      category: "Academic",
-      description: "Supports sustainable technology solutions for communities.",
-    },
-    {
-      name: "Mbarara University",
-      logo: "/images/partners/mbarara.jpeg",
-      category: "Academic",
-      description: "Drives innovation in healthcare and accessibility tech.",
-    },
-    {
-      name: "TechBit",
-      logo: "/images/partners/techbit.jpeg",
-      category: "Industry",
-      description: "Provides hardware components and technical expertise.",
-    },
-    {
-      name: "Innovation Hub Uganda",
-      logo: "/images/partners/innovation-hub.jpg",
-      category: "Community",
-      description: "Connects innovators and supports startup ecosystems.",
-    },
-  ];
+  useEffect(() => {
+    const fetchPartners = async () => {
+      try {
+        const response = await fetch('/api/partners');
+        if (response.ok) {
+          const data = await response.json();
+          setPartners(data);
+        }
+      } catch (error) {
+        console.error('Error fetching partners:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPartners();
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -76,6 +68,34 @@ export default function Partners() {
     }
   }, [isVisible, partners.length]);
 
+  if (loading) {
+    return (
+      <section className="py-16 bg-background">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Our Partners</h2>
+            <div className="flex justify-center">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (partners.length === 0) {
+    return (
+      <section className="py-16 bg-background">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Our Partners</h2>
+            <p className="text-lg text-muted-foreground">No partners available at this time.</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section ref={sectionRef} className="py-16 bg-background overflow-hidden">
       <div className="container mx-auto px-4">
@@ -99,7 +119,7 @@ export default function Partners() {
               style={{ transform: `translateX(-${currentIndex * 100}%)` }}
             >
               {partners.map((partner, index) => (
-                <div key={index} className="flex-shrink-0 w-full">
+                <div key={partner.id} className="flex-shrink-0 w-full">
                   <div className="bg-card hover:bg-card/90 rounded-lg p-6 mx-4 shadow-md border border-border hover:shadow-lg transition-all duration-300 cursor-pointer group">
                     <div className="flex flex-col items-center text-center">
                       <div className="mb-4 w-24 h-24 flex justify-center items-center bg-background rounded-full overflow-hidden shadow-sm group-hover:shadow-md transition-shadow duration-300">
@@ -117,6 +137,16 @@ export default function Partners() {
                       <p className="text-muted-foreground text-sm leading-relaxed">
                         {partner.description}
                       </p>
+                      {partner.website && (
+                        <a
+                          href={partner.website}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="mt-3 text-primary hover:text-primary/80 text-sm font-medium transition-colors"
+                        >
+                          Visit Website →
+                        </a>
+                      )}
                     </div>
                   </div>
                 </div>
