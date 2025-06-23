@@ -11,7 +11,6 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { AlertCircle } from "lucide-react"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import PayPalDonationButton from "./paypal-donation-button"
 import PayPalProvider from "./paypal-provider"
 
@@ -27,7 +26,7 @@ export default function DonationFormWithPayPal({ donationType, defaultAmount = 5
   const [email, setEmail] = useState("")
   const [message, setMessage] = useState("")
   const [isAnonymous, setIsAnonymous] = useState(false)
-  const [paymentMethod, setPaymentMethod] = useState<"stripe" | "paypal">("stripe")
+  const [paymentMethod, setPaymentMethod] = useState<"paypal">("paypal")
 
   const handleDonationChange = (value: number[]) => {
     setDonationAmount(value[0])
@@ -48,15 +47,15 @@ export default function DonationFormWithPayPal({ donationType, defaultAmount = 5
           <Slider
             id="amount"
             defaultValue={[defaultAmount]}
-            min={10}
+            min={1}
             max={500}
-            step={5}
+            step={1}
             value={[donationAmount]}
             onValueChange={handleDonationChange}
             className="my-6"
           />
           <div className="flex justify-between text-sm text-muted-foreground">
-            <span>$10</span>
+            <span>$1</span>
             <span>${donationAmount}</span>
             <span>$500</span>
           </div>
@@ -113,33 +112,18 @@ export default function DonationFormWithPayPal({ donationType, defaultAmount = 5
 
       <div className="space-y-4">
         <Label className="text-foreground">Payment Method</Label>
-        <Tabs defaultValue="stripe" onValueChange={(value) => setPaymentMethod(value as "stripe" | "paypal")}>
-          <TabsList className="grid w-full grid-cols-2 bg-muted">
-            <TabsTrigger value="stripe" className="text-foreground">Credit Card</TabsTrigger>
-            <TabsTrigger value="paypal" className="text-foreground">PayPal</TabsTrigger>
-          </TabsList>
-          <TabsContent value="stripe" className="pt-4">
-            <Button
-              type="submit"
-              className="w-full btn-elegant py-6 text-lg"
-              formAction="/api/donations"
-            >
-              Donate ${donationAmount} <Heart className="ml-2 h-5 w-5" />
-            </Button>
-          </TabsContent>
-          <TabsContent value="paypal" className="pt-4">
-            <PayPalProvider>
-              <PayPalDonationButton
-                amount={donationAmount}
-                donationType={donationType}
-                name={name || "Anonymous"}
-                email={email}
-                message={message}
-                anonymous={isAnonymous}
-              />
-            </PayPalProvider>
-          </TabsContent>
-        </Tabs>
+        <div className="pt-4">
+          <PayPalProvider>
+            <PayPalDonationButton
+              amount={donationAmount}
+              donationType={donationType}
+              name={name || "Anonymous"}
+              email={email}
+              message={message}
+              anonymous={isAnonymous}
+            />
+          </PayPalProvider>
+        </div>
       </div>
     </form>
   )

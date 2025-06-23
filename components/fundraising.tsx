@@ -22,19 +22,19 @@ export default function Fundraising() {
   const donationTiers = [
     {
       name: "Supporter",
-      range: "$25 - $499",
+      range: "$25 - $99",
       description: "Help us provide basic components and tools for student projects.",
       benefits: ["Recognition on our website", "Project updates newsletter"],
     },
     {
       name: "Innovator",
-      range: "$500 - $2,499",
+      range: "$100 - $199",
       description: "Fund a complete student project from concept to prototype.",
       benefits: ["All Supporter benefits", "Annual impact report", "Invitation to virtual showcase events"],
     },
     {
       name: "Pioneer",
-      range: "$2,500 - $9,999",
+      range: "$200 - $299",
       description: "Help us expand to a new university or technical institute.",
       benefits: [
         "All Innovator benefits",
@@ -44,7 +44,7 @@ export default function Fundraising() {
     },
     {
       name: "Visionary",
-      range: "$10,000+",
+      range: "$300 - $500",
       description: "Establish a fully equipped innovation lab at a partner university.",
       benefits: [
         "All Pioneer benefits",
