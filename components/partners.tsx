@@ -5,12 +5,11 @@ import { useEffect, useRef, useState } from "react";
 interface Partner {
   id: string;
   name: string;
-  logo: string;
-  category: string;
-  description: string;
+  logo?: string;
+  type: string;
+  description?: string;
   website?: string;
-  isVisible: boolean;
-  order: number;
+  location?: string;
 }
 
 export default function Partners() {
@@ -26,7 +25,7 @@ export default function Partners() {
         const response = await fetch('/api/partners');
         if (response.ok) {
           const data = await response.json();
-          setPartners(data);
+          setPartners(data.partners || []);
         }
       } catch (error) {
         console.error('Error fetching partners:', error);
@@ -132,11 +131,13 @@ export default function Partners() {
                       </div>
                       <h3 className="text-lg font-semibold text-foreground mb-2">{partner.name}</h3>
                       <span className="inline-block px-3 py-1 text-xs font-medium bg-primary/10 text-primary rounded-full mb-3">
-                        {partner.category}
+                        {partner.type}
                       </span>
-                      <p className="text-muted-foreground text-sm leading-relaxed">
-                        {partner.description}
-                      </p>
+                      {partner.description && (
+                        <p className="text-muted-foreground text-sm leading-relaxed">
+                          {partner.description}
+                        </p>
+                      )}
                       {partner.website && (
                         <a
                           href={partner.website}
@@ -175,15 +176,15 @@ export default function Partners() {
         >
           <div className="flex items-center gap-2 px-4 py-2 bg-card rounded-full border border-border">
             <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-            <span className="text-sm font-medium text-foreground">Academic Partners</span>
+            <span className="text-sm font-medium text-foreground">University Partners</span>
           </div>
           <div className="flex items-center gap-2 px-4 py-2 bg-card rounded-full border border-border">
             <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-            <span className="text-sm font-medium text-foreground">Industry Partners</span>
+            <span className="text-sm font-medium text-foreground">Corporate Partners</span>
           </div>
           <div className="flex items-center gap-2 px-4 py-2 bg-card rounded-full border border-border">
             <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
-            <span className="text-sm font-medium text-foreground">Community Partners</span>
+            <span className="text-sm font-medium text-foreground">NGO Partners</span>
           </div>
         </div>
       </div>
