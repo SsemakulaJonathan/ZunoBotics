@@ -58,7 +58,7 @@ export async function PATCH(
     }
 
     const body = await request.json()
-    const { name, description, useCase, category, icon, website, isPopular, order } = body
+    const { name, description, useCase, category, subcategory, icon, website, isPopular, order } = body
 
     const existingTool = await prisma.tool.findUnique({
       where: { id: params.id }
@@ -83,6 +83,7 @@ export async function PATCH(
         ...(description !== undefined && { description }),
         ...(useCase !== undefined && { useCase }),
         ...(category !== undefined && { category }),
+        ...(subcategory !== undefined && { subcategory }),
         ...(icon !== undefined && { icon }),
         ...(website !== undefined && { website }),
         ...(isPopular !== undefined && { isPopular }),

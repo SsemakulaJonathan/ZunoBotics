@@ -114,6 +114,7 @@ model Tool {
   description String
   useCase     String?
   category    String   // programming, hardware, software, platform
+  subcategory String?  // microcontrollers, sensors, actuators, development-boards, etc.
   icon        String?
   website     String?
   isPopular   Boolean @default(false)
@@ -185,4 +186,18 @@ model Admin {
   updatedAt DateTime @updatedAt
 
   @@map("admins")
+}
+
+model ImpactMetric {
+  id          String   @id @default(cuid())
+  icon        String   // users, code, school, globe, etc.
+  count       String   // "150+", "42", etc.
+  label       String   // "Students Supported", etc.
+  description String   // "Across multiple universities in Uganda"
+  order       Int      @default(0)
+  isVisible   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("impact_metrics")
 }

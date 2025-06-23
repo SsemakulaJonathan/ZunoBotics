@@ -19,6 +19,7 @@ interface Tool {
   description: string
   useCase?: string
   category: string
+  subcategory?: string
   icon?: string
   website?: string
   isPopular: boolean
@@ -70,17 +71,20 @@ export default function Tools() {
   }
 
   const categories = ["all", ...new Set(tools.map(tool => tool.category))]
+  const subcategories = [...new Set(tools.map(tool => tool.subcategory).filter(Boolean))]
+  const allFilterOptions = ["all", ...categories.slice(1), ...subcategories]
 
   const filteredTools = (type: string) =>
     tools.filter(tool => {
       const matchesType = type === "all" || 
         (type === "hardware" && (tool.category === "hardware")) ||
         (type === "software" && (tool.category === "programming" || tool.category === "software" || tool.category === "platform"))
-      const matchesCategory = activeCategory === "all" || tool.category === activeCategory
+      const matchesSubcategory = activeCategory === "all" || tool.subcategory === activeCategory || tool.category === activeCategory
       const matchesSearch = searchTerm === "" ||
         tool.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        tool.description.toLowerCase().includes(searchTerm.toLowerCase())
-      return matchesType && matchesCategory && matchesSearch
+        tool.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (tool.subcategory && tool.subcategory.toLowerCase().includes(searchTerm.toLowerCase()))
+      return matchesType && matchesSubcategory && matchesSearch
     })
 
   if (isLoading) {
@@ -133,9 +137,9 @@ export default function Tools() {
               value={activeCategory}
               onChange={(e) => setActiveCategory(e.target.value)}
             >
-              {categories.map((category) => (
-                <option key={category} value={category}>
-                  {category === "all" ? "All Categories" : category}
+              {allFilterOptions.map((option) => (
+                <option key={option} value={option}>
+                  {option === "all" ? "All Categories" : option}
                 </option>
               ))}
             </select>
@@ -203,9 +207,16 @@ export default function Tools() {
                         </Badge>
                       )}
                       <div className="flex items-center justify-between">
-                        <Badge className="bg-primary/10 text-primary">
-                          {tool.category}
-                        </Badge>
+                        <div className="flex flex-col gap-1">
+                          <Badge className="bg-primary/10 text-primary">
+                            {tool.category}
+                          </Badge>
+                          {tool.subcategory && (
+                            <Badge variant="outline" className="text-xs">
+                              {tool.subcategory}
+                            </Badge>
+                          )}
+                        </div>
                         {tool.website && (
                           <Button variant="ghost" size="sm" asChild>
                             <a href={tool.website} target="_blank" rel="noopener noreferrer">
@@ -256,9 +267,16 @@ export default function Tools() {
                         </Badge>
                       )}
                       <div className="flex items-center justify-between">
-                        <Badge className="bg-primary/10 text-primary">
-                          {tool.category}
-                        </Badge>
+                        <div className="flex flex-col gap-1">
+                          <Badge className="bg-primary/10 text-primary">
+                            {tool.category}
+                          </Badge>
+                          {tool.subcategory && (
+                            <Badge variant="outline" className="text-xs">
+                              {tool.subcategory}
+                            </Badge>
+                          )}
+                        </div>
                         {tool.website && (
                           <Button variant="ghost" size="sm" asChild>
                             <a href={tool.website} target="_blank" rel="noopener noreferrer">

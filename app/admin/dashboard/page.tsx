@@ -222,6 +222,11 @@ export default function AdminDashboard() {
                   Launch Timeline
                 </Button>
               </Link>
+              <Link href="/admin/impact">
+                <Button variant="outline" className="w-full justify-start">
+                  Impact Metrics
+                </Button>
+              </Link>
               <Link href="/admin/tools">
                 <Button variant="outline" className="w-full justify-start">
                   Tools & Technologies

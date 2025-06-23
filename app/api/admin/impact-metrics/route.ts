@@ -29,17 +29,16 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const tools = await prisma.tool.findMany({
+    const metrics = await prisma.impactMetric.findMany({
       orderBy: [
-        { isPopular: 'desc' },
         { order: 'asc' },
-        { name: 'asc' }
+        { createdAt: 'asc' }
       ]
     })
 
-    return NextResponse.json({ tools })
+    return NextResponse.json({ metrics })
   } catch (error) {
-    console.error('Error fetching tools:', error)
+    console.error('Error fetching impact metrics:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
@@ -52,35 +51,26 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { name, description, useCase, category, subcategory, icon, website, isPopular, order } = body
+    const { icon, count, label, description, order, isVisible } = body
 
-    if (!name || !description || !category) {
-      return NextResponse.json({ error: 'Name, description, and category are required' }, { status: 400 })
+    if (!icon || !count || !label || !description) {
+      return NextResponse.json({ error: 'Icon, count, label, and description are required' }, { status: 400 })
     }
 
-    // Validate category
-    const validCategories = ['programming', 'hardware', 'software', 'platform']
-    if (!validCategories.includes(category)) {
-      return NextResponse.json({ error: 'Invalid tool category' }, { status: 400 })
-    }
-
-    const tool = await prisma.tool.create({
+    const metric = await prisma.impactMetric.create({
       data: {
-        name,
+        icon,
+        count,
+        label,
         description,
-        useCase: useCase || null,
-        category,
-        subcategory: subcategory || null,
-        icon: icon || null,
-        website: website || null,
-        isPopular: isPopular || false,
-        order: order || 0
+        order: order || 0,
+        isVisible: isVisible !== undefined ? isVisible : true
       }
     })
 
-    return NextResponse.json({ tool }, { status: 201 })
+    return NextResponse.json({ metric }, { status: 201 })
   } catch (error) {
-    console.error('Error creating tool:', error)
+    console.error('Error creating impact metric:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

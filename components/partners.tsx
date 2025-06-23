@@ -59,7 +59,7 @@ export default function Partners() {
   }, []);
 
   useEffect(() => {
-    if (isVisible) {
+    if (isVisible && partners.length > 0) {
       const interval = setInterval(() => {
         setCurrentIndex((prev) => (prev + 1) % partners.length);
       }, 3000);
@@ -69,9 +69,11 @@ export default function Partners() {
 
   if (loading) {
     return (
-      <section className="py-16 bg-background">
+      <section ref={sectionRef} className="py-16 bg-background">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
+          <div className={`text-center mb-12 transition-all duration-1000 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          }`}>
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Our Partners</h2>
             <div className="flex justify-center">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
@@ -84,9 +86,11 @@ export default function Partners() {
 
   if (partners.length === 0) {
     return (
-      <section className="py-16 bg-background">
+      <section ref={sectionRef} className="py-16 bg-background">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
+          <div className={`text-center mb-12 transition-all duration-1000 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          }`}>
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Our Partners</h2>
             <p className="text-lg text-muted-foreground">No partners available at this time.</p>
           </div>

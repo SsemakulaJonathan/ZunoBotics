@@ -32,6 +32,7 @@ interface Tool {
   description: string
   useCase?: string
   category: string
+  subcategory?: string
   icon?: string
   website?: string
   isPopular: boolean
@@ -51,6 +52,7 @@ export default function ToolsManagement() {
     description: '',
     useCase: '',
     category: 'programming',
+    subcategory: 'none',
     icon: '',
     website: '',
     isPopular: false,
@@ -94,13 +96,18 @@ export default function ToolsManagement() {
       const url = editingTool ? `/api/admin/tools/${editingTool.id}` : '/api/admin/tools'
       const method = editingTool ? 'PATCH' : 'POST'
 
+      const submitData = {
+        ...formData,
+        subcategory: formData.subcategory === 'none' ? null : formData.subcategory
+      }
+
       const response = await fetch(url, {
         method,
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(submitData)
       })
 
       if (response.ok) {
@@ -120,6 +127,7 @@ export default function ToolsManagement() {
       description: tool.description,
       useCase: tool.useCase || '',
       category: tool.category,
+      subcategory: tool.subcategory || 'none',
       icon: tool.icon || '',
       website: tool.website || '',
       isPopular: tool.isPopular,
@@ -172,6 +180,7 @@ export default function ToolsManagement() {
       description: '',
       useCase: '',
       category: 'programming',
+      subcategory: 'none',
       icon: '',
       website: '',
       isPopular: false,
@@ -291,6 +300,43 @@ export default function ToolsManagement() {
                         </SelectContent>
                       </Select>
                     </div>
+                  </div>
+
+                  <div>
+                    <Label htmlFor="subcategory">Subcategory</Label>
+                    <Select value={formData.subcategory} onValueChange={(value) => setFormData({...formData, subcategory: value})}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select subcategory (optional)" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="none">None</SelectItem>
+                        {/* Hardware subcategories */}
+                        <SelectItem value="microcontrollers">Microcontrollers</SelectItem>
+                        <SelectItem value="sensors">Sensors</SelectItem>
+                        <SelectItem value="actuators">Actuators</SelectItem>
+                        <SelectItem value="development-boards">Development Boards</SelectItem>
+                        <SelectItem value="communication">Communication Modules</SelectItem>
+                        <SelectItem value="power">Power Management</SelectItem>
+                        <SelectItem value="displays">Displays</SelectItem>
+                        <SelectItem value="motors">Motors & Drivers</SelectItem>
+                        {/* Software subcategories */}
+                        <SelectItem value="ides">IDEs</SelectItem>
+                        <SelectItem value="simulation">Simulation</SelectItem>
+                        <SelectItem value="modeling">3D Modeling</SelectItem>
+                        <SelectItem value="version-control">Version Control</SelectItem>
+                        <SelectItem value="frameworks">Frameworks</SelectItem>
+                        <SelectItem value="libraries">Libraries</SelectItem>
+                        <SelectItem value="operating-systems">Operating Systems</SelectItem>
+                        {/* Programming subcategories */}
+                        <SelectItem value="languages">Programming Languages</SelectItem>
+                        <SelectItem value="protocols">Communication Protocols</SelectItem>
+                        <SelectItem value="apis">APIs & SDKs</SelectItem>
+                        {/* Platform subcategories */}
+                        <SelectItem value="cloud-services">Cloud Services</SelectItem>
+                        <SelectItem value="iot-platforms">IoT Platforms</SelectItem>
+                        <SelectItem value="marketplaces">Component Marketplaces</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
 
                   <div>
