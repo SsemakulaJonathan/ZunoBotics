@@ -11,7 +11,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
             <div className="flex items-center mb-4">
-              <Logo width={40} height={40} className="mr-2" />
+              <Logo width={48} height={48} className="mr-2" />
               <span className="text-xl font-bold text-primary">ZunoBotics</span>
             </div>
             <p className="text-muted-foreground mb-4">
