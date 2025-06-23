@@ -33,7 +33,7 @@ export default function FundraisingStats({ goal = 100000 }: FundraisingStatsProp
         setIsLoading(true)
         setError(null)
 
-        const response = await fetch("/api/donations")
+        const response = await fetch("/api/donations/paypal")
 
         if (!response.ok) {
           const errorText = await response.text()

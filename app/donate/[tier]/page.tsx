@@ -22,22 +22,22 @@ export default function DonatePage({ params }: DonatePageProps) {
     supporter: {
       name: "Supporter",
       description: "Help us provide basic components and tools for student projects.",
-      defaultAmount: 50,
+      defaultAmount: 100,
     },
     innovator: {
       name: "Innovator",
       description: "Fund a complete student project from concept to prototype.",
-      defaultAmount: 150,
+      defaultAmount: 1000,
     },
     pioneer: {
       name: "Pioneer",
       description: "Help us expand to a new university or technical institute.",
-      defaultAmount: 250,
+      defaultAmount: 5000,
     },
     visionary: {
       name: "Visionary",
       description: "Establish a fully equipped innovation lab at a partner university.",
-      defaultAmount: 400,
+      defaultAmount: 15000,
     },
   }
 

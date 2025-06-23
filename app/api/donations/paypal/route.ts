@@ -15,6 +15,44 @@ const paypalDonationSchema = z.object({
   donationType: z.enum(["one-time", "supporter", "innovator", "pioneer", "visionary"]),
 })
 
+export async function GET() {
+  try {
+    // Get total amount raised (only count completed donations)
+    const totalRaisedResult = await sql`
+      SELECT COALESCE(SUM(amount), 0) as total_raised
+      FROM donations
+      WHERE status = 'completed'
+    `
+
+    // Handle the result properly - Neon returns an array of rows
+    const totalRaised = Number.parseFloat(totalRaisedResult[0]?.total_raised || "0")
+
+    // Get recent public donations
+    const recentDonationsResult = await sql`
+      SELECT id, amount, name, message, donation_type as "donationType", created_at as "createdAt"
+      FROM donations
+      WHERE status = 'completed' AND anonymous = false
+      ORDER BY created_at DESC
+      LIMIT 5
+    `
+
+    // Format the dates properly for JSON serialization
+    const recentDonations = recentDonationsResult.map((donation) => ({
+      ...donation,
+      amount: Number.parseFloat(donation.amount),
+      createdAt: donation.createdAt.toISOString(),
+    }))
+
+    return NextResponse.json({
+      totalRaised,
+      recentDonations,
+    })
+  } catch (error) {
+    console.error("Error fetching donation data:", error)
+    return NextResponse.json({ error: "Failed to fetch donation data" }, { status: 500 })
+  }
+}
+
 export async function POST(req: Request) {
   try {
     // Log the request body for debugging

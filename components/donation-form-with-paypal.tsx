@@ -28,6 +28,24 @@ export default function DonationFormWithPayPal({ donationType, defaultAmount = 5
   const [isAnonymous, setIsAnonymous] = useState(false)
   const [paymentMethod, setPaymentMethod] = useState<"paypal">("paypal")
 
+  // Get slider range based on donation type
+  const getSliderRange = () => {
+    switch (donationType) {
+      case "supporter":
+        return { min: 25, max: 499, step: 5 }
+      case "innovator":
+        return { min: 500, max: 2499, step: 25 }
+      case "pioneer":
+        return { min: 2500, max: 9999, step: 100 }
+      case "visionary":
+        return { min: 10000, max: 50000, step: 500 }
+      default: // one-time
+        return { min: 1, max: 500, step: 1 }
+    }
+  }
+
+  const sliderRange = getSliderRange()
+
   const handleDonationChange = (value: number[]) => {
     setDonationAmount(value[0])
   }
@@ -47,17 +65,17 @@ export default function DonationFormWithPayPal({ donationType, defaultAmount = 5
           <Slider
             id="amount"
             defaultValue={[defaultAmount]}
-            min={1}
-            max={500}
-            step={1}
+            min={sliderRange.min}
+            max={sliderRange.max}
+            step={sliderRange.step}
             value={[donationAmount]}
             onValueChange={handleDonationChange}
             className="my-6"
           />
           <div className="flex justify-between text-sm text-muted-foreground">
-            <span>$1</span>
-            <span>${donationAmount}</span>
-            <span>$500</span>
+            <span>${sliderRange.min.toLocaleString()}</span>
+            <span>${donationAmount.toLocaleString()}</span>
+            <span>${sliderRange.max.toLocaleString()}</span>
           </div>
         </div>
       </div>
