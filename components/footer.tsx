@@ -11,10 +11,8 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
             <div className="flex items-center mb-4">
-              <div className="bg-primary rounded-lg p-2 flex items-center justify-center">
-                <Logo className="h-8 w-auto text-primary-foreground" />
-              </div>
-              <span className="ml-2 text-xl font-bold text-primary">ZunoBotics</span>
+              <Logo width={40} height={40} className="mr-2" />
+              <span className="text-xl font-bold text-primary">ZunoBotics</span>
             </div>
             <p className="text-muted-foreground mb-4">
               Democratizing robotics and automation technology across Africa through open-source innovation.

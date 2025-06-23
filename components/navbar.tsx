@@ -69,10 +69,8 @@ export default function Navbar() {
         <div className="container h-full mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-full">
             <Link href="/" className="flex items-center h-full">
-              <div className="bg-primary rounded-lg p-1.5 flex items-center justify-center">
-                <Logo className="h-7 w-7" />
-              </div>
-              <span className="ml-2 text-lg font-bold text-foreground">
+              <Logo width={32} height={32} className="mr-2" />
+              <span className="text-lg font-bold text-foreground">
                 ZunoBotics
               </span>
             </Link>
