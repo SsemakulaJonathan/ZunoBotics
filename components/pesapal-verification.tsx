@@ -21,6 +21,7 @@ export default function PesapalVerification({
   const [donationDetails, setDonationDetails] = useState<any>(null);
 
   useEffect(() => {
+    console.log('PesapalVerification props:', { orderId, trackingId });
     if (orderId && trackingId) {
       verifyPayment();
     }
@@ -32,6 +33,21 @@ export default function PesapalVerification({
     setVerificationStatus('loading');
 
     try {
+      // Check if this is a dev mode payment (tracking ID starts with "DEV-")
+      if (trackingId.startsWith('DEV-')) {
+        // Dev mode - simulate successful verification
+        setVerificationStatus('success');
+        toast.success('Payment verified successfully! (Dev Mode)');
+        
+        localStorage.removeItem('pesapal_order_id');
+        localStorage.removeItem('pesapal_tracking_id');
+        localStorage.removeItem('pesapal_donation_id');
+        
+        onVerificationComplete?.('success');
+        return;
+      }
+
+      // Production mode - verify with Pesapal API
       const response = await fetch('/api/donations/pesapal/callback', {
         method: 'POST',
         headers: {

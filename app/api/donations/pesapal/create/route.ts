@@ -59,20 +59,42 @@ export async function POST(request: NextRequest) {
         success: true,
         orderId,
         trackingId,
-        redirectUrl: `${process.env.NEXT_PUBLIC_APP_URL}/thank-you?orderId=${orderId}&trackingId=${trackingId}&provider=pesapal&dev=true`,
+        redirectUrl: `${process.env.NEXT_PUBLIC_APP_URL}/thank-you?orderID=${orderId}&trackingId=${trackingId}&provider=pesapal&dev=true`,
         donationId: donation.id,
         devMode: true,
       });
     }
     
     // Production mode - use real Pesapal API
-    // Try without notification_id first since IPN URL is pre-registered
+    
+    // For localhost development, we need to use the production domain for IPN registration
+    // since Pesapal cannot reach localhost URLs
+    const ipnCallbackUrl = callbackUrl.includes('localhost') 
+      ? 'https://www.zunobotics.com/api/donations/pesapal/callback'
+      : callbackUrl;
+    
+    try {
+      // Register IPN URL dynamically to get notification_id
+      const ipnResponse = await pesapalClient.registerIPN(ipnCallbackUrl);
+      console.log('IPN registration response:', ipnResponse);
+      
+      if (ipnResponse.ipn_id) {
+        notificationId = ipnResponse.ipn_id;
+      } else {
+        throw new Error('No IPN ID received from registration');
+      }
+    } catch (ipnError) {
+      console.error('IPN registration failed:', ipnError);
+      throw new Error('Failed to register IPN URL. Please ensure your callback URL is publicly accessible.');
+    }
+    
     const orderRequest = {
       id: orderId,
       currency: 'USD',
       amount: formattedAmount,
       description: `Donation to ZunoBotics${message ? ` - ${message}` : ''}`,
-      callback_url: callbackUrl,
+      callback_url: callbackUrl, // Use original callback URL for the order
+      notification_id: notificationId, // Use the registered IPN ID
       billing_address: {
         email_address: email || '',
         first_name: name.split(' ')[0] || name,

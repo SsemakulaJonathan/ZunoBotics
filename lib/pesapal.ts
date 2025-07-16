@@ -86,7 +86,20 @@ class PesapalAPI {
       }),
     });
 
-    const data = await response.json();
+    // Check if response is JSON or HTML for auth endpoint too
+    const contentType = response.headers.get('content-type');
+    console.log('Auth response content-type:', contentType);
+    console.log('Auth response status:', response.status);
+    
+    let data;
+    if (contentType && contentType.includes('application/json')) {
+      data = await response.json();
+    } else {
+      const textResponse = await response.text();
+      console.log('Auth HTML response:', textResponse.substring(0, 500));
+      throw new Error(`Authentication returned HTML instead of JSON. Status: ${response.status}`);
+    }
+    
     console.log('Token response:', data);
     
     // Check if there's an error in the response
@@ -183,11 +196,23 @@ class PesapalAPI {
       },
       body: JSON.stringify({
         url,
-        ipn_type: ipnType,
+        ipn_notification_type: ipnType,
       }),
     });
 
-    const responseData = await response.json();
+    // Check if response is JSON or HTML
+    const contentType = response.headers.get('content-type');
+    console.log('IPN response content-type:', contentType);
+    
+    let responseData;
+    if (contentType && contentType.includes('application/json')) {
+      responseData = await response.json();
+    } else {
+      const textResponse = await response.text();
+      console.log('IPN registration HTML response:', textResponse.substring(0, 500));
+      throw new Error(`IPN registration returned HTML instead of JSON. Status: ${response.status}`);
+    }
+    
     console.log('IPN registration response:', JSON.stringify(responseData, null, 2));
 
     if (!response.ok) {
@@ -207,13 +232,16 @@ export const createPesapalClient = (): PesapalAPI => {
       hasKey: !!consumerKey, 
       hasSecret: !!consumerSecret 
     });
-    throw new Error('Pesapal consumer key and secret are required. Please check your live credentials.');
+    throw new Error('Pesapal consumer key and secret are required. Please check your credentials.');
   }
+
+  // Always use production environment since you have live credentials
+  const environment = 'production';
 
   const config: PesapalConfig = {
     consumerKey: consumerKey.trim(),
     consumerSecret: consumerSecret.trim(),
-    environment: 'production', // Use production environment for live credentials
+    environment: environment,
   };
 
   return new PesapalAPI(config);

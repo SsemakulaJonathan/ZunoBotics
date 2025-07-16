@@ -25,15 +25,18 @@ export default async function ThankYouPage({
   const hasError = params.error
   const verified = params.verified
   const isMock = params.mock === "true"
+  const isDev = params.dev === "true"
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-white px-4">
-      <Suspense fallback={<div>Loading...</div>}>
-        <PesapalVerification 
-          orderId={orderID as string}
-          trackingId={trackingId as string}
-        />
-      </Suspense>
+      {!isDev && (
+        <Suspense fallback={<div>Loading...</div>}>
+          <PesapalVerification 
+            orderId={orderID as string}
+            trackingId={trackingId as string}
+          />
+        </Suspense>
+      )}
       <div className="mx-auto max-w-md text-center">
         <div className="mb-6 flex justify-center">
           <div className="rounded-full bg-green-100 p-3">
@@ -83,6 +86,7 @@ export default async function ThankYouPage({
           <div className="mb-8 rounded-md bg-green-50 p-4 text-sm text-green-800">
             <p>
               <strong>Payment Successful:</strong> Your Pesapal donation has been processed.
+              {isDev && <><br /><span className="text-blue-600">(Development Mode)</span></>}
               <br />Order ID: {orderID}
               {trackingId && <><br />Tracking ID: {trackingId}</>}
             </p>
