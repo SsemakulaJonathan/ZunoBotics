@@ -1,7 +1,7 @@
 // app/donate/[tier]/page.tsx
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
-import DonationForm from "@/components/donation-form-with-paypal"
+import DonationForm from "@/components/donation-form"
 import { Card, CardContent } from "@/components/ui/card"
 
 export const metadata: Metadata = {

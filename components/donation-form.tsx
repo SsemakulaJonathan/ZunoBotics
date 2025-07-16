@@ -1,4 +1,4 @@
-// components/donation-form-with-paypal.tsx
+// components/donation-form.tsx
 "use client"
 
 import { useState } from "react"
@@ -11,22 +11,21 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { AlertCircle } from "lucide-react"
-import PayPalDonationButton from "./paypal-donation-button"
-import PayPalProvider from "./paypal-provider"
+import PesapalDonationButton from "./pesapal-donation-button"
 
-interface DonationFormWithPayPalProps {
+interface DonationFormProps {
   donationType: "one-time" | "supporter" | "innovator" | "pioneer" | "visionary"
   defaultAmount?: number
 }
 
-export default function DonationFormWithPayPal({ donationType, defaultAmount = 50 }: DonationFormWithPayPalProps) {
+export default function DonationForm({ donationType, defaultAmount = 50 }: DonationFormProps) {
   const [error, setError] = useState<string | null>(null)
   const [donationAmount, setDonationAmount] = useState(defaultAmount)
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [message, setMessage] = useState("")
   const [isAnonymous, setIsAnonymous] = useState(false)
-  const [paymentMethod, setPaymentMethod] = useState<"paypal">("paypal")
+  const [paymentMethod, setPaymentMethod] = useState<"pesapal">("pesapal")
 
   // Get slider range based on donation type
   const getSliderRange = () => {
@@ -131,16 +130,14 @@ export default function DonationFormWithPayPal({ donationType, defaultAmount = 5
       <div className="space-y-4">
         <Label className="text-foreground">Payment Method</Label>
         <div className="pt-4">
-          <PayPalProvider>
-            <PayPalDonationButton
-              amount={donationAmount}
-              donationType={donationType}
-              name={name || "Anonymous"}
-              email={email}
-              message={message}
-              anonymous={isAnonymous}
-            />
-          </PayPalProvider>
+          <PesapalDonationButton
+            amount={donationAmount}
+            donationType={donationType}
+            name={name || "Anonymous"}
+            email={email}
+            message={message}
+            anonymous={isAnonymous}
+          />
         </div>
       </div>
     </form>

@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Heart, Building, GraduationCap, Users } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import DonationFormWithPayPal from "@/components/donation-form-with-paypal"
+import DonationForm from "@/components/donation-form"
 import FundraisingStats from "@/components/fundraising-stats"
 
 export default function Fundraising() {
@@ -123,7 +123,7 @@ export default function Fundraising() {
                 <Card className="bg-card border-border">
                   <CardContent className="pt-8 pb-8">
                     <h3 className="text-2xl font-bold text-foreground mb-6">Donate</h3>
-                    <DonationFormWithPayPal donationType="one-time" defaultAmount={50} />
+                    <DonationForm donationType="one-time" defaultAmount={50} />
                   </CardContent>
                 </Card>
 
