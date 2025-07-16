@@ -61,7 +61,7 @@ export default function Fundraising() {
       description: "Become a corporate partner with brand visibility and talent nurturing opportunities.",
       icon: <Building className="h-6 w-6 text-primary" />,
       badge: "Enterprise",
-      contact: "zunobotics@gmail.com",
+      contact: "info@zunobotics.com",
       contactType: "email",
     },
     {
@@ -69,7 +69,7 @@ export default function Fundraising() {
       description: "Partner with us as an educational institution to expand our reach.",
       icon: <GraduationCap className="h-6 w-6 text-primary" />,
       badge: "Education",
-      contact: "zunobotics@gmail.com",
+      contact: "info@zunobotics.com",
       contactType: "email",
     },
     {

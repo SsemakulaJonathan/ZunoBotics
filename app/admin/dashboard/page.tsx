@@ -99,6 +99,14 @@ export default function AdminDashboard() {
       stats: [
         { label: 'Total', value: stats.partners.total, color: 'default' }
       ]
+    },
+    {
+      title: 'Site Settings',
+      href: '/admin/settings',
+      icon: Settings,
+      stats: [
+        { label: 'Fundraising Goal', value: '$100K', color: 'default' }
+      ]
     }
   ]
 

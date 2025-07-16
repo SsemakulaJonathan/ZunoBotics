@@ -88,7 +88,7 @@ export default function PesapalDonationButton({
       ) : (
         <>
           <CreditCard className="mr-2 h-4 w-4" />
-          Donate ${amount} with Pesapal
+          Donate ${amount}
         </>
       )}
     </Button>

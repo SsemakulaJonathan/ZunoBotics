@@ -175,7 +175,7 @@ The project uses a comprehensive design system built on Tailwind CSS:
 
 ## 📧 Contact Information
 
-- **General**: zunobotics@gmail.com
+- **General**: info@zunobotics.com
 - **Phone**: +256788123717
 - **Partnerships**: jonathan@uhururobotics.com
 - **Location**: Kampala, Uganda

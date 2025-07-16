@@ -21,10 +21,11 @@ interface FundraisingStatsProps {
   goal?: number
 }
 
-export default function FundraisingStats({ goal = 100000 }: FundraisingStatsProps) {
+export default function FundraisingStats({ goal: propGoal }: FundraisingStatsProps) {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [totalRaised, setTotalRaised] = useState(0)
+  const [goal, setGoal] = useState(propGoal || 100000)
   const [recentDonations, setRecentDonations] = useState<Donation[]>([])
 
   useEffect(() => {
@@ -33,16 +34,29 @@ export default function FundraisingStats({ goal = 100000 }: FundraisingStatsProp
         setIsLoading(true)
         setError(null)
 
-        const response = await fetch("/api/donations/paygate")
+        // Fetch both donations and goal setting
+        const [donationsResponse, settingsResponse] = await Promise.all([
+          fetch("/api/donations"),
+          fetch("/api/admin/settings?key=fundraising_goal")
+        ]);
 
-        if (!response.ok) {
-          const errorText = await response.text()
-          throw new Error(`API error: ${response.status} - ${errorText}`)
+        if (!donationsResponse.ok) {
+          const errorText = await donationsResponse.text()
+          throw new Error(`API error: ${donationsResponse.status} - ${errorText}`)
         }
 
-        const data = await response.json()
-        setTotalRaised(data.totalRaised)
-        setRecentDonations(data.recentDonations)
+        const donationsData = await donationsResponse.json()
+        setTotalRaised(donationsData.totalRaised)
+        setRecentDonations(donationsData.recentDonations)
+
+        // Update goal if we got it from settings
+        if (settingsResponse.ok) {
+          const settingsData = await settingsResponse.json()
+          if (settingsData.success && settingsData.setting) {
+            setGoal(settingsData.setting.value)
+          }
+        }
+
       } catch (error) {
         console.error("Failed to fetch donation stats:", error)
         setError("Unable to load donation statistics. Please try again later.")
@@ -53,6 +67,7 @@ export default function FundraisingStats({ goal = 100000 }: FundraisingStatsProp
 
     fetchDonationStats()
   }, [])
+
 
   const progressPercentage = (totalRaised / goal) * 100
 
@@ -99,7 +114,7 @@ export default function FundraisingStats({ goal = 100000 }: FundraisingStatsProp
         <div className="space-y-4">
           <h3 className="text-lg font-medium text-foreground">Recent Supporters</h3>
           <div className="space-y-3">
-            {recentDonations.map((donation) => (
+            {recentDonations.slice(0, 5).map((donation) => (
               <Card key={donation.id} className="bg-card border-border">
                 <CardContent className="p-4">
                   <div className="flex justify-between items-start">

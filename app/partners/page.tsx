@@ -24,7 +24,7 @@ export default function PartnersPage() {
             className="btn-elegant px-6 py-3 rounded-md flex items-center justify-center mx-auto"
           >
             <a 
-              href="mailto:zunobotics@gmail.com?subject=Partnership%20Opportunity%20with%20ZunoBotics&body=Hello%20ZunoBotics%20team,%0D%0A%0D%0AI'm%20interested%20in%20exploring%20partnership%20opportunities%20with%20ZunoBotics.%20Our%20organization%20would%20like%20to%20support%20African%20innovation%20in%20robotics%20and%20automation.%0D%0A%0D%0APlease%20let%20me%20know%20how%20we%20can%20collaborate.%0D%0A%0D%0ABest%20regards"
+              href="mailto:info@zunobotics.com?subject=Partnership%20Opportunity%20with%20ZunoBotics&body=Hello%20ZunoBotics%20team,%0D%0A%0D%0AI'm%20interested%20in%20exploring%20partnership%20opportunities%20with%20ZunoBotics.%20Our%20organization%20would%20like%20to%20support%20African%20innovation%20in%20robotics%20and%20automation.%0D%0A%0D%0APlease%20let%20me%20know%20how%20we%20can%20collaborate.%0D%0A%0D%0ABest%20regards"
             >
               Contact Us
               <ArrowRight size={20} className="ml-2" />

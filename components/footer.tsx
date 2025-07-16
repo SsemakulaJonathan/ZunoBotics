@@ -2,7 +2,7 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import Logo from "@/components/logo"
-import { Mail, MapPin, Phone, Github, Linkedin, Twitter, Instagram, MessageCircle } from "lucide-react"
+import { Mail, MapPin, Phone, Github, Linkedin, Twitter, Instagram, MessageCircle, Facebook } from "lucide-react"
 
 export default function Footer() {
   return (
@@ -20,7 +20,7 @@ export default function Footer() {
             <div className="flex flex-wrap gap-2">
               <Button variant="ghost" size="icon" className="rounded-full hover:bg-muted" asChild>
                 <a 
-                  href="https://github.com/ZunoBotics" 
+                  href="https://github.zunobotics.com" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   aria-label="Visit our GitHub"
@@ -30,7 +30,7 @@ export default function Footer() {
               </Button>
               <Button variant="ghost" size="icon" className="rounded-full hover:bg-muted" asChild>
                 <a 
-                  href="https://www.linkedin.com/company/zunobotics/" 
+                  href="https://linkedin.zunobotics.com" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   aria-label="Follow us on LinkedIn"
@@ -40,7 +40,7 @@ export default function Footer() {
               </Button>
               <Button variant="ghost" size="icon" className="rounded-full hover:bg-muted" asChild>
                 <a 
-                  href="https://twitter.com/zunobotics" 
+                  href="https://x.zunobotics.com" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   aria-label="Follow us on Twitter"
@@ -50,7 +50,7 @@ export default function Footer() {
               </Button>
               <Button variant="ghost" size="icon" className="rounded-full hover:bg-muted" asChild>
                 <a 
-                  href="https://instagram.com/zunobotics" 
+                  href="https://instagram.zunobotics.com" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   aria-label="Follow us on Instagram"
@@ -60,7 +60,17 @@ export default function Footer() {
               </Button>
               <Button variant="ghost" size="icon" className="rounded-full hover:bg-muted" asChild>
                 <a 
-                  href="https://discord.gg/GWFyEesE" 
+                  href="https://facebook.zunobotics.com" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  aria-label="Follow us on Facebook"
+                >
+                  <Facebook className="h-5 w-5 text-foreground" />
+                </a>
+              </Button>
+              <Button variant="ghost" size="icon" className="rounded-full hover:bg-muted" asChild>
+                <a 
+                  href="https://discord.zunobotics.com" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   aria-label="Join our Discord"
@@ -112,10 +122,10 @@ export default function Footer() {
               <li className="flex items-start">
                 <Mail className="h-5 w-5 text-primary mr-2 mt-0.5" />
                 <a 
-                  href="mailto:zunobotics@gmail.com?subject=Hello%20ZunoBotics!&body=Hi%20ZunoBotics%20team,%0D%0A%0D%0AI'm%20interested%20in%20learning%20more%20about%20your%20robotics%20and%20automation%20programs.%20I%20would%20love%20to%20discuss%20potential%20collaboration%20opportunities.%0D%0A%0D%0ABest%20regards"
+                  href="mailto:info@zunobotics.com?subject=Hello%20ZunoBotics!&body=Hi%20ZunoBotics%20team,%0D%0A%0D%0AI'm%20interested%20in%20learning%20more%20about%20your%20robotics%20and%20automation%20programs.%20I%20would%20love%20to%20discuss%20potential%20collaboration%20opportunities.%0D%0A%0D%0ABest%20regards"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
-                  zunobotics@gmail.com
+                  info@zunobotics.com
                 </a>
               </li>
               <li className="flex items-start">

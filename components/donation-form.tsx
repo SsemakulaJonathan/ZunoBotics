@@ -127,18 +127,15 @@ export default function DonationForm({ donationType, defaultAmount = 50 }: Donat
         </div>
       </div>
 
-      <div className="space-y-4">
-        <Label className="text-foreground">Payment Method</Label>
-        <div className="pt-4">
-          <PesapalDonationButton
-            amount={donationAmount}
-            donationType={donationType}
-            name={name || "Anonymous"}
-            email={email}
-            message={message}
-            anonymous={isAnonymous}
-          />
-        </div>
+      <div className="flex justify-center pt-4">
+        <PesapalDonationButton
+          amount={donationAmount}
+          donationType={donationType}
+          name={name || "Anonymous"}
+          email={email}
+          message={message}
+          anonymous={isAnonymous}
+        />
       </div>
     </form>
   )
