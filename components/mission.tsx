@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { Calendar, Users, Briefcase, Award, Target, Trophy, Star, Clock, CheckCircle } from "lucide-react";
+import { Calendar, Users, Briefcase, Award, Target, Trophy, Star, Clock, CheckCircle, Mail, Linkedin, Github } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { motion, useInView } from "framer-motion";
 
@@ -245,7 +245,40 @@ export default function Mission() {
                         />
                         <h3 className="text-xl font-bold text-foreground mb-2 text-center">{member.name}</h3>
                         <p className="text-primary font-medium mb-2 text-center">{member.role}</p>
-                        <p className="text-muted-foreground text-center">{member.description}</p>
+                        <p className="text-muted-foreground text-center mb-4">{member.description}</p>
+                        <div className="flex justify-center space-x-6">
+                          {member.email && (
+                            <a
+                              href={`mailto:${member.email}`}
+                              className="text-muted-foreground hover:text-primary transition-colors"
+                              title="Email"
+                            >
+                              <Mail className="h-5 w-5" />
+                            </a>
+                          )}
+                          {member.linkedin && (
+                            <a
+                              href={member.linkedin}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-muted-foreground hover:text-primary transition-colors"
+                              title="LinkedIn"
+                            >
+                              <Linkedin className="h-5 w-5" />
+                            </a>
+                          )}
+                          {member.github && (
+                            <a
+                              href={member.github}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-muted-foreground hover:text-primary transition-colors"
+                              title="GitHub"
+                            >
+                              <Github className="h-5 w-5" />
+                            </a>
+                          )}
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -279,7 +312,40 @@ export default function Mission() {
                       />
                       <h3 className="text-xl font-bold text-foreground mb-2 text-center">{member.name}</h3>
                       <p className="text-primary font-medium mb-2 text-center">{member.role}</p>
-                      <p className="text-muted-foreground text-center">{member.description}</p>
+                      <p className="text-muted-foreground text-center mb-4">{member.description}</p>
+                      <div className="flex justify-center space-x-6">
+                        {member.email && (
+                          <a
+                            href={`mailto:${member.email}`}
+                            className="text-muted-foreground hover:text-primary transition-colors"
+                            title="Email"
+                          >
+                            <Mail className="h-5 w-5" />
+                          </a>
+                        )}
+                        {member.linkedin && (
+                          <a
+                            href={member.linkedin}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-muted-foreground hover:text-primary transition-colors"
+                            title="LinkedIn"
+                          >
+                            <Linkedin className="h-5 w-5" />
+                          </a>
+                        )}
+                        {member.github && (
+                          <a
+                            href={member.github}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-muted-foreground hover:text-primary transition-colors"
+                            title="GitHub"
+                          >
+                            <Github className="h-5 w-5" />
+                          </a>
+                        )}
+                      </div>
                     </div>
                   ))}
                 </div>
