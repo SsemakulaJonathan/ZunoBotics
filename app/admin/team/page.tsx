@@ -261,14 +261,25 @@ export default function TeamManagement() {
                   </div>
 
                   <div>
-                    <Label htmlFor="description">Description *</Label>
+                    <Label htmlFor="description">Description * ({formData.description.length}/200)</Label>
                     <Textarea
                       id="description"
                       value={formData.description}
-                      onChange={(e) => setFormData({...formData, description: e.target.value})}
+                      onChange={(e) => {
+                        if (e.target.value.length <= 200) {
+                          setFormData({...formData, description: e.target.value})
+                        }
+                      }}
                       rows={3}
                       required
+                      maxLength={200}
+                      placeholder="Enter team member description (max 200 characters)"
                     />
+                    {formData.description.length >= 180 && (
+                      <p className="text-sm text-amber-600 mt-1">
+                        {200 - formData.description.length} characters remaining
+                      </p>
+                    )}
                   </div>
 
                   <div>

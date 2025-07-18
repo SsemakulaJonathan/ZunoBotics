@@ -549,25 +549,46 @@ export default function AdminProjectsPage() {
                         </div>
 
                         <div className="col-span-2">
-                          <Label htmlFor="description">Description *</Label>
+                          <Label htmlFor="description">Description * ({formData.description.length}/450)</Label>
                           <Textarea
                             id="description"
                             value={formData.description}
-                            onChange={(e) => setFormData({...formData, description: e.target.value})}
+                            onChange={(e) => {
+                              if (e.target.value.length <= 450) {
+                                setFormData({...formData, description: e.target.value})
+                              }
+                            }}
                             rows={3}
                             required
+                            maxLength={450}
+                            placeholder="Enter project description (max 450 characters)"
                           />
+                          {formData.description.length >= 400 && (
+                            <p className="text-sm text-amber-600 mt-1">
+                              {450 - formData.description.length} characters remaining
+                            </p>
+                          )}
                         </div>
 
                         <div className="col-span-2">
-                          <Label htmlFor="impact">Project Impact</Label>
+                          <Label htmlFor="impact">Project Impact ({formData.impact.length}/400)</Label>
                           <Textarea
                             id="impact"
                             value={formData.impact}
-                            onChange={(e) => setFormData({...formData, impact: e.target.value})}
+                            onChange={(e) => {
+                              if (e.target.value.length <= 400) {
+                                setFormData({...formData, impact: e.target.value})
+                              }
+                            }}
                             rows={2}
-                            placeholder="e.g., 30% increase in crop yields with 40% less water usage"
+                            maxLength={400}
+                            placeholder="Enter project impact - use line breaks for bullet points (max 400 characters)"
                           />
+                          {formData.impact.length >= 350 && (
+                            <p className="text-sm text-amber-600 mt-1">
+                              {400 - formData.impact.length} characters remaining
+                            </p>
+                          )}
                         </div>
 
                         <div className="col-span-2">

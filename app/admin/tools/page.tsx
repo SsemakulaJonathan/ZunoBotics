@@ -340,25 +340,46 @@ export default function ToolsManagement() {
                   </div>
 
                   <div>
-                    <Label htmlFor="description">Description *</Label>
+                    <Label htmlFor="description">Description * ({formData.description.length}/100)</Label>
                     <Textarea
                       id="description"
                       value={formData.description}
-                      onChange={(e) => setFormData({...formData, description: e.target.value})}
+                      onChange={(e) => {
+                        if (e.target.value.length <= 100) {
+                          setFormData({...formData, description: e.target.value})
+                        }
+                      }}
                       rows={3}
+                      maxLength={100}
+                      placeholder="Enter tool description (max 100 characters)"
                       required
                     />
+                    {formData.description.length >= 80 && (
+                      <p className="text-sm text-amber-600 mt-1">
+                        {100 - formData.description.length} characters remaining
+                      </p>
+                    )}
                   </div>
 
                   <div>
-                    <Label htmlFor="useCase">Use Case</Label>
+                    <Label htmlFor="useCase">Use Case ({formData.useCase.length}/70)</Label>
                     <Textarea
                       id="useCase"
                       value={formData.useCase}
-                      onChange={(e) => setFormData({...formData, useCase: e.target.value})}
+                      onChange={(e) => {
+                        if (e.target.value.length <= 70) {
+                          setFormData({...formData, useCase: e.target.value})
+                        }
+                      }}
                       rows={2}
-                      placeholder="Describe the practical use case for this tool..."
+                      maxLength={70}
+                      placeholder="Describe the practical use case for this tool (max 70 characters)"
                     />
+                    {formData.useCase.length >= 60 && (
+                      <p className="text-sm text-amber-600 mt-1">
+                        {70 - formData.useCase.length} characters remaining
+                      </p>
+                    )}
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">

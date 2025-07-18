@@ -394,9 +394,17 @@ export default function Projects() {
                         {project.impact && (
                           <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-3 mb-4">
                             <h4 className="text-sm font-semibold text-green-800 dark:text-green-400 mb-1">Impact</h4>
-                            <p className="text-sm text-green-700 dark:text-green-300">
-                              {project.impact}
-                            </p>
+                            <div className="text-sm text-green-700 dark:text-green-300">
+                              {project.impact.includes('\n') ? (
+                                <ul className="list-disc list-inside space-y-1">
+                                  {project.impact.split('\n').filter(line => line.trim()).map((line, index) => (
+                                    <li key={index}>{line.trim()}</li>
+                                  ))}
+                                </ul>
+                              ) : (
+                                <p>{project.impact}</p>
+                              )}
+                            </div>
                           </div>
                         )}
                         

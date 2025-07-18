@@ -277,15 +277,25 @@ export default function ImpactManagement() {
               </div>
 
               <div>
-                <Label htmlFor="description">Description *</Label>
+                <Label htmlFor="description">Description * ({formData.description.length}/50)</Label>
                 <Textarea
                   id="description"
                   value={formData.description}
-                  onChange={(e) => setFormData({...formData, description: e.target.value})}
+                  onChange={(e) => {
+                    if (e.target.value.length <= 50) {
+                      setFormData({...formData, description: e.target.value})
+                    }
+                  }}
                   rows={2}
-                  placeholder="e.g., Across multiple universities in Uganda"
+                  maxLength={50}
+                  placeholder="e.g., Across multiple universities in Uganda (max 50 chars)"
                   required
                 />
+                {formData.description.length >= 40 && (
+                  <p className="text-sm text-amber-600 mt-1">
+                    {50 - formData.description.length} characters remaining
+                  </p>
+                )}
               </div>
 
               <div className="grid grid-cols-2 gap-4">

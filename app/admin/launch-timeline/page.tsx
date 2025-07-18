@@ -290,14 +290,25 @@ export default function LaunchTimelineManagement() {
                   </div>
 
                   <div>
-                    <Label htmlFor="description">Description *</Label>
+                    <Label htmlFor="description">Description * ({formData.description.length}/100)</Label>
                     <Textarea
                       id="description"
                       value={formData.description}
-                      onChange={(e) => setFormData({...formData, description: e.target.value})}
+                      onChange={(e) => {
+                        if (e.target.value.length <= 100) {
+                          setFormData({...formData, description: e.target.value})
+                        }
+                      }}
                       rows={3}
+                      maxLength={100}
+                      placeholder="Enter timeline description (max 100 characters)"
                       required
                     />
+                    {formData.description.length >= 80 && (
+                      <p className="text-sm text-amber-600 mt-1">
+                        {100 - formData.description.length} characters remaining
+                      </p>
+                    )}
                   </div>
 
                   <div className="grid grid-cols-3 gap-4">
