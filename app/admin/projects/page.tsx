@@ -19,12 +19,10 @@ import {
   Users,
   Star,
   Search,
-  Filter,
-  ArrowLeft,
-  Upload
+  Upload,
+  ArrowLeft
 } from 'lucide-react'
 import Link from 'next/link'
-import Image from 'next/image'
 
 interface Project {
   id: string
@@ -34,18 +32,17 @@ interface Project {
   image?: string
   tags: string[]
   university: string
-  contributors: number
-  repoStars: number
+  contributors?: number
+  repoStars?: number
   githubUrl?: string
   demoUrl?: string
-  dateCompleted?: string
   category?: string
   technology: string[]
+  dateCompleted?: string
   status: string
-  createdAt: string
 }
 
-export default function ProjectManagement() {
+export default function AdminProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([])
   const [filteredProjects, setFilteredProjects] = useState<Project[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -69,28 +66,17 @@ export default function ProjectManagement() {
     technology: '',
     status: 'active'
   })
+  const [activeTab, setActiveTab] = useState<'projects' | 'categories' | 'universities'>('projects')
+  const [newCategory, setNewCategory] = useState('')
+  const [newUniversity, setNewUniversity] = useState('')
+  const [editingCategory, setEditingCategory] = useState<string | null>(null)
+  const [editingUniversity, setEditingUniversity] = useState<string | null>(null)
   const router = useRouter()
 
-  const universities = [
-    'Makerere University',
-    'Kyambogo University',
-    'Uganda Martyrs University',
-    'Mbarara University of Science and Technology',
-    'University of Rwanda',
-    'Other'
-  ]
-
-  const categories = [
-    'Agriculture',
-    'Healthcare',
-    'Environment',
-    'Education',
-    'Accessibility',
-    'IoT',
-    'AI/ML',
-    'Robotics',
-    'Other'
-  ]
+  const [universities, setUniversities] = useState<Array<{id: string, name: string}>>([])
+  const [categories, setCategories] = useState<Array<{id: string, name: string}>>([])
+  const [universitiesLoaded, setUniversitiesLoaded] = useState(false)
+  const [categoriesLoaded, setCategoriesLoaded] = useState(false)
 
   useEffect(() => {
     const token = localStorage.getItem('adminToken')
@@ -98,45 +84,82 @@ export default function ProjectManagement() {
       router.push('/admin/login')
       return
     }
-
+    
     fetchProjects()
+    fetchCategories()
+    fetchUniversities()
   }, [router])
 
   useEffect(() => {
-    // Filter projects based on search and status
     let filtered = projects
-
+    
     if (searchTerm) {
-      filtered = filtered.filter(project => 
+      filtered = filtered.filter(project =>
         project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        project.university.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        project.category?.toLowerCase().includes(searchTerm.toLowerCase())
+        project.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        project.university.toLowerCase().includes(searchTerm.toLowerCase())
       )
     }
-
+    
     if (statusFilter !== 'all') {
       filtered = filtered.filter(project => project.status === statusFilter)
     }
-
+    
     setFilteredProjects(filtered)
   }, [projects, searchTerm, statusFilter])
 
   const fetchProjects = async () => {
     try {
+      const token = localStorage.getItem('adminToken')
       const response = await fetch('/api/admin/projects', {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+          'Authorization': `Bearer ${token}`
         }
       })
-      
       if (response.ok) {
         const data = await response.json()
-        setProjects(data.projects)
+        setProjects(data.projects || data)
       }
     } catch (error) {
-      console.error('Failed to fetch projects:', error)
+      console.error('Error fetching projects:', error)
     } finally {
       setIsLoading(false)
+    }
+  }
+
+  const fetchCategories = async () => {
+    try {
+      const token = localStorage.getItem('adminToken')
+      const response = await fetch('/api/admin/categories', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      if (response.ok) {
+        const data = await response.json()
+        setCategories(data.categories || [])
+        setCategoriesLoaded(true)
+      }
+    } catch (error) {
+      console.error('Error fetching categories:', error)
+    }
+  }
+
+  const fetchUniversities = async () => {
+    try {
+      const token = localStorage.getItem('adminToken')
+      const response = await fetch('/api/admin/universities', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      if (response.ok) {
+        const data = await response.json()
+        setUniversities(data.universities || [])
+        setUniversitiesLoaded(true)
+      }
+    } catch (error) {
+      console.error('Error fetching universities:', error)
     }
   }
 
@@ -150,27 +173,28 @@ export default function ProjectManagement() {
       contributors: Number(formData.contributors),
       repoStars: Number(formData.repoStars)
     }
-
+    
     try {
+      const token = localStorage.getItem('adminToken')
       const url = editingProject ? `/api/admin/projects/${editingProject.id}` : '/api/admin/projects'
       const method = editingProject ? 'PATCH' : 'POST'
-
+      
       const response = await fetch(url, {
         method,
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+          'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify(projectData)
+        body: JSON.stringify(projectData),
       })
-
+      
       if (response.ok) {
         fetchProjects()
         setIsDialogOpen(false)
         resetForm()
       }
     } catch (error) {
-      console.error('Failed to save project:', error)
+      console.error('Error saving project:', error)
     }
   }
 
@@ -183,8 +207,8 @@ export default function ProjectManagement() {
       image: project.image || '',
       tags: project.tags.join(', '),
       university: project.university,
-      contributors: project.contributors,
-      repoStars: project.repoStars,
+      contributors: project.contributors || 1,
+      repoStars: project.repoStars || 0,
       githubUrl: project.githubUrl || '',
       demoUrl: project.demoUrl || '',
       dateCompleted: project.dateCompleted || '',
@@ -195,22 +219,22 @@ export default function ProjectManagement() {
     setIsDialogOpen(true)
   }
 
-  const handleDelete = async (projectId: string) => {
-    if (!confirm('Are you sure you want to delete this project?')) return
-
-    try {
-      const response = await fetch(`/api/admin/projects/${projectId}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+  const handleDelete = async (id: string) => {
+    if (confirm('Are you sure you want to delete this project?')) {
+      try {
+        const token = localStorage.getItem('adminToken')
+        const response = await fetch(`/api/admin/projects/${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        })
+        if (response.ok) {
+          fetchProjects()
         }
-      })
-
-      if (response.ok) {
-        fetchProjects()
+      } catch (error) {
+        console.error('Error deleting project:', error)
       }
-    } catch (error) {
-      console.error('Failed to delete project:', error)
     }
   }
 
@@ -232,6 +256,136 @@ export default function ProjectManagement() {
       status: 'active'
     })
     setEditingProject(null)
+  }
+
+  // Category management functions
+  const addCategory = async () => {
+    if (!newCategory.trim()) return
+    
+    try {
+      const token = localStorage.getItem('adminToken')
+      const response = await fetch('/api/admin/categories', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ name: newCategory.trim() })
+      })
+      
+      if (response.ok) {
+        setNewCategory('')
+        fetchCategories()
+      }
+    } catch (error) {
+      console.error('Error adding category:', error)
+    }
+  }
+
+  const updateCategory = async (categoryId: string, newName: string) => {
+    if (!newName.trim()) return
+    
+    try {
+      const token = localStorage.getItem('adminToken')
+      const response = await fetch(`/api/admin/categories/${categoryId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ name: newName.trim() })
+      })
+      
+      if (response.ok) {
+        setEditingCategory(null)
+        fetchCategories()
+      }
+    } catch (error) {
+      console.error('Error updating category:', error)
+    }
+  }
+
+  const deleteCategory = async (categoryId: string) => {
+    try {
+      const token = localStorage.getItem('adminToken')
+      const response = await fetch(`/api/admin/categories/${categoryId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      
+      if (response.ok) {
+        fetchCategories()
+      }
+    } catch (error) {
+      console.error('Error deleting category:', error)
+    }
+  }
+
+  // University management functions
+  const addUniversity = async () => {
+    if (!newUniversity.trim()) return
+    
+    try {
+      const token = localStorage.getItem('adminToken')
+      const response = await fetch('/api/admin/universities', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ name: newUniversity.trim() })
+      })
+      
+      if (response.ok) {
+        setNewUniversity('')
+        fetchUniversities()
+      }
+    } catch (error) {
+      console.error('Error adding university:', error)
+    }
+  }
+
+  const updateUniversity = async (universityId: string, newName: string) => {
+    if (!newName.trim()) return
+    
+    try {
+      const token = localStorage.getItem('adminToken')
+      const response = await fetch(`/api/admin/universities/${universityId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ name: newName.trim() })
+      })
+      
+      if (response.ok) {
+        setEditingUniversity(null)
+        fetchUniversities()
+      }
+    } catch (error) {
+      console.error('Error updating university:', error)
+    }
+  }
+
+  const deleteUniversity = async (universityId: string) => {
+    try {
+      const token = localStorage.getItem('adminToken')
+      const response = await fetch(`/api/admin/universities/${universityId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      
+      if (response.ok) {
+        fetchUniversities()
+      }
+    } catch (error) {
+      console.error('Error deleting university:', error)
+    }
   }
 
   if (isLoading) {
@@ -267,344 +421,499 @@ export default function ProjectManagement() {
                 </p>
               </div>
             </div>
-            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-              <DialogTrigger asChild>
-                <Button onClick={resetForm}>
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Project
+            <div className="flex items-center space-x-4">
+              <div className="flex space-x-2">
+                <Button 
+                  variant={activeTab === 'projects' ? 'default' : 'outline'}
+                  onClick={() => setActiveTab('projects')}
+                  size="sm"
+                >
+                  Projects
                 </Button>
-              </DialogTrigger>
-              <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-                <DialogHeader>
-                  <DialogTitle>
-                    {editingProject ? 'Edit Project' : 'Add New Project'}
-                  </DialogTitle>
-                  <DialogDescription>
-                    {editingProject ? 'Update project information' : 'Add a new student project to the showcase'}
-                  </DialogDescription>
-                </DialogHeader>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="col-span-2">
-                      <Label htmlFor="title">Project Title *</Label>
-                      <Input
-                        id="title"
-                        value={formData.title}
-                        onChange={(e) => setFormData({...formData, title: e.target.value})}
-                        required
-                      />
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="university">University *</Label>
-                      <Select value={formData.university} onValueChange={(value) => setFormData({...formData, university: value})}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select university" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {universities.map((uni) => (
-                            <SelectItem key={uni} value={uni}>{uni}</SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div>
-                      <Label htmlFor="category">Category</Label>
-                      <Select value={formData.category} onValueChange={(value) => setFormData({...formData, category: value})}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select category" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {categories.map((cat) => (
-                            <SelectItem key={cat} value={cat}>{cat}</SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div>
-                      <Label htmlFor="contributors">Contributors</Label>
-                      <Input
-                        id="contributors"
-                        type="number"
-                        min="1"
-                        value={formData.contributors}
-                        onChange={(e) => setFormData({...formData, contributors: parseInt(e.target.value) || 1})}
-                      />
-                    </div>
-
-                    <div>
-                      <Label htmlFor="repoStars">Repository Stars</Label>
-                      <Input
-                        id="repoStars"
-                        type="number"
-                        min="0"
-                        value={formData.repoStars}
-                        onChange={(e) => setFormData({...formData, repoStars: parseInt(e.target.value) || 0})}
-                      />
-                    </div>
-
-                    <div>
-                      <Label htmlFor="status">Status</Label>
-                      <Select value={formData.status} onValueChange={(value) => setFormData({...formData, status: value})}>
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="active">Active</SelectItem>
-                          <SelectItem value="completed">Completed</SelectItem>
-                          <SelectItem value="archived">Archived</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div>
-                      <Label htmlFor="dateCompleted">Date Completed</Label>
-                      <Input
-                        id="dateCompleted"
-                        value={formData.dateCompleted}
-                        onChange={(e) => setFormData({...formData, dateCompleted: e.target.value})}
-                        placeholder="e.g., March 2024"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <Label htmlFor="description">Description *</Label>
-                    <Textarea
-                      id="description"
-                      value={formData.description}
-                      onChange={(e) => setFormData({...formData, description: e.target.value})}
-                      rows={3}
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="impact">Project Impact</Label>
-                    <Textarea
-                      id="impact"
-                      value={formData.impact}
-                      onChange={(e) => setFormData({...formData, impact: e.target.value})}
-                      rows={2}
-                      placeholder="e.g., 30% increase in crop yields with 40% less water usage"
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="image">Image URL</Label>
-                    <Input
-                      id="image"
-                      value={formData.image}
-                      onChange={(e) => setFormData({...formData, image: e.target.value})}
-                      placeholder="/path/to/image.png"
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="tags">Tags (comma-separated)</Label>
-                    <Input
-                      id="tags"
-                      value={formData.tags}
-                      onChange={(e) => setFormData({...formData, tags: e.target.value})}
-                      placeholder="IoT, Agriculture, Sensors"
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="technology">Technologies (comma-separated)</Label>
-                    <Input
-                      id="technology"
-                      value={formData.technology}
-                      onChange={(e) => setFormData({...formData, technology: e.target.value})}
-                      placeholder="Arduino, Python, Machine Learning"
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="githubUrl">GitHub URL</Label>
-                    <Input
-                      id="githubUrl"
-                      value={formData.githubUrl}
-                      onChange={(e) => setFormData({...formData, githubUrl: e.target.value})}
-                      placeholder="https://github.com/username/project"
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="demoUrl">Demo URL</Label>
-                    <Input
-                      id="demoUrl"
-                      value={formData.demoUrl}
-                      onChange={(e) => setFormData({...formData, demoUrl: e.target.value})}
-                      placeholder="https://project-demo.com"
-                    />
-                  </div>
-
-                  <div className="flex gap-2 pt-4">
-                    <Button type="submit" className="flex-1">
-                      {editingProject ? 'Update Project' : 'Add Project'}
+                <Button 
+                  variant={activeTab === 'categories' ? 'default' : 'outline'}
+                  onClick={() => setActiveTab('categories')}
+                  size="sm"
+                >
+                  Categories
+                </Button>
+                <Button 
+                  variant={activeTab === 'universities' ? 'default' : 'outline'}
+                  onClick={() => setActiveTab('universities')}
+                  size="sm"
+                >
+                  Universities
+                </Button>
+              </div>
+              {activeTab === 'projects' && (
+                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                  <DialogTrigger asChild>
+                    <Button onClick={resetForm}>
+                      <Plus className="h-4 w-4 mr-2" />
+                      Add Project
                     </Button>
-                    <Button 
-                      type="button" 
-                      variant="outline" 
-                      onClick={() => setIsDialogOpen(false)}
-                      className="flex-1"
-                    >
-                      Cancel
-                    </Button>
-                  </div>
-                </form>
-              </DialogContent>
-            </Dialog>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                    <DialogHeader>
+                      <DialogTitle>
+                        {editingProject ? 'Edit Project' : 'Add New Project'}
+                      </DialogTitle>
+                      <DialogDescription>
+                        {editingProject ? 'Update the project details below.' : 'Fill in the project details below.'}
+                      </DialogDescription>
+                    </DialogHeader>
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="col-span-2">
+                          <Label htmlFor="title">Project Title *</Label>
+                          <Input
+                            id="title"
+                            value={formData.title}
+                            onChange={(e) => setFormData({...formData, title: e.target.value})}
+                            required
+                          />
+                        </div>
+                        
+                        <div>
+                          <Label htmlFor="university">University *</Label>
+                          <Select onValueChange={(value) => setFormData({...formData, university: value})} value={formData.university}>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select university" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {universities.map((uni) => (
+                                <SelectItem key={uni.id} value={uni.name}>{uni.name}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+
+                        <div>
+                          <Label htmlFor="category">Category</Label>
+                          <Select onValueChange={(value) => setFormData({...formData, category: value})} value={formData.category}>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select category" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {categories.map((cat) => (
+                                <SelectItem key={cat.id} value={cat.name}>{cat.name}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+
+                        <div>
+                          <Label htmlFor="contributors">Contributors</Label>
+                          <Input
+                            id="contributors"
+                            type="number"
+                            min="1"
+                            value={formData.contributors}
+                            onChange={(e) => setFormData({...formData, contributors: parseInt(e.target.value)})}
+                          />
+                        </div>
+
+                        <div>
+                          <Label htmlFor="repoStars">Repository Stars</Label>
+                          <Input
+                            id="repoStars"
+                            type="number"
+                            min="0"
+                            value={formData.repoStars}
+                            onChange={(e) => setFormData({...formData, repoStars: parseInt(e.target.value)})}
+                          />
+                        </div>
+
+                        <div>
+                          <Label htmlFor="status">Status</Label>
+                          <Select onValueChange={(value) => setFormData({...formData, status: value})} value={formData.status}>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select status" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="active">Active</SelectItem>
+                              <SelectItem value="completed">Completed</SelectItem>
+                              <SelectItem value="archived">Archived</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+
+                        <div>
+                          <Label htmlFor="dateCompleted">Date Completed</Label>
+                          <Input
+                            id="dateCompleted"
+                            value={formData.dateCompleted}
+                            onChange={(e) => setFormData({...formData, dateCompleted: e.target.value})}
+                            placeholder="e.g., March 2024"
+                          />
+                        </div>
+
+                        <div className="col-span-2">
+                          <Label htmlFor="description">Description *</Label>
+                          <Textarea
+                            id="description"
+                            value={formData.description}
+                            onChange={(e) => setFormData({...formData, description: e.target.value})}
+                            rows={3}
+                            required
+                          />
+                        </div>
+
+                        <div className="col-span-2">
+                          <Label htmlFor="impact">Project Impact</Label>
+                          <Textarea
+                            id="impact"
+                            value={formData.impact}
+                            onChange={(e) => setFormData({...formData, impact: e.target.value})}
+                            rows={2}
+                            placeholder="e.g., 30% increase in crop yields with 40% less water usage"
+                          />
+                        </div>
+
+                        <div className="col-span-2">
+                          <Label htmlFor="image">Project Image</Label>
+                          <Input
+                            id="image"
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => {
+                              const file = e.target.files?.[0]
+                              if (file) {
+                                const reader = new FileReader()
+                                reader.onload = (event) => {
+                                  setFormData({...formData, image: event.target?.result as string})
+                                }
+                                reader.readAsDataURL(file)
+                              }
+                            }}
+                            className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100"
+                          />
+                          {formData.image && (
+                            <div className="mt-2">
+                              <img 
+                                src={formData.image} 
+                                alt="Preview" 
+                                className="h-20 w-20 object-cover rounded-md border" 
+                              />
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="col-span-2">
+                          <Label htmlFor="tags">Tags (comma-separated)</Label>
+                          <Input
+                            id="tags"
+                            value={formData.tags}
+                            onChange={(e) => setFormData({...formData, tags: e.target.value})}
+                            placeholder="IoT, Agriculture, Sensors"
+                          />
+                        </div>
+
+                        <div className="col-span-2">
+                          <Label htmlFor="technology">Technologies (comma-separated)</Label>
+                          <Input
+                            id="technology"
+                            value={formData.technology}
+                            onChange={(e) => setFormData({...formData, technology: e.target.value})}
+                            placeholder="Arduino, Python, Machine Learning"
+                          />
+                        </div>
+
+                        <div>
+                          <Label htmlFor="githubUrl">GitHub URL</Label>
+                          <Input
+                            id="githubUrl"
+                            value={formData.githubUrl}
+                            onChange={(e) => setFormData({...formData, githubUrl: e.target.value})}
+                            placeholder="https://github.com/username/project"
+                          />
+                        </div>
+
+                        <div>
+                          <Label htmlFor="demoUrl">Demo URL</Label>
+                          <Input
+                            id="demoUrl"
+                            value={formData.demoUrl}
+                            onChange={(e) => setFormData({...formData, demoUrl: e.target.value})}
+                            placeholder="https://project-demo.com"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="flex justify-end space-x-2 pt-4">
+                        <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
+                          Cancel
+                        </Button>
+                        <Button type="submit">
+                          {editingProject ? 'Update Project' : 'Add Project'}
+                        </Button>
+                      </div>
+                    </form>
+                  </DialogContent>
+                </Dialog>
+              )}
+            </div>
           </div>
         </div>
       </header>
 
-      {/* Content */}
+      {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Filters */}
-        <div className="flex flex-col sm:flex-row gap-4 mb-6">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search projects..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
-            />
-          </div>
-          <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="w-full sm:w-48">
-              <Filter className="h-4 w-4 mr-2" />
-              <SelectValue placeholder="Filter by status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Status</SelectItem>
-              <SelectItem value="active">Active</SelectItem>
-              <SelectItem value="completed">Completed</SelectItem>
-              <SelectItem value="archived">Archived</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredProjects.map((project) => (
-            <Card key={project.id} className="overflow-hidden">
-              {project.image && (
-                <div className="aspect-video relative">
-                  <Image
-                    src={project.image}
-                    alt={project.title}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              )}
-              <CardHeader>
-                <div className="flex justify-between items-start">
-                  <div className="flex-1">
-                    <CardTitle className="text-lg">{project.title}</CardTitle>
-                    <CardDescription>{project.university}</CardDescription>
-                  </div>
-                  <Badge variant={project.status === 'completed' ? 'default' : 'secondary'}>
-                    {project.status}
-                  </Badge>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <p className="text-sm text-muted-foreground line-clamp-3">
-                    {project.description}
-                  </p>
-                  
-                  <div className="flex flex-wrap gap-1">
-                    {project.tags.slice(0, 3).map((tag) => (
-                      <Badge key={tag} variant="outline" className="text-xs">
-                        {tag}
-                      </Badge>
-                    ))}
-                    {project.tags.length > 3 && (
-                      <Badge variant="outline" className="text-xs">
-                        +{project.tags.length - 3}
-                      </Badge>
-                    )}
-                  </div>
-
-                  <div className="flex items-center justify-between text-sm text-muted-foreground">
-                    <div className="flex items-center">
-                      <Users className="h-4 w-4 mr-1" />
-                      {project.contributors}
-                    </div>
-                    <div className="flex items-center">
-                      <Star className="h-4 w-4 mr-1" />
-                      {project.repoStars}
-                    </div>
-                    {project.dateCompleted && (
-                      <span>{project.dateCompleted}</span>
-                    )}
-                  </div>
-
-                  <div className="flex gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleEdit(project)}
-                      className="flex-1"
-                    >
-                      <Edit className="h-4 w-4 mr-2" />
-                      Edit
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleDelete(project.id)}
-                      className="flex-1"
-                    >
-                      <Trash2 className="h-4 w-4 mr-2" />
-                      Delete
-                    </Button>
-                  </div>
-
-                  {(project.githubUrl || project.demoUrl) && (
-                    <div className="flex gap-2">
-                      {project.githubUrl && (
-                        <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="flex-1">
-                          <Button variant="outline" size="sm" className="w-full">
-                            <Github className="h-4 w-4 mr-2" />
-                            GitHub
-                          </Button>
-                        </a>
-                      )}
-                      {project.demoUrl && (
-                        <a href={project.demoUrl} target="_blank" rel="noopener noreferrer" className="flex-1">
-                          <Button variant="outline" size="sm" className="w-full">
-                            <ExternalLink className="h-4 w-4 mr-2" />
-                            Demo
-                          </Button>
-                        </a>
-                      )}
-                    </div>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        {filteredProjects.length === 0 && (
-          <Card>
-            <CardContent className="text-center py-12">
-              <div className="text-muted-foreground">
-                {searchTerm || statusFilter !== 'all' 
-                  ? 'No projects match your search criteria'
-                  : 'No projects found. Add your first project!'
-                }
+        {activeTab === 'projects' && (
+          <div>
+            {/* Filters */}
+            <div className="flex flex-col sm:flex-row gap-4 mb-6">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder="Search projects..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10"
+                />
               </div>
-            </CardContent>
-          </Card>
+              <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <SelectTrigger className="w-48">
+                  <SelectValue placeholder="Filter by status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Status</SelectItem>
+                  <SelectItem value="active">Active</SelectItem>
+                  <SelectItem value="completed">Completed</SelectItem>
+                  <SelectItem value="archived">Archived</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Projects Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredProjects.map((project) => (
+                <Card key={project.id} className="group hover:shadow-lg transition-shadow">
+                  <CardHeader className="pb-3">
+                    <div className="flex items-center justify-between">
+                      <Badge variant={project.status === 'active' ? 'default' : project.status === 'completed' ? 'secondary' : 'outline'}>
+                        {project.status}
+                      </Badge>
+                      <div className="flex space-x-1">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleEdit(project)}
+                          className="opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleDelete(project.id)}
+                          className="opacity-0 group-hover:opacity-100 transition-opacity text-destructive hover:text-destructive"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                    <CardTitle className="text-lg">{project.title}</CardTitle>
+                    <CardDescription className="text-sm">
+                      {project.university} • {project.category}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
+                      {project.description}
+                    </p>
+                    {project.image && (
+                      <div className="mb-3">
+                        <img 
+                          src={project.image} 
+                          alt={project.title}
+                          className="w-full h-32 object-cover rounded-md"
+                        />
+                      </div>
+                    )}
+                    <div className="flex flex-wrap gap-2 mb-3">
+                      {project.tags.slice(0, 3).map((tag) => (
+                        <Badge key={tag} variant="outline" className="text-xs">{tag}</Badge>
+                      ))}
+                      {project.tags.length > 3 && (
+                        <Badge variant="outline" className="text-xs">+{project.tags.length - 3}</Badge>
+                      )}
+                    </div>
+                    <div className="flex items-center justify-between text-sm text-muted-foreground">
+                      <div className="flex items-center space-x-4">
+                        {project.contributors && (
+                          <div className="flex items-center space-x-1">
+                            <Users className="h-3 w-3" />
+                            <span>{project.contributors}</span>
+                          </div>
+                        )}
+                        {project.repoStars && project.repoStars > 0 && (
+                          <div className="flex items-center space-x-1">
+                            <Star className="h-3 w-3" />
+                            <span>{project.repoStars}</span>
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex space-x-2">
+                        {project.githubUrl && (
+                          <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
+                            <Button variant="ghost" size="sm">
+                              <Github className="h-3 w-3" />
+                            </Button>
+                          </a>
+                        )}
+                        {project.demoUrl && (
+                          <a href={project.demoUrl} target="_blank" rel="noopener noreferrer">
+                            <Button variant="ghost" size="sm">
+                              <ExternalLink className="h-3 w-3" />
+                            </Button>
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        )}
+        
+        {activeTab === 'categories' && (
+          <div className="space-y-6">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow">
+              <div className="p-6">
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    Manage Categories
+                  </h2>
+                  <div className="flex space-x-2">
+                    <Input
+                      placeholder="Enter new category"
+                      value={newCategory}
+                      onChange={(e) => setNewCategory(e.target.value)}
+                      onKeyPress={(e) => e.key === 'Enter' && addCategory()}
+                      className="w-48"
+                    />
+                    <Button onClick={addCategory} disabled={!newCategory.trim()}>
+                      <Plus className="h-4 w-4 mr-2" />
+                      Add
+                    </Button>
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {categories.map((category) => (
+                    <Card key={category.id} className="p-4">
+                      <div className="flex justify-between items-center">
+                        {editingCategory === category.id ? (
+                          <Input
+                            defaultValue={category.name}
+                            onBlur={(e) => updateCategory(category.id, e.target.value)}
+                            onKeyPress={(e) => {
+                              if (e.key === 'Enter') {
+                                updateCategory(category.id, e.currentTarget.value)
+                              }
+                            }}
+                            className="flex-1 mr-2"
+                          />
+                        ) : (
+                          <span className="text-sm font-medium">{category.name}</span>
+                        )}
+                        <div className="flex space-x-1">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setEditingCategory(editingCategory === category.id ? null : category.id)}
+                          >
+                            <Edit className="h-3 w-3" />
+                          </Button>
+                          {category.name !== 'Other' && (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => deleteCategory(category.id)}
+                              className="text-red-500 hover:text-red-700"
+                            >
+                              <Trash2 className="h-3 w-3" />
+                            </Button>
+                          )}
+                        </div>
+                      </div>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+        
+        {activeTab === 'universities' && (
+          <div className="space-y-6">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow">
+              <div className="p-6">
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    Manage Universities
+                  </h2>
+                  <div className="flex space-x-2">
+                    <Input
+                      placeholder="Enter new university"
+                      value={newUniversity}
+                      onChange={(e) => setNewUniversity(e.target.value)}
+                      onKeyPress={(e) => e.key === 'Enter' && addUniversity()}
+                      className="w-48"
+                    />
+                    <Button onClick={addUniversity} disabled={!newUniversity.trim()}>
+                      <Plus className="h-4 w-4 mr-2" />
+                      Add
+                    </Button>
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {universities.map((university) => (
+                    <Card key={university.id} className="p-4">
+                      <div className="flex justify-between items-center">
+                        {editingUniversity === university.id ? (
+                          <Input
+                            defaultValue={university.name}
+                            onBlur={(e) => updateUniversity(university.id, e.target.value)}
+                            onKeyPress={(e) => {
+                              if (e.key === 'Enter') {
+                                updateUniversity(university.id, e.currentTarget.value)
+                              }
+                            }}
+                            className="flex-1 mr-2"
+                          />
+                        ) : (
+                          <span className="text-sm font-medium">{university.name}</span>
+                        )}
+                        <div className="flex space-x-1">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setEditingUniversity(editingUniversity === university.id ? null : university.id)}
+                          >
+                            <Edit className="h-3 w-3" />
+                          </Button>
+                          {university.name !== 'Other' && (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => deleteUniversity(university.id)}
+                              className="text-red-500 hover:text-red-700"
+                            >
+                              <Trash2 className="h-3 w-3" />
+                            </Button>
+                          )}
+                        </div>
+                      </div>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
         )}
       </main>
     </div>

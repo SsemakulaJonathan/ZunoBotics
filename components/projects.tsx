@@ -35,6 +35,7 @@ export default function Projects() {
   const [projects, setProjects] = useState<Project[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [visibleProjects, setVisibleProjects] = useState(3)
+  const [expandedDescriptions, setExpandedDescriptions] = useState<Set<string>>(new Set())
   const [activeFilters, setActiveFilters] = useState({
     university: 'all',
     category: 'all',
@@ -51,6 +52,8 @@ export default function Projects() {
     file: null as File | null
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [availableUniversities, setAvailableUniversities] = useState<Array<{id: string, name: string}>>([])
+  const [availableCategories, setAvailableCategories] = useState<Array<{id: string, name: string}>>([])
 
   // Fetch projects from database
   useEffect(() => {
@@ -68,23 +71,34 @@ export default function Projects() {
       }
     }
 
+    const fetchUniversities = async () => {
+      try {
+        const response = await fetch('/api/universities')
+        if (response.ok) {
+          const data = await response.json()
+          setAvailableUniversities(data.universities || [])
+        }
+      } catch (error) {
+        console.error('Error fetching universities:', error)
+      }
+    }
+
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch('/api/categories')
+        if (response.ok) {
+          const data = await response.json()
+          setAvailableCategories(data.categories || [])
+        }
+      } catch (error) {
+        console.error('Error fetching categories:', error)
+      }
+    }
+
     fetchProjects()
+    fetchUniversities()
+    fetchCategories()
   }, [])
-
-
-  const availableUniversities = [
-    'Makerere University',
-    'Kyambogo University',
-    'Uganda Martyrs University',
-    'Mbarara University of Science and Technology',
-    'Busitema University',
-    'Islamic University in Uganda',
-    'Gulu University',
-    'Mbarara University',
-    'University of Rwanda',
-    'Kigali Institute of Science and Technology',
-    'Other'
-  ]
 
   const fadeIn = {
     hidden: { opacity: 0, y: 20 },
@@ -200,6 +214,18 @@ export default function Projects() {
   const downloadTemplate = () => {
     // This would download the proposal template
     window.open('/api/proposals/template', '_blank')
+  }
+
+  const toggleDescription = (projectId: string) => {
+    setExpandedDescriptions(prev => {
+      const newSet = new Set(prev)
+      if (newSet.has(projectId)) {
+        newSet.delete(projectId)
+      } else {
+        newSet.add(projectId)
+      }
+      return newSet
+    })
   }
 
   return (
@@ -351,9 +377,19 @@ export default function Projects() {
                     </CardHeader>
                     <CardContent className="flex-1 flex flex-col justify-between">
                       <div>
-                        <p className="text-muted-foreground mb-4 line-clamp-3">
-                          {project.description}
-                        </p>
+                        <div className="mb-4">
+                          <p className={`text-muted-foreground ${expandedDescriptions.has(project.id) ? '' : 'line-clamp-4'}`}>
+                            {project.description}
+                          </p>
+                          {project.description.length > 200 && (
+                            <button
+                              onClick={() => toggleDescription(project.id)}
+                              className="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 mt-1 font-medium"
+                            >
+                              {expandedDescriptions.has(project.id) ? 'Read Less' : 'Read More'}
+                            </button>
+                          )}
+                        </div>
                         
                         {project.impact && (
                           <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-3 mb-4">
@@ -488,7 +524,7 @@ export default function Projects() {
                     </SelectTrigger>
                     <SelectContent>
                       {availableUniversities.map(uni => (
-                        <SelectItem key={uni} value={uni}>{uni}</SelectItem>
+                        <SelectItem key={uni.id} value={uni.name}>{uni.name}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
@@ -510,8 +546,9 @@ export default function Projects() {
                     id="description"
                     value={proposalForm.description}
                     onChange={(e) => setProposalForm({...proposalForm, description: e.target.value})}
-                    rows={4}
+                    rows={8}
                     required
+                    placeholder="Provide a detailed description of your project, including its objectives, methodology, expected outcomes, and potential impact..."
                   />
                 </div>
                 
