@@ -246,7 +246,7 @@ export default function Mission() {
                         <h3 className="text-xl font-bold text-foreground mb-2 text-center">{member.name}</h3>
                         <p className="text-primary font-medium mb-2 text-center">{member.role}</p>
                         <p className="text-muted-foreground text-center mb-4">{member.description}</p>
-                        <div className="flex justify-center space-x-6">
+                        <div className="flex justify-around px-8">
                           {member.email && (
                             <a
                               href={`mailto:${member.email}`}
@@ -313,7 +313,7 @@ export default function Mission() {
                       <h3 className="text-xl font-bold text-foreground mb-2 text-center">{member.name}</h3>
                       <p className="text-primary font-medium mb-2 text-center">{member.role}</p>
                       <p className="text-muted-foreground text-center mb-4">{member.description}</p>
-                      <div className="flex justify-center space-x-6">
+                      <div className="flex justify-around px-8">
                         {member.email && (
                           <a
                             href={`mailto:${member.email}`}
